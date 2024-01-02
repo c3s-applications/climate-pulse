@@ -12,7 +12,7 @@ function getWidth(maxHeight, padWidescreen, padMobile, mode) {
   }
 }
 
-const Globe = ({height, padWidescreen = 195, padMobile = 180, mode = 'adaptive'}) => {
+const Globe = ({height, padWidescreen = 225, padMobile = 50, mode = 'adaptive'}) => {
   const globeEl = useRef();
   const [cablePaths, setCablePaths] = useState([]);
   const [width, setWidth] = useState([getWidth(height, padWidescreen, padMobile, mode)]);

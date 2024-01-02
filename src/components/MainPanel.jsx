@@ -6,6 +6,7 @@ import TimeSeries from './TimeSeries';
 import DownloadGlobe from './DownloadGlobe';
 import DownloadTimeSeries from './DownloadTimeSeries';
 import TimeSeriesMenu from './TimeSeriesMenu';
+import TimeSeriesControls from './TimeSeriesControls';
 
 const MainPanel = () => (
     <Grid columns='equal' celled stackable divided>
@@ -15,7 +16,7 @@ const MainPanel = () => (
           <TimeSeries />
           {/* <Label size='small'>Compare <b>2023</b></Label> */}
           {/* <Button.Group basic compact size='mini'> */}
-            <Button basic compact size='mini'>1940s</Button>
+            {/* <Button basic compact size='mini'>1940s</Button>
             <Button basic compact size='mini'>1950s</Button>
             <Button basic compact size='mini'>1960s</Button>
             <Button basic compact size='mini'>1970s</Button>
@@ -24,8 +25,9 @@ const MainPanel = () => (
             <Button basic compact size='mini'>2000s</Button>
             <Button basic compact size='mini'>2010s</Button>
             <Button basic compact size='mini'>2020s</Button>
-            <Button basic compact size='mini' active>1940-2022</Button>
+            <Button basic compact size='mini' active>1940-2022</Button> */}
           {/* </Button.Group> */}
+            <TimeSeriesControls />
           <Divider />
         <DownloadTimeSeries />
         </Grid.Column>

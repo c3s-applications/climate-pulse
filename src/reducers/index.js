@@ -8,9 +8,13 @@ const initialState = {
   variable: "air-temperature",
   timeseriesType: "absolute",
   globeType: "anomaly",
-  globeTime: new Date("2023-12-14"),
-  maxDate: new Date("2023-12-14"),
+  globeTime: new Date("2023-12-12"),
+  maxDate: new Date("2023-12-12"),
   minDate: new Date("2023-01-01"),
+  maxYear: "2022",
+  minYear: "1940",
+  currentYears: [],
+  resetChart: false,
 }
 
 // our reducer constant returning an unchanged or updated state object depending on the users action, many cases will follow

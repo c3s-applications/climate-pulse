@@ -67,7 +67,7 @@ for year in range(1940, 2024):
         )
         blob = go.Scatter(
             x=[day_of_year(len(data))[-1]], y=[data[-1]], line_color=color, line_width=line_width,
-            showlegend=False, name="14 Dec 2023", text=f"<b>14 Dec 2023<br>{data[-1]}°C</b>",
+            showlegend=False, name="14 Dec 2023", text=f"<b>14 Dec 2023<br>{data[-1]:+.2f}°C</b>",
             mode="markers+text", textposition="bottom center", textfont=dict(color=color),
             marker={"size": 9}, legendgroup="latest", hoverinfo="skip",
         )
@@ -82,22 +82,30 @@ for year in range(1940, 2024):
     fig.add_trace(trace)
 
 
-data_2016 = get_year_data(2016) - data_mean
-customdata = data_2016 - data_mean[:len(data_2016)]
-customdata = np.dstack([data_mean[:len(customdata)], customdata])
-customdata = customdata[0]
-color = "gold"
-line_width = 2
-trace = go.Scatter(x=day_of_year(len(data_2016)), y=data_2016, name="2016", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2016))
-fig.add_trace(trace)
+# data_2016 = get_year_data(2016) - data_mean
+# customdata = data_2016 - data_mean[:len(data_2016)]
+# customdata = np.dstack([data_mean[:len(customdata)], customdata])
+# customdata = customdata[0]
+# color = "gold"
+# line_width = 2
+# trace = go.Scatter(x=day_of_year(len(data_2016)), y=data_2016, name="2016", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2016))
+# fig.add_trace(trace)
 
-data_2020 = get_year_data(2020) - data_mean
-customdata = data_2020 - data_mean[:len(data_2020)]
-customdata = np.dstack([data_mean[:len(customdata)], customdata])
-customdata = customdata[0]
-color = "darkorange"
+# data_2020 = get_year_data(2020) - data_mean
+# customdata = data_2020 - data_mean[:len(data_2020)]
+# customdata = np.dstack([data_mean[:len(customdata)], customdata])
+# customdata = customdata[0]
+# color = "darkorange"
+# line_width = 2
+# trace = go.Scatter(x=day_of_year(len(data_2020)), y=data_2020, name="2020", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2020))
+# fig.add_trace(trace)
+
+color = "darkgrey"
 line_width = 2
-trace = go.Scatter(x=day_of_year(len(data_2020)), y=data_2020, name="2020", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2020))
+trace = go.Scatter(x=day_of_year(len(data_mean)), y=[0]*len(data_mean), name="1991-2020 average", line_color=color, line_width=line_width, line_dash="dash", line_shape="spline", hovertemplate=(
+    "<b>1991-2020 average - %{x|%B %-d}</b><br>"
+    "Temperature: %{y:.2f}°C<extra></extra>"
+))
 fig.add_trace(trace)
 
 # color = "darkgrey"

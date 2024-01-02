@@ -81,23 +81,23 @@ for year in range(1940, 2024):
     fig.add_trace(trace)
 
 
-data_2016 = get_year_data(2016)
-customdata = data_2016 - data_mean[:len(data_2016)]
-customdata = np.dstack([data_mean[:len(customdata)], customdata])
-customdata = customdata[0]
-color = "gold"
-line_width = 2
-trace = go.Scatter(x=day_of_year(len(data_2016)), y=data_2016, name="2016", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2016))
-fig.add_trace(trace)
+# data_2016 = get_year_data(2016)
+# customdata = data_2016 - data_mean[:len(data_2016)]
+# customdata = np.dstack([data_mean[:len(customdata)], customdata])
+# customdata = customdata[0]
+# color = "gold"
+# line_width = 2
+# trace = go.Scatter(x=day_of_year(len(data_2016)), y=data_2016, name="2016", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2016))
+# fig.add_trace(trace)
 
-data_2020 = get_year_data(2020)
-customdata = data_2020 - data_mean[:len(data_2020)]
-customdata = np.dstack([data_mean[:len(customdata)], customdata])
-customdata = customdata[0]
-color = "darkorange"
-line_width = 2
-trace = go.Scatter(x=day_of_year(len(data_2020)), y=data_2020, name="2020", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2020))
-fig.add_trace(trace)
+# data_2020 = get_year_data(2020)
+# customdata = data_2020 - data_mean[:len(data_2020)]
+# customdata = np.dstack([data_mean[:len(customdata)], customdata])
+# customdata = customdata[0]
+# color = "darkorange"
+# line_width = 2
+# trace = go.Scatter(x=day_of_year(len(data_2020)), y=data_2020, name="2020", line_color=color, line_width=line_width, visible="legendonly", customdata=customdata, hovertemplate=get_hovertemplate(2020))
+# fig.add_trace(trace)
 
 color = "darkgrey"
 line_width = 2
