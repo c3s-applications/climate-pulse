@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
-import { Image } from 'semantic-ui-react'
+import { Image, Grid } from 'semantic-ui-react'
 import Globe from './Globe';
 
 function GlobeContainer() {
@@ -21,32 +21,41 @@ function GlobeContainer() {
     });
 
     return(
-        <div id='globeContainer' >
-        <h3
-            align="left"
-            style={{
-                marginLeft: 50,
-                marginTop: 18,
-                marginBottom: 0,
-                fontWeight: "normal",
-                fontSize: 17,
-                color: "#2A3F5F",
-            }}
-        >
-            <b>Global air temperature anomaly - {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
-            <br></br>
-            <sup>
-            Data: ERA5 12 Dec 2023 ● Credit: C3S/ECMWF
-            </sup>
-        </h3>
-        <Image
-            src={legendSrc}
-            floated='right'
-            inline
-            verticalAlign='middle'
-        />
-        <Globe height={462} />
-        </div>
+        <>
+            <h3
+                align="left"
+                style={{
+                    marginLeft: 50,
+                    marginTop: 18,
+                    marginBottom: 0,
+                    fontWeight: "normal",
+                    fontSize: 17,
+                    color: "#2A3F5F",
+                }}
+            >
+                <b>Global air temperature anomaly - {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
+                <br></br>
+                <sup>
+                Data: ERA5 12 Dec 2023 ● Credit: C3S/ECMWF
+                </sup>
+            </h3>
+
+            <Grid padded={false} stackable>
+            <Grid.Row>
+                <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'>
+                </Grid.Column>
+                <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
+                    <Globe height={462} />
+                </Grid.Column>
+                <Grid.Column computer={2} textAlign='center' verticalAlign='middle'>
+                    <Image
+                        src={legendSrc}
+                        verticalAlign='middle'
+                    />
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+        </>
     )
 }
 

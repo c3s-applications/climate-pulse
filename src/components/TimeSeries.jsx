@@ -52,6 +52,11 @@ function TimeSeries(props) {
         callUpdateSettings()
     }
 
+    function handleUpdateSettings(setting, value) {
+        props.controls[setting] = value
+        callUpdateSettings()
+    }
+
     useEffect(() => {
         if (timeseriesType != prevTimeseriesType.current) {
             if (timeseriesType === 'absolute') {
@@ -139,11 +144,33 @@ function TimeSeries(props) {
                 hoverlabel: trace.hoverlabel,
                 customdata: trace.customdata,
                 showlegend: false,
+                name: curveNumber + 1940,
             }
             timeSeriesRef.current.props.data.splice(-3, 0, newTrace)
             setRevision(revision + 1);
             timeSeriesRef.current.props.layout.datarevision = revision;
         }
+    }
+
+    function setTime(d) {
+        var year = d.points[0].data.name
+        console.log(year)
+        if (year.length > 4) {
+            year = d.points[0].curveNumber + 1940
+            if (year == 2026) {
+                year = 2023
+            }
+        }
+        var dayOfYear = d.points[0].pointIndex + 1
+        if (year % 4 === 0 && dayOfYear > 59) {
+            dayOfYear = dayOfYear + 1
+        }
+        var date = new Date(new Date(year, 0).setDate(dayOfYear))
+
+        console.log(date)
+
+        handleUpdateSettings('globeTime', date)
+        hoverReset(d)
     }
 
     function hoverReset(d) {
@@ -174,6 +201,7 @@ function TimeSeries(props) {
                 style={{width: "100%", height: "100%"}}
                 onHover={hoverHighlight}
                 onUnhover={hoverReset}
+                onClick={setTime}
             />
         </div>
     )

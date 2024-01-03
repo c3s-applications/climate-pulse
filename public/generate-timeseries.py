@@ -156,7 +156,7 @@ def timeseries(
         # ],
         title={
             'text': (
-                "<b>Daily global surface air temperature</b><br>"
+                f"<b>Daily global surface air temperature {'anomaly' if anomalies else ''}</b><br>"
                 "<sup>Data: ERA5 1940-2023 ● Credit: Copernicus Climate Change Service & ECMWF</sup>"
             ),
             'y': 0.93,
@@ -179,7 +179,7 @@ def timeseries(
         yaxis=dict(
             showgrid=True,
             gridcolor="#e6e6e6",
-            title="temperature (°C)"
+            title=f"temperature {'anomaly ' if anomalies else ''}(°C)"
         ),
         xaxis=dict(
             showgrid=False,
