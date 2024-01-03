@@ -58,7 +58,7 @@ function TimeSeries(props) {
     }
 
     useEffect(() => {
-        if (timeseriesType != prevTimeseriesType.current) {
+        if (timeseriesType !== prevTimeseriesType.current) {
             if (timeseriesType === 'absolute') {
                 setJsonSrc('time-series-absolute.json')
                 prevJsonSrc.current = 'time-series-anomalies.json'
@@ -69,7 +69,7 @@ function TimeSeries(props) {
             prevTimeseriesType.current = timeseriesType
         }
 
-        if (jsonSrc != prevJsonSrc.current) {
+        if (jsonSrc !== prevJsonSrc.current) {
             fetch(jsonSrc)
                 .then( resp => resp.json())
                 .then((data)=> {
@@ -80,7 +80,7 @@ function TimeSeries(props) {
                 prevJsonSrc.current = jsonSrc
         }
 
-        if (highlightsApplied == false) {
+        if (highlightsApplied === false) {
             applyHighlights()
             setHighlightsApplied(true)
         }
@@ -96,7 +96,7 @@ function TimeSeries(props) {
         }
 
         if (timeSeriesRef.current.props.data !== null) {
-            if (currentYears != prevCurrentYears.current) {
+            if (currentYears !== prevCurrentYears.current) {
 
                 if (typeof prevCurrentYears.current !== 'undefined') {
                     for (var i = 0; i < prevCurrentYears.current.length; i++) {
@@ -157,7 +157,7 @@ function TimeSeries(props) {
         console.log(year)
         if (year.length > 4) {
             year = d.points[0].curveNumber + 1940
-            if (year == 2026) {
+            if (year === 2026) {
                 year = 2023
             }
         }

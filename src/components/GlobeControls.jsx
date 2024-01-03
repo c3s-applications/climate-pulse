@@ -38,24 +38,24 @@ function GlobeControls(props) {
         {key: 26, text: '26', value: 26},
         {key: 27, text: '27', value: 27},
         {key: 28, text: '28', value: 28},
-        {key: 29, text: '29', value: 29, disabled: props.controls.globeTime.getMonth()==1},
-        {key: 30, text: '30', value: 30, disabled: props.controls.globeTime.getMonth()==1},
+        {key: 29, text: '29', value: 29, disabled: props.controls.globeTime.getMonth()===1},
+        {key: 30, text: '30', value: 30, disabled: props.controls.globeTime.getMonth()===1},
         {key: 31, text: '31', value: 31, disabled: !non31DayMonths.includes(props.controls.globeTime.getMonth())},
     ]
 
     const months = [
-        {key: "jan", text: "January", value: 0, active: props.controls.globeTime.getMonth()==0},
-        {key: "feb", text: "February", value: 1, active: props.controls.globeTime.getMonth()==1},
-        {key: "mar", text: "March", value: 2, active: props.controls.globeTime.getMonth()==2},
-        {key: "apr", text: "April", value: 3, active: props.controls.globeTime.getMonth()==3},
-        {key: "may", text: "May", value: 4, active: props.controls.globeTime.getMonth()==4},
-        {key: "jun", text: "June", value: 5, active: props.controls.globeTime.getMonth()==5},
-        {key: "jul", text: "July", value: 6, active: props.controls.globeTime.getMonth()==6},
-        {key: "aug", text: "August", value: 7, active: props.controls.globeTime.getMonth()==7},
-        {key: "sep", text: "September", value: 8, active: props.controls.globeTime.getMonth()==8},
-        {key: "oct", text: "October", value: 9, active: props.controls.globeTime.getMonth()==9},
-        {key: "nov", text: "November", value: 10, active: props.controls.globeTime.getMonth()==10},
-        {key: "dec", text: "December", value: 11, active: props.controls.globeTime.getMonth()==11},
+        {key: "jan", text: "January", value: 0, active: props.controls.globeTime.getMonth()===0},
+        {key: "feb", text: "February", value: 1, active: props.controls.globeTime.getMonth()===1},
+        {key: "mar", text: "March", value: 2, active: props.controls.globeTime.getMonth()===2},
+        {key: "apr", text: "April", value: 3, active: props.controls.globeTime.getMonth()===3},
+        {key: "may", text: "May", value: 4, active: props.controls.globeTime.getMonth()===4},
+        {key: "jun", text: "June", value: 5, active: props.controls.globeTime.getMonth()===5},
+        {key: "jul", text: "July", value: 6, active: props.controls.globeTime.getMonth()===6},
+        {key: "aug", text: "August", value: 7, active: props.controls.globeTime.getMonth()===7},
+        {key: "sep", text: "September", value: 8, active: props.controls.globeTime.getMonth()===8},
+        {key: "oct", text: "October", value: 9, active: props.controls.globeTime.getMonth()===9},
+        {key: "nov", text: "November", value: 10, active: props.controls.globeTime.getMonth()===10},
+        {key: "dec", text: "December", value: 11, active: props.controls.globeTime.getMonth()===11},
     ]
 
     function callUpdateSettings() {
