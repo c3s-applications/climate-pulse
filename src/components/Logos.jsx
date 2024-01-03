@@ -10,7 +10,7 @@ export const ClimatePulseLogo = (props) => (
 )
 
 export const C3SLogo = (props) => (
-    <Logo organisation='C3S' href='https://climate.copernicus.eu/' {...props}/>
+    <Logo organisation='c3s' href='https://climate.copernicus.eu/' {...props}/>
 )
 
 export const ECMWFLogo = (props) => (
