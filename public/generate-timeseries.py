@@ -10,9 +10,18 @@ DEFAULT_LINEWIDTH = 1
 LATEST_LINEWIDTH = 2
 HIGHLIGHT_DELTA = 2
 
+VARIABLES = {
+    "sst": "sea surface temperature",
+    "temp": "surface air temperature",
+}
 
-def get_year_data(df, year):
-    data = df[df['date'].str.contains(str(year))==True].temp.values
+DOMAINS = {
+    "sst": "60°S - 60°N",
+    "temp": "Global",
+}
+
+def get_year_data(df, year, var_name="temp"):
+    data = df[df['date'].str.contains(str(year))==True][var_name].values
     if len(data) == 366:
         data = np.delete(data, [59])
     return data
@@ -37,30 +46,31 @@ def generate_hovertemplate(year, anomalies=False):
         )
     return hovertemplate
 
-def data_mean(df, start_year=1991, end_year=2020):
+def data_mean(df, start_year=1991, end_year=2020, var_name="temp"):
     return np.mean(
-        [get_year_data(df, year) for year in range(start_year, end_year+1)],
+        [get_year_data(df, year, var_name) for year in range(start_year, end_year+1)],
         axis=0
     )
 
 
 def timeseries(
-        csv_file="era5_daily_series_2t_global_1940-2024.csv",
+        csv_file,
+        var_name,
         target="time-series-json",
         anomalies=False,
 ):
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(csv_file, comment="#")
     start_year = int(df.iloc[0].date[:4])
     end_year = int(df.iloc[-1].date[:4])
     
-    reference_mean = data_mean(df)
+    reference_mean = data_mean(df, var_name=var_name)
     
     fig = go.Figure()
     
     first = True
     latest_marker = None
     for year in range(start_year, end_year+1):
-        data = get_year_data(df, year)
+        data = get_year_data(df, year, var_name=var_name)
         
         if anomalies:
             data -= reference_mean[:len(data)]
@@ -157,7 +167,7 @@ def timeseries(
         ],
         title={
             'text': (
-                f"<b>Daily global surface air temperature {'anomaly' if anomalies else ''}</b><br>"
+                f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}({DOMAINS[var_name]})</b><br>"
                 "<sup>Data: ERA5 1940-2023 ● Credit: C3S/ECMWF</sup>"
             ),
             'y': 0.93,
@@ -199,5 +209,12 @@ def timeseries(
         f.write(fig.to_json())
 
 if __name__ == "__main__":
-    timeseries(target="time-series-absolute.json", anomalies=False)
-    timeseries(target="time-series-anomalies.json", anomalies=True)
+    csv_file = "era5_daily_series_2t_global_1940-2024.csv"
+    var_name = "temp"
+    timeseries(csv_file, var_name, target="time-series-air-temperature-absolute.json", anomalies=False)
+    timeseries(csv_file, var_name, target="time-series-air-temperature-anomalies.json", anomalies=True)
+    
+    csv_file = "era5_daily_series_sst_60S-60N_1979-2024.csv"
+    var_name = "sst"
+    timeseries(csv_file, var_name, target="time-series-sea-temperature-absolute.json", anomalies=False)
+    timeseries(csv_file, var_name, target="time-series-sea-temperature-anomalies.json", anomalies=True)

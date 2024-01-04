@@ -20,12 +20,16 @@ const addedColors = [
 ]
 
 function TimeSeries(props) {
+
+    const variable = useSelector(state => state.controls.variable);
+    const prevVariable = useRef();
+
     const timeSeriesRef = useRef();
     const [revision, setRevision] = useState(0);
     const [plotlyData, setPlotlyData] = useState(null);
     const [plotlyLayout, setPlotlyLayout] = useState(null);
     const [highlightsApplied, setHighlightsApplied] = useState(false)
-    const [jsonSrc, setJsonSrc] = useState('time-series-absolute.json')
+    const [jsonSrc, setJsonSrc] = useState(`time-series-${variable}-absolute.json`)
     const prevJsonSrc = useRef();
 
     const timeseriesType = useSelector(state => state.controls.timeseriesType);
@@ -35,6 +39,14 @@ function TimeSeries(props) {
 
     const currentYears = useSelector(state => state.controls.currentYears);
     const prevCurrentYears = useRef();
+
+    function getStartYear() {
+        if (variable === 'sea-temperature') {
+            return 1979
+        } else {
+            return 1940
+        }
+    }
 
     function callUpdateSettings() {
         const { controls, dispatch } = props
@@ -65,27 +77,39 @@ function TimeSeries(props) {
         }
     }
 
+    function updateSrc() {
+        fetch(jsonSrc)
+            .then( resp => resp.json())
+            .then((data)=> {
+                setPlotlyData(data.data)
+                setPlotlyLayout(data.layout)
+            })
+            .then(() => setHighlightsApplied(false))
+    }
+
+    function updateJson() {
+        if (timeseriesType === 'absolute') {
+            var src = `time-series-${variable}-absolute.json`
+        } else {
+            var src = `time-series-${variable}-anomalies.json`
+        }
+        setJsonSrc(src)
+    }
+
     useEffect(() => {
         if (timeseriesType !== prevTimeseriesType.current) {
-            if (timeseriesType === 'absolute') {
-                setJsonSrc('time-series-absolute.json')
-                prevJsonSrc.current = 'time-series-anomalies.json'
-            } else {
-                setJsonSrc('time-series-anomalies.json')
-                prevJsonSrc.current = 'time-series-anomalies.json'
-            }
+            updateJson()
             prevTimeseriesType.current = timeseriesType
         }
 
-        if (jsonSrc !== prevJsonSrc.current) {
-            fetch(jsonSrc)
-                .then( resp => resp.json())
-                .then((data)=> {
-                    setPlotlyData(data.data)
-                    setPlotlyLayout(data.layout)
-                })
-                .then(() => setHighlightsApplied(false))
-                prevJsonSrc.current = jsonSrc
+        if (jsonSrc !== prevJsonSrc.current ) {
+            updateSrc()
+            prevJsonSrc.current = jsonSrc
+        }
+
+        if (variable !== prevVariable.current) {
+            updateJson()
+            prevVariable.current = variable
         }
 
         if (highlightsApplied === false) {
@@ -124,7 +148,7 @@ function TimeSeries(props) {
         if (timeSeriesRef.current.props.data !== null) {
             for (var i = 0; i < currentYears.length; i++) {
                 var currentYear = currentYears[i]
-                const trace = timeSeriesRef.current.props.data[currentYear-1940]
+                const trace = timeSeriesRef.current.props.data[currentYear-getStartYear()]
                 var newTrace = {
                     x: trace.x,
                     y: trace.y,
@@ -153,7 +177,7 @@ function TimeSeries(props) {
                 hoverlabel: trace.hoverlabel,
                 customdata: trace.customdata,
                 showlegend: false,
-                name: curveNumber + 1940,
+                name: curveNumber + getStartYear(),
             }
             timeSeriesRef.current.props.data.splice(-3, 0, newTrace)
             setRevision(revision + 1);
@@ -166,7 +190,7 @@ function TimeSeries(props) {
         if (["2023", "2024"].includes(year)) {
             console.log(year)
             if (year.length > 4) {
-                year = d.points[0].curveNumber + 1940
+                year = d.points[0].curveNumber + getStartYear()
                 if (year === 2026) {
                     year = 2023
                 }
