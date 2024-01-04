@@ -18,7 +18,7 @@ FROM prepare AS build
 RUN npm run build
 
 FROM nginx:1.21-alpine
-COPY --from=build /app/build /usr/share/nginx/html/c3s-apps/climate-pulse/
+COPY --from=build /app/build /usr/share/nginx/html/
 RUN rm -f /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d/
 EXPOSE 80
