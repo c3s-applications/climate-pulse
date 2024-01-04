@@ -57,6 +57,14 @@ function TimeSeries(props) {
         callUpdateSettings()
     }
 
+    function getDefaultStyle() {
+        if (window.innerWidth < 768) {
+            return {width: "100%", height: 400}
+        } else {
+            return {width: "100%", height: "100%"}
+        }
+    }
+
     useEffect(() => {
         if (timeseriesType !== prevTimeseriesType.current) {
             if (timeseriesType === 'absolute') {
@@ -102,9 +110,10 @@ function TimeSeries(props) {
                     for (var i = 0; i < prevCurrentYears.current.length; i++) {
                         timeSeriesRef.current.props.data.splice(timeSeriesRef.current.props.data.length-4, 1)
                     }
-                }
 
-                applyHighlights()
+                    applyHighlights()
+                    setHighlightsApplied(true)
+                }
                 
             }
             prevCurrentYears.current = currentYears
@@ -198,7 +207,7 @@ function TimeSeries(props) {
                 }}
                 useResizeHandler
                 revision={revision}
-                style={{width: "100%", height: "50%"}}
+                style={getDefaultStyle()}
                 onHover={hoverHighlight}
                 onUnhover={hoverReset}
                 // onClick={setTime}

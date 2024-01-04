@@ -12,7 +12,7 @@ function GlobeContainer() {
         if (window.innerWidth < 768) {
             return {height: 320, altitude: 1.75}
         } else {
-            return {height: 443, altitude: 1.75}
+            return {height: 443, altitude: 1.7}
         }
     }
 
