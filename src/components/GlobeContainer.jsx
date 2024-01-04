@@ -8,6 +8,14 @@ function GlobeContainer() {
     const globeTime = new Date(useSelector(state => state.controls.globeTime));
     const [legendSrc, setLegendSrc] = useState(null);
 
+    function defaultGlobeParams() {
+        if (window.innerWidth < 768) {
+            return {height: 320, altitude: 1.75}
+        } else {
+            return {height: 443, altitude: 1.75}
+        }
+    }
+
     useEffect(() => {
         function handleResize () {
             if (window.innerWidth < 768) {
@@ -22,6 +30,7 @@ function GlobeContainer() {
 
     return(
         <>
+
             <h3
                 align="left"
                 style={{
@@ -38,14 +47,15 @@ function GlobeContainer() {
                 <sup>
                 Data: ERA5 {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'short', year: 'numeric'})} ● Credit: C3S/ECMWF
                 </sup>
-            </h3>
 
+            </h3>
+                <br></br>
             <Grid padded={false} stackable>
             <Grid.Row>
                 <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'>
                 </Grid.Column>
                 <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
-                    <Globe height={462} />
+                    <Globe {...defaultGlobeParams()} />
                 </Grid.Column>
                 <Grid.Column computer={2} textAlign='center' verticalAlign='middle'>
                     <Image

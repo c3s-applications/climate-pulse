@@ -12,7 +12,7 @@ function getWidth(maxHeight, padWidescreen, padMobile, mode) {
   }
 }
 
-const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive'}) => {
+const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive', altitude = 1.75}) => {
   const globeEl = useRef();
   const [cablePaths, setCablePaths] = useState([]);
   const [width, setWidth] = useState([getWidth(height, padWidescreen, padMobile, mode)]);
@@ -35,7 +35,7 @@ const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive'})
   
           setCablePaths(cablePaths);
         });
-      globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: 1.75 });
+      globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
     }, []);
 
 

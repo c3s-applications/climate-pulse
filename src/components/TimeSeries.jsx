@@ -198,10 +198,10 @@ function TimeSeries(props) {
                 }}
                 useResizeHandler
                 revision={revision}
-                style={{width: "100%", height: "100%"}}
+                style={{width: "100%", height: "50%"}}
                 onHover={hoverHighlight}
                 onUnhover={hoverReset}
-                onClick={setTime}
+                // onClick={setTime}
             />
         </div>
     )

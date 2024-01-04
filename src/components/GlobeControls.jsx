@@ -60,7 +60,7 @@ function GlobeControls(props) {
 
     const years = [
         {key: 2023, text: '2023', value: 2023},
-        {key: 2022, text: '2022', value: 2022},
+        {key: 2024, text: '2024', value: 2024},
     ]
 
     function invalidDay(day) {
@@ -126,6 +126,14 @@ function GlobeControls(props) {
       
       var result = new Date(controls.globeTime);
       result.setDate(result.getDate() + days);
+    
+      if (result.getMonth()===1 && result.getDate()===29) {
+        if (days < 0) {
+            result.setDate(result.getDate() - 1);
+        } else {
+            result.setDate(result.getDate() + 1);
+        }
+      }
 
       if (result > controls.maxDate) {
         result = controls.maxDate

@@ -93,6 +93,7 @@ const averageTemps = {
     '2020': 14.806639344262294,
     '2021': 14.65564383561644,
     '2022': 14.68186301369863,
+    '2023': 14.982740,
 }
 
 function TimeSeriesYearComparison(props) {
@@ -167,7 +168,7 @@ function TimeSeriesYearComparison(props) {
         <Popup
             textAlign='left'
             on='click'
-            trigger={<Button basic color='grey' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>2023</span></Button>}
+            trigger={<Button basic color='grey' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>{props.controls.maxDate.getFullYear()}</span></Button>}
             flowing
             hoverable
         >            
@@ -197,7 +198,7 @@ function TimeSeriesYearComparison(props) {
                     selection
                     search
                     clearable
-                    options={yearRange(1940, 2023)}
+                    options={yearRange(1940, props.controls.maxDate.getFullYear())}
                     defaultValue={currentYears}
                     renderLabel={renderLabel}
                     onChange={updateYears}

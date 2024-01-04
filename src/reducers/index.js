@@ -8,12 +8,12 @@ const initialState = {
   variable: "air-temperature",
   timeseriesType: "absolute",
   globeType: "anomaly",
-  globeTime: new Date("2023-10-12"),
-  maxDate: new Date("2023-10-12"),
+  globeTime: new Date("2024-01-02"),
+  maxDate: new Date("2024-01-02"),
   minDate: new Date("2023-01-01"),
   maxYear: "2022",
   minYear: "1940",
-  currentYears: [],
+  currentYears: ["2023"],
   resetChart: false,
 }
 

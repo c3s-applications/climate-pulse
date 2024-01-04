@@ -45,7 +45,7 @@ def data_mean(df, start_year=1991, end_year=2020):
 
 
 def timeseries(
-        csv_file="era5_daily_series_2t_global_1940-2023.csv",
+        csv_file="era5_daily_series_2t_global_1940-2024.csv",
         target="time-series-json",
         anomalies=False,
 ):
@@ -116,6 +116,7 @@ def timeseries(
             legendgroup=legendgroup,
             showlegend=first or year==end_year,
             name=name,
+            mode="lines",
             customdata=customdata,
             hovertemplate=hovertemplate,
         )
