@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import ReactGlobe from 'react-globe.gl';
+import { useSelector } from 'react-redux';
 import * as THREE from 'three'
 
 const globeMaterial = new THREE.MeshBasicMaterial();
@@ -17,26 +18,44 @@ const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive', 
   const [cablePaths, setCablePaths] = useState([]);
   const [width, setWidth] = useState([getWidth(height, padWidescreen, padMobile, mode)]);
   
+  const [globeImageUrl, setGlobeImageUrl] = useState("https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/2t/anomalies/map_era5_2t_anomaly_global_daily_stripped_20231215.png");
+
+  const globeTime = useSelector(state => state.controls.globeTime);
+  const prevglobeTime = useRef();
+
+  const [setUp, setSetUp] = useState(false);
+
   useEffect(() => {
 
-      function handleResize() {
-        setWidth(getWidth(height, padWidescreen, padMobile, mode))
+      if (globeTime !== prevglobeTime.current) {
+          var year = globeTime.getFullYear()
+          var month = globeTime.getMonth()
+          var day = ('0' + globeTime.getDate()).slice(-2)
+          setGlobeImageUrl(`maps/map_era5_2t_anomaly_global_daily_stripped_${year}${month+1}${day}.png`)
+          prevglobeTime.current = new Date(globeTime)
       }
-      window.addEventListener('resize', handleResize)
-      fetch('coastlines.geojson')
-        .then(r => r.json())
-        .then(cablesGeo => {
-          let cablePaths = [];
-          cablesGeo.features.forEach(({ geometry, properties }) => {
-            geometry.coordinates.forEach(
-                coords => cablePaths.push({ coords, properties })
-            );
+
+      if (setUp === false) {
+        function handleResize() {
+          setWidth(getWidth(height, padWidescreen, padMobile, mode))
+        }
+        window.addEventListener('resize', handleResize)
+        fetch('coastlines.geojson')
+          .then(r => r.json())
+          .then(cablesGeo => {
+            let cablePaths = [];
+            cablesGeo.features.forEach(({ geometry, properties }) => {
+              geometry.coordinates.forEach(
+                  coords => cablePaths.push({ coords, properties })
+              );
+            });
+    
+            setCablePaths(cablePaths);
           });
-  
-          setCablePaths(cablePaths);
-        });
-      globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
-    }, []);
+        globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
+        setSetUp(true)
+      }
+    });
 
 
     return <ReactGlobe
@@ -51,7 +70,7 @@ const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive', 
         pathPointAlt={0.001}
         pathColor={() => '#888888'}
         globeMaterial={globeMaterial}
-        globeImageUrl="test-image.png"
+        globeImageUrl={globeImageUrl}
       />
     
   }

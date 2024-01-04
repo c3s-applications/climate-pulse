@@ -28,6 +28,7 @@ function TimeSeries(props) {
     const [revision, setRevision] = useState(0);
     const [plotlyData, setPlotlyData] = useState(null);
     const [plotlyLayout, setPlotlyLayout] = useState(null);
+    const [plotlyStyle, setPlotlyStyle] = useState(null);
     const [highlightsApplied, setHighlightsApplied] = useState(false)
     const [jsonSrc, setJsonSrc] = useState(`time-series-${variable}-absolute.json`)
     const prevJsonSrc = useRef();
@@ -69,11 +70,11 @@ function TimeSeries(props) {
         callUpdateSettings()
     }
 
-    function getDefaultStyle() {
+    function getDefaultHeight() {
         if (window.innerWidth < 768) {
-            return {width: "100%", height: 400}
+            return 400
         } else {
-            return {width: "100%", height: "100%"}
+            return 527
         }
     }
 
@@ -82,7 +83,9 @@ function TimeSeries(props) {
             .then( resp => resp.json())
             .then((data)=> {
                 setPlotlyData(data.data)
+                data.layout["height"] = getDefaultHeight()
                 setPlotlyLayout(data.layout)
+                // setPlotlyStyle(getDefaultStyle())
             })
             .then(() => setHighlightsApplied(false))
     }
@@ -122,7 +125,9 @@ function TimeSeries(props) {
                 .then( resp => resp.json())
                 .then((data)=> {
                     setPlotlyData(data.data)
+                    data.layout["height"] = getDefaultHeight()
                     setPlotlyLayout(data.layout)
+                    // setPlotlyStyle(getDefaultStyle())
                 })
             setReset(false)
         }
@@ -191,7 +196,6 @@ function TimeSeries(props) {
     function setTime(d) {
         var year = d.points[0].data.name
         if (["2023", "2024"].includes(year)) {
-            console.log(year)
             if (year.length > 4) {
                 year = d.points[0].curveNumber + getStartYear()
                 if (year === 2026) {
@@ -203,8 +207,6 @@ function TimeSeries(props) {
                 dayOfYear = dayOfYear + 1
             }
             var date = new Date(new Date(year, 0).setDate(dayOfYear))
-
-            console.log(date)
 
             handleUpdateSettings('globeTime', date)
             hoverReset(d)
@@ -236,7 +238,7 @@ function TimeSeries(props) {
                 }}
                 useResizeHandler
                 revision={revision}
-                style={getDefaultStyle()}
+                style={{width: "100%", height: "100%"}}
                 onHover={hoverHighlight}
                 onUnhover={hoverReset}
                 onClick={setTime}
