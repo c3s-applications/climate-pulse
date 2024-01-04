@@ -8,9 +8,10 @@ import DownloadTimeSeries from './DownloadTimeSeries';
 import TimeSeriesMenu from './TimeSeriesMenu';
 import TimeSeriesControls from './TimeSeriesControls';
 
+
 const MainPanel = () => (
-    <Grid columns='equal' celled stackable divided>
-      <Grid.Row>
+    <Grid columns='equal' celled stackable divided centered >
+      <Grid.Row centered>
         <Grid.Column textAlign="center">
           <TimeSeriesMenu />
           <TimeSeries />

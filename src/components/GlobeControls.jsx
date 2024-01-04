@@ -126,15 +126,9 @@ function GlobeControls(props) {
             <Button.Group basic size='mini' color='grey'>
                 <Button
                     size='mini'
-                    animated='vertical'
                     onClick={() => jumpToDate(props.controls.maxDate)}
                 >
-                    <Button.Content hidden>
-                        Latest
-                    </Button.Content>
-                    <Button.Content visible>
-                        <Icon name='calendar times' />
-                    </Button.Content>
+                    Latest
                 </Button>
                 <Popup
                     textAlign='left'
@@ -142,11 +136,8 @@ function GlobeControls(props) {
                     flowing
                     hoverable
                     trigger={
-                        <Button size='mini' animated='vertical'>
-                            <Button.Content hidden>Calendar</Button.Content>
-                            <Button.Content visible>
-                                <Icon name='calendar alternate' />
-                            </Button.Content>
+                        <Button size='mini' >
+                            Select date
                         </Button>
                     }
                 >

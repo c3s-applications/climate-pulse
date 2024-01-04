@@ -69,3 +69,7 @@ g.points {
       paint-order: stroke;
   }
 }
+
+.mainPanelContainer {
+  width: 1825px !important;
+}

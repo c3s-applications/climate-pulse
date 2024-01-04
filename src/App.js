@@ -1,5 +1,5 @@
 import './App.css';
-import { Grid, Divider } from 'semantic-ui-react';
+import { Grid, Divider, Container } from 'semantic-ui-react';
 import MainPanel from './components/MainPanel';
 import Menu from './components/Menu';
 import Methodology from './components/Methodology';
@@ -13,23 +13,33 @@ const store = createStore(
   reducer,
 )
 
+const panelStyle = {
+  maxWidth: "calc( 723px  +  2rem ) !important",
+};
+
 const App = () => (
   <Provider store={store}>
     <Grid centered padded columns={1} >
+
       <Grid.Row>
         <Grid.Column>
-          <Header />
+          <Container className='mainPanelContainer'>
+            <Header />
+          </Container>
           <Divider />
         </Grid.Column>
       </Grid.Row>
+
       <Grid.Row>
-        <Grid.Column computer={10} mobile={16}>
+        <Grid.Column computer={10} mobile={16} widescreen={8}>
           <Menu />
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-        <MainPanel />
+        <Container className='mainPanelContainer'>
+          <MainPanel />
+        </Container>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row>
@@ -38,6 +48,8 @@ const App = () => (
         <Divider hidden/>
         </Grid.Column>
       </Grid.Row>
+
+
       <Grid.Row>
         <Grid.Column>
           <Footer />

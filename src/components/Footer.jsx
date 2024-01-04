@@ -5,16 +5,16 @@ import { ECMWFLogo, C3SLogo, CopernicusLogo, EULogo } from './Logos'
 const Footer = () => (
     <Grid centered verticalAlign='middle'>
         <Grid.Row color='black'>
-        <Grid.Column computer={3} mobile={4}>
+        <Grid.Column computer={3} textAlign='left' mobile={4}>
             <EULogo mode='negative' size='medium' centered/>
         </Grid.Column>
-        <Grid.Column computer={3} mobile={4}>
+        <Grid.Column computer={3} textAlign='center' mobile={4}>
             <CopernicusLogo mode='negative' size='small' centered/>
         </Grid.Column>
-        <Grid.Column computer={3} mobile={4}>
+        <Grid.Column computer={3} textAlign='center' mobile={4}>
             <ECMWFLogo mode='negative' size='small' centered/>
         </Grid.Column>
-        <Grid.Column computer={3} mobile={4}>
+        <Grid.Column computer={3} textAlign='right' mobile={4}>
             <C3SLogo mode='negative' size='small' centered/>
         </Grid.Column>
         </Grid.Row>

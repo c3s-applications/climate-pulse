@@ -145,19 +145,19 @@ def timeseries(
         fig.add_trace(latest_marker)
 
     fig.update_layout(
-        # images=[
-        #     dict(
-        #         source="c3s.webp",
-        #         xref="paper", yref="paper",
-        #         x=1, y=0.985,
-        #         sizex=0.2, sizey=0.2,
-        #         xanchor="right", yanchor="bottom"
-        #     ),
-        # ],
+        images=[
+            dict(
+                source="logos/c3s-positive.png",
+                xref="paper", yref="paper",
+                x=1, y=0.985,
+                sizex=0.2, sizey=0.2,
+                xanchor="right", yanchor="bottom"
+            ),
+        ],
         title={
             'text': (
                 f"<b>Daily global surface air temperature {'anomaly' if anomalies else ''}</b><br>"
-                "<sup>Data: ERA5 1940-2023 ● Credit: Copernicus Climate Change Service & ECMWF</sup>"
+                "<sup>Data: ERA5 1940-2023 ● Credit: C3S/ECMWF</sup>"
             ),
             'y': 0.93,
             'x': 0.08,

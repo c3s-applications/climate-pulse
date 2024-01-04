@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dropdown, Icon } from 'semantic-ui-react'
 import Plotly from 'plotly.js-dist-min'
+import html2canvas from "html2canvas";
 
 const TimeSeriesDataDownload = () => (
     <Dropdown.Item
@@ -14,17 +15,37 @@ const TimeSeriesDataDownload = () => (
     />
 )
 
+const downloadTimeseriesImage = async () => {
+    const element = document.getElementById('timeseries');
+    const canvas = await html2canvas(element, {scale: 2, allowTaint: true, useCORS: true});
+    
+    const data = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    
+    if (typeof link.download === 'string') {
+        link.href = data;
+        link.download = 'climate-pulse-air-temperature-absolute-20231216.png';
+    
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        window.open(data);
+    }
+};
+
 const TimeSeriesImageDownload = () => (
     <Dropdown.Item
         text='Image'
         description='PNG'
-        onClick={() => Plotly.downloadImage(
-            document.getElementById('timeseries'),
-            {
-                format: 'png',
-                filename: 'climate-pulse-air-temperature-absolute-20231216'
-            }
-        )}
+        onClick={downloadTimeseriesImage}
+        //     () => Plotly.downloadImage(
+        //     document.getElementById('timeseries'),
+        //     {
+        //         format: 'png',
+        //         filename: 'climate-pulse-air-temperature-absolute-20231216'
+        //     }
+        // )}
     />
 )
 
