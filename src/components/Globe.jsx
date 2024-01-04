@@ -29,9 +29,10 @@ const Globe = ({height, padWidescreen = 125, padMobile = 40, mode = 'adaptive', 
 
       if (globeTime !== prevglobeTime.current) {
           var year = globeTime.getFullYear()
-          var month = globeTime.getMonth()
+          var month = ('0' + (globeTime.getMonth()+1)).slice(-2)
           var day = ('0' + globeTime.getDate()).slice(-2)
-          setGlobeImageUrl(`maps/map_era5_2t_anomaly_global_daily_stripped_${year}${month+1}${day}.png`)
+          console.log()
+          setGlobeImageUrl(`maps/map_era5_2t_anomaly_global_daily_stripped_${year}${month}${day}.png`)
           prevglobeTime.current = new Date(globeTime)
       }
 
