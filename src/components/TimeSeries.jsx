@@ -148,16 +148,19 @@ function TimeSeries(props) {
         if (timeSeriesRef.current.props.data !== null) {
             for (var i = 0; i < currentYears.length; i++) {
                 var currentYear = currentYears[i]
-                const trace = timeSeriesRef.current.props.data[currentYear-getStartYear()]
-                var newTrace = {
-                    x: trace.x,
-                    y: trace.y,
-                    line: {'color': addedColors[i], width: 2},
-                    hovertemplate: "<b>" + currentYear.toString() + " - %{x|%B %-d}</b><br>Temperature: %{y}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<br>Anomaly: %{customdata[1]:.2f}°C<extra></extra>",
-                    customdata: trace.customdata,
-                    name: currentYear.toString(),
+                var traceIndex = currentYear-getStartYear()
+                if (traceIndex >= 0) {
+                    const trace = timeSeriesRef.current.props.data[traceIndex]
+                    var newTrace = {
+                        x: trace.x,
+                        y: trace.y,
+                        line: {'color': addedColors[i], width: 2},
+                        hovertemplate: "<b>" + currentYear.toString() + " - %{x|%B %-d}</b><br>Temperature: %{y}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<br>Anomaly: %{customdata[1]:.2f}°C<extra></extra>",
+                        customdata: trace.customdata,
+                        name: currentYear.toString(),
+                    }
+                    timeSeriesRef.current.props.data.splice(-3, 0, newTrace)
                 }
-                timeSeriesRef.current.props.data.splice(-3, 0, newTrace)
             }
             setRevision(revision + 1);
             timeSeriesRef.current.props.layout.datarevision = revision;

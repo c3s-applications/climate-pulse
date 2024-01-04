@@ -9,6 +9,54 @@ const sortByOptions = [
     {key: 'descending', text: 'Descending', value: 'descending'},
 ]
 
+const averageSsts = {
+    '1979': 20.161315068493153,
+    '1980': 20.16428961748634,
+    '1981': 20.11068493150685,
+    '1982': 20.140246575342466,
+    '1983': 20.20145205479452,
+    '1984': 20.062295081967214,
+    '1985': 20.012109589041096,
+    '1986': 20.062520547945205,
+    '1987': 20.23345205479452,
+    '1988': 20.143032786885247,
+    '1989': 20.085424657534247,
+    '1990': 20.232821917808216,
+    '1991': 20.226246575342465,
+    '1992': 20.094726775956286,
+    '1993': 20.11635616438356,
+    '1994': 20.121342465753425,
+    '1995': 20.212027397260275,
+    '1996': 20.14590163934426,
+    '1997': 20.33268493150685,
+    '1998': 20.403972602739724,
+    '1999': 20.185945205479452,
+    '2000': 20.224398907103826,
+    '2001': 20.335123287671234,
+    '2002': 20.341671232876713,
+    '2003': 20.373671232876713,
+    '2004': 20.357622950819675,
+    '2005': 20.38323287671233,
+    '2006': 20.362246575342468,
+    '2007': 20.277698630136985,
+    '2008': 20.286666666666665,
+    '2009': 20.425095890410958,
+    '2010': 20.416438356164385,
+    '2011': 20.289753424657533,
+    '2012': 20.369125683060112,
+    '2013': 20.389890410958905,
+    '2014': 20.46504109589041,
+    '2015': 20.567616438356165,
+    '2016': 20.61445355191257,
+    '2017': 20.55482191780822,
+    '2018': 20.512465753424657,
+    '2019': 20.600931506849314,
+    '2020': 20.595081967213115,
+    '2021': 20.542931506849314,
+    '2022': 20.54208219178082,
+    '2023': 20.797780821917808,
+}
+
 const averageTemps = {
     '1940': 13.690327868852458,
     '1941': 13.73841095890411,
@@ -100,6 +148,22 @@ function TimeSeriesYearComparison(props) {
     const currentYears = props.controls.currentYears
     const [sortYears, setSortYears] = useState('hottest')
 
+    function getStartYear() {
+        if (props.controls.variable === 'air-temperature') {
+            return 1940
+        } else {
+            return 1979
+        }
+    }
+
+    function getValues() {
+        if (props.controls.variable === 'air-temperature') {
+            return averageTemps
+        } else {
+            return averageSsts
+        }
+    }
+
     function yearRange(start, stop) {
         var step = 1
         var result = []
@@ -112,8 +176,8 @@ function TimeSeriesYearComparison(props) {
                     text: label,
                     value: label,
                     disabled: (currentYears.length >= 5),
-                    temp: averageTemps[label],
-                    description: ((Math.round(averageTemps[label] * 100) / 100).toFixed(2)).toString().concat('°C'),
+                    temp: getValues()[label],
+                    description: ((Math.round(getValues()[label] * 100) / 100).toFixed(2)).toString().concat('°C'),
                     
                 });
         }
@@ -167,10 +231,11 @@ function TimeSeriesYearComparison(props) {
         <>
         <Popup
             textAlign='left'
-            on='click'
             trigger={<Button basic color='grey' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>{props.controls.maxDate.getFullYear()}</span></Button>}
+            on='click'
             flowing
-            hoverable
+            hoverable={false}
+            hideOnScroll={false}
         >            
             <Label.Group>              
                 <Label>
@@ -198,7 +263,7 @@ function TimeSeriesYearComparison(props) {
                     selection
                     search
                     clearable
-                    options={yearRange(1940, props.controls.maxDate.getFullYear())}
+                    options={yearRange(getStartYear(), props.controls.maxDate.getFullYear())}
                     defaultValue={currentYears}
                     renderLabel={renderLabel}
                     onChange={updateYears}
