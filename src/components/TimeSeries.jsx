@@ -163,23 +163,25 @@ function TimeSeries(props) {
 
     function setTime(d) {
         var year = d.points[0].data.name
-        console.log(year)
-        if (year.length > 4) {
-            year = d.points[0].curveNumber + 1940
-            if (year === 2026) {
-                year = 2023
+        if (["2023", "2024"].includes(year)) {
+            console.log(year)
+            if (year.length > 4) {
+                year = d.points[0].curveNumber + 1940
+                if (year === 2026) {
+                    year = 2023
+                }
             }
-        }
-        var dayOfYear = d.points[0].pointIndex + 1
-        if (year % 4 === 0 && dayOfYear > 59) {
-            dayOfYear = dayOfYear + 1
-        }
-        var date = new Date(new Date(year, 0).setDate(dayOfYear))
+            var dayOfYear = d.points[0].pointIndex + 1
+            if (year % 4 === 0 && dayOfYear > 59) {
+                dayOfYear = dayOfYear + 1
+            }
+            var date = new Date(new Date(year, 0).setDate(dayOfYear))
 
-        console.log(date)
+            console.log(date)
 
-        handleUpdateSettings('globeTime', date)
-        hoverReset(d)
+            handleUpdateSettings('globeTime', date)
+            hoverReset(d)
+        }
     }
 
     function hoverReset(d) {
@@ -210,7 +212,7 @@ function TimeSeries(props) {
                 style={getDefaultStyle()}
                 onHover={hoverHighlight}
                 onUnhover={hoverReset}
-                // onClick={setTime}
+                onClick={setTime}
             />
         </div>
     )
