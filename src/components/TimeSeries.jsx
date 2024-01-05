@@ -165,7 +165,7 @@ const colorChoices = ['#d01f27', '#d22527', '#d52b28', '#d73228', '#da3828', '#d
 
 function chooseColors(nColors) {
     if (nColors === 1) {
-        return ["#2355a1"]
+        return ["#f0702c"]
     } else if (nColors === 3) {
         return ["#d01f27", "FDC659", "#2355a1"]
     } else {

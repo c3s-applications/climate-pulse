@@ -80,6 +80,9 @@ function GlobeControls(props) {
             (
                 (props.controls.globeTime.getFullYear() === props.controls.maxDate.getFullYear()) &&
                 (month > props.controls.maxDate.getMonth())
+            ) || (
+                (props.controls.globeTime.getFullYear() === props.controls.minDate.getFullYear()) &&
+                (month < props.controls.minDate.getMonth())
             )
         )
     }
@@ -150,6 +153,21 @@ function GlobeControls(props) {
       callUpdateSettings()
     }
 
+    function getVariable() {
+        if (props.controls.variable === 'air-temperature') {
+            return 'surface air temperature'
+        } else {
+            return 'sea surface temperature'
+        }
+    }
+
+    function getVariableType() {
+        if (props.controls.globeType === 'absolute') {
+            return ''
+        } else {
+            return 'anomaly '
+        }
+    }
     return (
         <>
             <Button.Group basic size='mini' color='teal'>
@@ -248,10 +266,10 @@ function GlobeControls(props) {
                 }
             >
                 <Modal.Header>
-                    <b>Global air temperature anomaly - {props.controls.globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
+                    <b>Global {getVariable()} {getVariableType()}- {props.controls.globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
                     <br></br>
                     <sup>
-                    Data: ERA5 reanalysis from the Climate Data Store ● Credit: C3S/ECMWF
+                    Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
                     </sup>
                 </Modal.Header>
                 <Modal.Content>

@@ -6,6 +6,8 @@ import Globe from './Globe';
 
 function GlobeContainer() {
     const globeTime = new Date(useSelector(state => state.controls.globeTime));
+    const globeType = useSelector(state => state.controls.globeType);
+    const variable = useSelector(state => state.controls.variable);
     const [legendSrc, setLegendSrc] = useState(null);
 
     function defaultGlobeParams() {
@@ -13,6 +15,22 @@ function GlobeContainer() {
             return {height: 320, altitude: 1.75}
         } else {
             return {height: 443, altitude: 1.7}
+        }
+    }
+
+    function getVariable() {
+        if (variable === 'air-temperature') {
+            return 'surface air temperature'
+        } else {
+            return 'sea surface temperature'
+        }
+    }
+
+    function getVariableType() {
+        if (globeType === 'absolute') {
+            return ''
+        } else {
+            return 'anomaly '
         }
     }
 
@@ -42,10 +60,10 @@ function GlobeContainer() {
                     color: "#2A3F5F",
                 }}
             >
-                <b>Global surface air temperature anomaly - {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
+                <b>Global {getVariable()} {getVariableType()}- {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
                 <br></br>
                 <sup>
-                Data: ERA5 reanalysis from the Climate Data Store ● Credit: C3S/ECMWF
+                Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
                 </sup>
 
             </h3>
