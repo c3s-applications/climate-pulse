@@ -105,6 +105,11 @@ function GlobeControls(props) {
         callUpdateSettings()
     }
 
+    function setFocus(lat, lon) {
+        var globe = document.getElementById("mainGlobe")
+        console.log(globe)
+    }
+
     function callUpdateSettings() {
       const { controls, dispatch } = props
   
@@ -142,19 +147,19 @@ function GlobeControls(props) {
       }
 
       controls.globeTime = result
-      console.log(controls.globeTime)
       callUpdateSettings()
     }
 
     return (
         <>
-            <Button.Group basic size='mini' color='grey'>
+            <Button.Group basic size='mini' color='teal'>
                 <Button
                     icon
                     disabled={props.controls.globeTime <= props.controls.minDate}
                     onClick={() => incrementTime(-5)}
                 >
                     <Icon name='angle double left' />
+                    5 days
                 </Button>
                 <Button
                     icon
@@ -162,12 +167,14 @@ function GlobeControls(props) {
                     onClick={() => incrementTime(-1)}
                 >
                     <Icon name='angle left' />
+                    1 day
                 </Button>
                 <Button
                     icon
                     disabled={props.controls.globeTime >= props.controls.maxDate}
                     onClick={() => incrementTime(1)}
                 >
+                    1 day
                     <Icon name='angle right' />
                 </Button>
                 <Button
@@ -175,10 +182,11 @@ function GlobeControls(props) {
                     disabled={props.controls.globeTime >= props.controls.maxDate}
                     onClick={() => incrementTime(5)}
                 >
+                    5 days
                     <Icon name='angle double right' />
                 </Button>
             </Button.Group>&nbsp;
-            <Button.Group basic size='mini' color='grey'>
+            <Button.Group size='mini' basic color='teal'>
                 <Button
                     size='mini'
                     onClick={() => jumpToDate(props.controls.maxDate)}
@@ -228,7 +236,7 @@ function GlobeControls(props) {
                 closeIcon
                 size='fullscreen'
                 trigger={
-                    <Button.Group basic size='mini' color='grey'>
+                    <Button.Group size='mini' color='teal'>
                         <Button icon><Icon name='expand' /></Button>
                     </Button.Group>
                 }

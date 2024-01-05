@@ -61,7 +61,7 @@ function TimeSeries(props) {
   
     function setReset(value) {
         props.controls['resetChart'] = value
-        props.controls['currentYears'] = []
+        props.controls['currentYears'] = props.controls.defaultCurrentYears
         callUpdateSettings()
     }
 
@@ -85,7 +85,6 @@ function TimeSeries(props) {
                 setPlotlyData(data.data)
                 data.layout["height"] = getDefaultHeight()
                 setPlotlyLayout(data.layout)
-                // setPlotlyStyle(getDefaultStyle())
             })
             .then(() => setHighlightsApplied(false))
     }
@@ -121,31 +120,23 @@ function TimeSeries(props) {
         }
 
         if (resetChart) {
-            fetch(jsonSrc)
-                .then( resp => resp.json())
-                .then((data)=> {
-                    setPlotlyData(data.data)
-                    data.layout["height"] = getDefaultHeight()
-                    setPlotlyLayout(data.layout)
-                    // setPlotlyStyle(getDefaultStyle())
-                })
+            updateSrc()
             setReset(false)
+            setHighlightsApplied(false)
         }
 
-        if (timeSeriesRef.current.props.data !== null) {
-            if (currentYears !== prevCurrentYears.current) {
+        if (timeSeriesRef.current.props.data !== null && currentYears !== prevCurrentYears.current) {
 
-                if (typeof prevCurrentYears.current !== 'undefined') {
-                    for (var i = 0; i < prevCurrentYears.current.length; i++) {
-                        timeSeriesRef.current.props.data.splice(timeSeriesRef.current.props.data.length-4, 1)
-                    }
-
-                    applyHighlights()
-                    setHighlightsApplied(true)
+            if (typeof prevCurrentYears.current !== 'undefined') {
+                for (var i = 0; i < prevCurrentYears.current.length; i++) {
+                    timeSeriesRef.current.props.data.splice(timeSeriesRef.current.props.data.length-4, 1)
                 }
-                
+
+                applyHighlights()
+                setHighlightsApplied(true)
             }
             prevCurrentYears.current = currentYears
+                
         }
     });
 
@@ -211,6 +202,9 @@ function TimeSeries(props) {
             handleUpdateSettings('globeTime', date)
             hoverReset(d)
         }
+        var traceYear = d.points[0].curveNumber + getStartYear()
+        handleUpdateSettings('currentYears', currentYears.concat(traceYear.toString()))
+        console.log(currentYears)
     }
 
     function hoverReset(d) {
@@ -239,8 +233,8 @@ function TimeSeries(props) {
                 useResizeHandler
                 revision={revision}
                 style={{width: "100%", height: "100%"}}
-                onHover={hoverHighlight}
-                onUnhover={hoverReset}
+                // onHover={hoverHighlight}
+                // onUnhover={hoverReset}
                 onClick={setTime}
             />
         </div>

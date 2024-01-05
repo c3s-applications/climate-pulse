@@ -168,7 +168,7 @@ def timeseries(
         title={
             'text': (
                 f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}({DOMAINS[var_name]})</b><br>"
-                "<sup>Data: ERA5 1940-2023 ● Credit: C3S/ECMWF</sup>"
+                f"<sup>Data: ERA5 {start_year}-{end_year} ● Credit: C3S/ECMWF</sup>"
             ),
             'y': 0.93,
             'x': 0.08,
@@ -185,7 +185,7 @@ def timeseries(
         ),
         plot_bgcolor="white",
         hovermode="closest",
-        # hoverdistance=-1,
+        hoverdistance=-1,
         hoverlabel=dict(font=dict(size=12, family="Lato")),
         yaxis=dict(
             showgrid=True,

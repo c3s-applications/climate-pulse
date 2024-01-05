@@ -231,7 +231,7 @@ function TimeSeriesYearComparison(props) {
         <>
         <Popup
             textAlign='left'
-            trigger={<Button basic color='grey' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>{props.controls.maxDate.getFullYear()}</span></Button>}
+            trigger={<Button basic color='teal' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>{props.controls.maxDate.getFullYear()}</span></Button>}
             on='click'
             flowing
             hoverable={false}
@@ -271,8 +271,7 @@ function TimeSeriesYearComparison(props) {
             </Label>
             </Popup>
             <Button
-                basic
-                color='grey'
+                color='teal'
                 size='mini'
                 onClick={resetChart}
             >

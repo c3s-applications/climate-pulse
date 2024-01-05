@@ -5,7 +5,7 @@ import {
 
 // these are our initial settings
 const initialState = {
-  variable: "air-temperature",
+  variable: "sea-temperature",
   timeseriesType: "absolute",
   globeType: "anomaly",
   globeTime: new Date("2024-01-02"),
@@ -14,7 +14,9 @@ const initialState = {
   maxYear: "2022",
   minYear: "1940",
   currentYears: ["2023"],
+  defaultCurrentYears: ["2023"],
   resetChart: false,
+  globeFocus: null,
 }
 
 // our reducer constant returning an unchanged or updated state object depending on the users action, many cases will follow

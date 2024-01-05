@@ -24,12 +24,16 @@ function Menu(props) {
   return (
     <Button.Group widths={2} >
       <Button
+        color='purple'
+        basic={props.controls.variable !== 'air-temperature'}
         active={props.controls.variable === 'air-temperature'}
         onClick={() => handleSettings("variable", 'air-temperature')}
       >
         Air temperature
       </Button>
       <Button
+        color='purple'
+        basic={props.controls.variable !== 'sea-temperature'}
         active={props.controls.variable === 'sea-temperature'}
         onClick={() => handleSettings("variable", 'sea-temperature')}
       >
