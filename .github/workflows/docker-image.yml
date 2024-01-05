@@ -22,7 +22,7 @@ jobs:
     - name: Create Docker context
       run: docker buildx create --name app-ctx --platform="linux/amd64"
     - name: Build the Docker image
-      run: docker buildx build --tag "eccr.ecmwf.int/c3s-applications/${app}:latest" --builder=app-ctx --platorm=linux/amd64 --push .
+      run: docker -v; docker buildx build --tag "eccr.ecmwf.int/c3s-applications/${app}:latest" --builder=app-ctx --platorm=linux/amd64 --push .
       
       
       
