@@ -1,6 +1,12 @@
 # PREPARE STAGE
 FROM node:16 AS prepare
 
+ARG public_url
+
+ENV PUBLIC_URL=$public_url
+
+RUN echo $PUBLIC_URL
+
 WORKDIR /app
 
 COPY public/ /app/public

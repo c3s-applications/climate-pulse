@@ -28,6 +28,9 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: eccr.ecmwf.int/c3s-applications/climate-pulse:latest
+        build-args: |
+          public_url=$APP_PATH
+
       
       
       
