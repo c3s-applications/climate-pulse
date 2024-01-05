@@ -7,7 +7,7 @@ COPY public/ /app/public
 COPY src/ /app/src
 COPY package.json /app/
 
-RUN npm install
+RUN npm ci
 
 FROM prepare AS development
 
