@@ -5,7 +5,7 @@ import {
 
 // these are our initial settings
 const initialState = {
-  variable: "sea-temperature",
+  variable: "air-temperature",
   timeseriesType: "absolute",
   globeType: "anomaly",
   globeTime: new Date("2024-01-02"),

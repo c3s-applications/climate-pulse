@@ -175,7 +175,7 @@ function TimeSeriesYearComparison(props) {
                     key: i,
                     text: label,
                     value: label,
-                    disabled: (currentYears.length >= 5),
+                    // disabled: (currentYears.length >= 5),
                     temp: getValues()[label],
                     description: ((Math.round(getValues()[label] * 100) / 100).toFixed(2)).toString().concat('°C'),
                     
@@ -213,16 +213,11 @@ function TimeSeriesYearComparison(props) {
         props.controls['resetChart'] = true
         callUpdateSettings()
     }
-
-    const yearColors = ['red', 'orange', 'yellow', 'green', 'blue']
     
     function renderLabel(label) {
         const currentYears = props.controls.currentYears
         var result = {content: `${label.text}`}
         var idx = currentYears.indexOf(label.text)
-        if (idx <= yearColors.length) {
-            result['color'] = yearColors[currentYears.indexOf(label.text)]
-        }
 
         return result
     }
@@ -233,15 +228,14 @@ function TimeSeriesYearComparison(props) {
             textAlign='left'
             trigger={<Button basic color='teal' size='mini'><Icon name='plus'/>Add years to compare with <span style={{color: '#941333', fontWeight: 'bold'}}>{props.controls.maxDate.getFullYear()}</span></Button>}
             on='click'
-            flowing
+            size='mini'
             hoverable={false}
+            style={{minWidth: "300px"}}
             hideOnScroll={false}
         >            
             <Label.Group>              
-                <Label>
                     <Icon name='sort' />
                     Sort years by &nbsp;
-                </Label>
                 <Label>
                     <Dropdown
                         options={sortByOptions}
@@ -249,16 +243,11 @@ function TimeSeriesYearComparison(props) {
                         onChange={function(e, data){setSortYears(data.value)}}
                     />
                 </Label>
-                {currentYears.length >= 5 &&
-                    <Label basic color='red'>
-                        No more than five years can be selected at once
-                    </Label>
-                }      
                 
             </Label.Group>
-            <Label>
                 <Dropdown
                     placeholder='Select years'
+                    fluid
                     multiple
                     selection
                     search
@@ -268,7 +257,6 @@ function TimeSeriesYearComparison(props) {
                     renderLabel={renderLabel}
                     onChange={updateYears}
                 />
-            </Label>
             </Popup>
             <Button
                 color='teal'
@@ -277,7 +265,7 @@ function TimeSeriesYearComparison(props) {
             >
                 <Icon name='undo' />
                 Reset chart
-            </Button>
+            </Button> 
             </>
     )
 

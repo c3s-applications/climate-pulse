@@ -185,7 +185,7 @@ def timeseries(
         ),
         plot_bgcolor="white",
         hovermode="closest",
-        hoverdistance=-1,
+        # hoverdistance=-1,
         hoverlabel=dict(font=dict(size=12, family="Lato")),
         yaxis=dict(
             showgrid=True,

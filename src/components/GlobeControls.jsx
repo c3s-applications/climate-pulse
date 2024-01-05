@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux"
 import { updateSettings } from "../actions/actions"
-import { Button, Modal, Icon, Popup, Dropdown } from 'semantic-ui-react'
+import { Button, Modal, Icon, Popup, Dropdown, Label } from 'semantic-ui-react'
 import Globe from './Globe';
 
 
@@ -196,6 +196,7 @@ function GlobeControls(props) {
                 <Popup
                     textAlign='left'
                     on='click'
+                    size='mini'
                     flowing
                     hoverable={false}
                     hideOnScroll={false}
@@ -205,6 +206,7 @@ function GlobeControls(props) {
                         </Button>
                     }
                 >
+                    Select date<br></br>
                     <Dropdown
                         options={days}
                         selection

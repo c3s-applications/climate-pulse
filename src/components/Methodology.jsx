@@ -5,8 +5,8 @@ import Attribution from './Attribution'
 
 const Methodology = () => (
   <Container>
-    <Segment secondary color='grey'>
-        <Header as='h2'>Methodology</Header>
+    <Segment secondary color='purple'>
+        <Header as='h3'>Methodology</Header>
         <p>
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
         ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et
