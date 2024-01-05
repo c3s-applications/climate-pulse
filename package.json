@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "env-cmd": "^10.1.0",
     "html2canvas": "^1.4.1",
     "plotly.js": "^2.27.1",
     "plotly.js-dist": "^2.27.1",
@@ -24,8 +25,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "env-cmd -f environments/.env.local craco start",
     "build": "craco build",
+    "build:local": "env-cmd -f environments/.env.local craco build",
+    "build:development": "env-cmd -f environments/.env.development craco build",
+    "build:production": "env-cmd -f environments/.env.production craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
