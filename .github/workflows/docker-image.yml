@@ -1,0 +1,29 @@
+name: Build and push image to Harbor
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker/login-action@v1
+      with:
+        registry: harbor.example.com
+        username: ${{ secrets.HARBOR_USERNAME  }}
+        password: ${{ secrets.HARBOR_PASSWORD }}
+
+    - uses: actions/checkout@v3
+    # - name: BuildAndPushImageOnHarbor
+    #   run: |
+    #     docker build ./ -t harbor.example.com/chaturmail/chaturmail-backend:${{ github.run_number }}
+    #     docker push harbor.example.com/chaturmail/chaturmail-backend:${{ github.run_number }}
+    - name: Create Docker context
+      run: docker buildx create --name app-ctx --platform="linux/amd64"
+    - name: Build the Docker image
+      run: docker buildx build --tag "eccr.ecmwf.int/c3s-applications/${app}:latest" --builder=app-ctx --platorm=linux/amd64 --push .
+      
+      
+      
+      
