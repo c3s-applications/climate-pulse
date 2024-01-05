@@ -4,9 +4,9 @@ import Glossary from './Glossary'
 import Attribution from './Attribution'
 
 const Methodology = () => (
-  <Container>
+  <Container textAlign='justified'>
     <Segment secondary color='purple'>
-        <Header as='h3'>Methodology</Header>
+        <Header as='h4'>Methodology</Header>
         <p>
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
         ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et

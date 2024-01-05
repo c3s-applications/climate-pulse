@@ -42,10 +42,10 @@ function GlobeContainer() {
                     color: "#2A3F5F",
                 }}
             >
-                <b>Global air temperature anomaly - {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
+                <b>Global surface air temperature anomaly - {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
                 <br></br>
                 <sup>
-                Data: ERA5 {globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'short', year: 'numeric'})} ● Credit: C3S/ECMWF
+                Data: ERA5 reanalysis from the Climate Data Store ● Credit: C3S/ECMWF
                 </sup>
 
             </h3>

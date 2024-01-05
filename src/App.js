@@ -31,7 +31,7 @@ const App = () => (
 
     <Grid.Row textAlign='left'>
 
-      <Container textAlign='left' >
+      <Container textAlign='justified' >
         <Segment secondary color='purple'>
             <p>
             <b>Climate Pulse</b> tracks the latest global temperature and sea surface

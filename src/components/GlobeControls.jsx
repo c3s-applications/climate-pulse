@@ -198,6 +198,7 @@ function GlobeControls(props) {
                     on='click'
                     size='mini'
                     flowing
+                    style={{minWidth: "300px"}}
                     hoverable={false}
                     hideOnScroll={false}
                     trigger={
@@ -211,6 +212,7 @@ function GlobeControls(props) {
                         options={days}
                         selection
                         compact
+                        style={{minWidth: "80px"}}
                         pinned
                         defaultValue={props.controls.globeTime.getDate()}
                         onChange={updateDay}
@@ -219,6 +221,7 @@ function GlobeControls(props) {
                         options={months}
                         selection
                         compact
+                        style={{minWidth: "150px"}}
                         pinned
                         defaultValue={props.controls.globeTime.getMonth()}
                         onChange={updateMonth}
@@ -227,6 +230,7 @@ function GlobeControls(props) {
                         options={years}
                         selection
                         compact
+                        style={{minWidth: "80px"}}
                         pinned
                         defaultValue={props.controls.globeTime.getFullYear()}
                         onChange={updateYear}
@@ -247,8 +251,7 @@ function GlobeControls(props) {
                     <b>Global air temperature anomaly - {props.controls.globeTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
                     <br></br>
                     <sup>
-                    Data: ERA5 12 Dec 2023 ● Credit: Copernicus Climate Change
-                    Service & ECMWF
+                    Data: ERA5 reanalysis from the Climate Data Store ● Credit: C3S/ECMWF
                     </sup>
                 </Modal.Header>
                 <Modal.Content>
