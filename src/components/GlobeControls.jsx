@@ -9,6 +9,12 @@ const non31DayMonths = [1, 3, 5, 8, 10]
 
 function GlobeControls(props) {
 
+    const temporalResolutions = [
+        {key: 'daily', text: 'Daily', value: 'daily'},
+        {key: 'monthly', text: 'Monthly', value: 'monthly'},
+        {key: 'annual', text: 'Annual', value: 'annual'},
+    ]
+
     const days = [
         {key: 1, text: '1', value: 1, disabled: invalidDay(1)},
         {key: 2, text: '2', value: 2, disabled: invalidDay(2)},
@@ -110,7 +116,6 @@ function GlobeControls(props) {
 
     function setFocus(lat, lon) {
         var globe = document.getElementById("mainGlobe")
-        console.log(globe)
     }
 
     function callUpdateSettings() {
@@ -129,7 +134,7 @@ function GlobeControls(props) {
       callUpdateSettings()
     }
   
-    function incrementTime(days) {
+    function incrementDays(days) {
       const { controls } = props
       
       var result = new Date(controls.globeTime);
@@ -174,7 +179,7 @@ function GlobeControls(props) {
                 <Button
                     icon
                     disabled={props.controls.globeTime <= props.controls.minDate}
-                    onClick={() => incrementTime(-5)}
+                    onClick={() => incrementDays(-5)}
                 >
                     <Icon name='angle double left' />
                     5 days
@@ -182,7 +187,7 @@ function GlobeControls(props) {
                 <Button
                     icon
                     disabled={props.controls.globeTime <= props.controls.minDate}
-                    onClick={() => incrementTime(-1)}
+                    onClick={() => incrementDays(-1)}
                 >
                     <Icon name='angle left' />
                     1 day
@@ -190,7 +195,7 @@ function GlobeControls(props) {
                 <Button
                     icon
                     disabled={props.controls.globeTime >= props.controls.maxDate}
-                    onClick={() => incrementTime(1)}
+                    onClick={() => incrementDays(1)}
                 >
                     1 day
                     <Icon name='angle right' />
@@ -198,7 +203,7 @@ function GlobeControls(props) {
                 <Button
                     icon
                     disabled={props.controls.globeTime >= props.controls.maxDate}
-                    onClick={() => incrementTime(5)}
+                    onClick={() => incrementDays(5)}
                 >
                     5 days
                     <Icon name='angle double right' />

@@ -10,14 +10,6 @@ function GlobeContainer() {
     const variable = useSelector(state => state.controls.variable);
     const [legendSrc, setLegendSrc] = useState(null);
 
-    function defaultGlobeParams() {
-        if (window.innerWidth < 768) {
-            return {height: 320, altitude: 1.75}
-        } else {
-            return {height: 443, altitude: 1.7}
-        }
-    }
-
     function getVariable() {
         if (variable === 'air-temperature') {
             return 'surface air temperature'
@@ -73,7 +65,7 @@ function GlobeContainer() {
                 <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'>
                 </Grid.Column>
                 <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
-                    <Globe {...defaultGlobeParams()} />
+                    <Globe />
                 </Grid.Column>
                 <Grid.Column computer={2} textAlign='center' verticalAlign='middle'>
                     <Image

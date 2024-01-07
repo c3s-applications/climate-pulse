@@ -1,40 +1,50 @@
-import { combineReducers } from 'redux'
-import {
-    UPDATE_SETTINGS
-  } from '../actions/actions'
+import { UPDATE_STATE, UPDATE_TIMESERIES, UPDATE_GLOBE } from '../actions/actions'
 
-// these are our initial settings
 const initialState = {
   variable: "air-temperature",
-  timeseriesType: "absolute",
-  globeType: "anomaly",
-  globeTime: new Date("2023-12-31"),
   maxDate: new Date("2024-01-02"),
   minDate: new Date("2023-12-01"),
-  maxYear: "2022",
-  minYear: "1940",
-  currentYears: ["2023"],
-  defaultCurrentYears: ["2023"],
-  resetChart: false,
-  globeFocus: null,
+  timeSeries: {
+    quantity: "absolute",
+    highlightYears: ["2023"],
+    defaultHighlightYears: ["2023"],
+    reset: 0,
+    loaded: true,
+  },
+  globe: {
+    quantity: "anomaly",
+    temporalResolution: "daily",
+    dateTime: new Date("2023-12-31"),
+    loaded: true,
+  },
 }
 
-// our reducer constant returning an unchanged or updated state object depending on the users action, many cases will follow
 const controls = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_SETTINGS:
+    case UPDATE_STATE:
         return {
           ...state,
-          settings: action.settings
+          ...action,
+        }
+    case UPDATE_TIMESERIES:
+        return {
+          ...state,
+          timeSeries: {
+            ...state.timeSeries,
+            ...action,
+          }
+        }
+    case UPDATE_GLOBE:
+        return {
+          ...state,
+          globe: {
+            ...state.globe,
+            ...action,
+          }
         }
     default:
       return state
   }
 }
 
-// creates a root reducer and combines different reducers if needed
-const rootReducer = combineReducers({
-  controls
-})
-
-export default rootReducer
+export default controls

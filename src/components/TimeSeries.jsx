@@ -240,6 +240,9 @@ function TimeSeries(props) {
     }
 
     function updateSrc() {
+        if (props.controls.timeSeriesLoaded) {
+            handleUpdateSettings('timeSeriesLoaded', false)
+        }
         fetch(jsonSrc)
             .then( resp => resp.json())
             .then((data)=> {
@@ -283,7 +286,6 @@ function TimeSeries(props) {
         if (resetChart) {
             updateSrc()
             setReset(false)
-            setHighlightsApplied(false)
         }
 
         if (timeSeriesRef.current.props.data !== null && currentYears !== prevCurrentYears.current) {
@@ -328,6 +330,7 @@ function TimeSeries(props) {
             }
             setRevision(revision + 1);
             timeSeriesRef.current.props.layout.datarevision = revision;
+            timeSeriesRef.current.handlers.Relayout()
         }
     }
 
@@ -405,6 +408,11 @@ function TimeSeries(props) {
                 // onHover={hoverHighlight}
                 // onUnhover={hoverReset}
                 onClick={setTime}
+                onRelayout={function(){
+                    if (!props.controls.timeSeriesLoaded) {
+                        handleUpdateSettings('timeSeriesLoaded', true)
+                    }
+                }}
             />
         </div>
     )

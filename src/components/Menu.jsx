@@ -1,41 +1,27 @@
 import React from 'react'
-import { connect } from "react-redux"
-import { updateSettings } from "../actions/actions"
+import { useSelector, useDispatch } from "react-redux"
+import { updateState } from "../actions/actions"
 import { Button } from 'semantic-ui-react'
 
-function Menu(props) {
-
-  function callUpdateSettings() {
-    const { controls, dispatch } = props
-
-    dispatch(
-      updateSettings({
-        settings: controls.settings
-      })
-    )
-  }
-
-  function handleSettings(settingName, setting) {
-    const { controls } = props
-    controls[settingName] = setting
-    callUpdateSettings()
-  }
+const Menu = () => {
+  const dispatch = useDispatch()
+  const variable = useSelector(state => state.variable)
 
   return (
     <Button.Group widths={2} >
       <Button
         color='purple'
-        basic={props.controls.variable !== 'air-temperature'}
-        active={props.controls.variable === 'air-temperature'}
-        onClick={() => handleSettings("variable", 'air-temperature')}
+        basic={variable !== 'air-temperature'}
+        active={variable === 'air-temperature'}
+        onClick={() => dispatch(updateState({variable: 'air-temperature'}))}
       >
         Air temperature
       </Button>
       <Button
         color='purple'
-        basic={props.controls.variable !== 'sea-temperature'}
-        active={props.controls.variable === 'sea-temperature'}
-        onClick={() => handleSettings("variable", 'sea-temperature')}
+        basic={variable !== 'sea-temperature'}
+        active={variable === 'sea-temperature'}
+        onClick={() => dispatch(updateState({variable: 'sea-temperature'}))}
       >
         Sea temperature
       </Button>
@@ -43,11 +29,4 @@ function Menu(props) {
   );
 }
 
-const mapStateToProps = state => {
-  const controls = state.controls
-  return {
-    controls
-  }
-}
-
-export default connect(mapStateToProps)(Menu)
+export default Menu

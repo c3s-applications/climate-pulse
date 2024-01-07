@@ -34,12 +34,11 @@ const App = () => (
       <Container textAlign='justified' >
         <Segment secondary color='purple'>
             <p>
-            <b>Climate Pulse</b> tracks the latest global temperature and sea surface
-            temperature information from the <b>Copernicus Climate Change Service (C3S)</b>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
-            ligula eget dolor. Aenean massa strong. Cum sociis natoque penatibus et
-            magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
-            ultricies nec, pellentesque eu, pretium quis, sem.        
+            <b>Climate Pulse</b> is being actively developed by the Copernicus Climate
+            Change Service (C3S) and is currently in the <b>beta</b> phase of development.
+            </p>
+            <p>
+            
             </p>
         </Segment>
       </Container>
