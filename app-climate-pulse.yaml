@@ -1,0 +1,9 @@
+name: climate-pulse
+deployment:
+  image: eccr.ecmwf.int/c3s-applications/climate-pulse
+  tag: latest
+  port: 80
+ingress:
+  hostname: ecds-dev.copernicus-climate.eu
+  path: /c3s-apps/climate-pulse/
+  

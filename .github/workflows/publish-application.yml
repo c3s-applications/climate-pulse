@@ -1,0 +1,93 @@
+name: Publish development application
+
+env:
+  IMAGE_TAG: latest
+  
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+    - '*'
+
+jobs:
+  build_and_push:
+    name: Build and push image to Harbor
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker/login-action@v3
+      with:
+        registry: eccr.ecmwf.int
+        username: ${{ secrets.HARBOR_USERNAME  }}
+        password: ${{ secrets.HARBOR_PASSWORD }}
+
+    - uses: actions/checkout@v4
+
+    - name: Set development environment variables
+      if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+        cat environments/actions.env.dev >> $GITHUB_ENV
+    - name: Set production environment variables
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        cat environments/actions.env.prod >> $GITHUB_ENV
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        buildkitd-flags: --debug
+    - name: Build the Docker image
+      uses: docker/build-push-action@v5
+      with: 
+        context: .
+        platforms: linux/amd64
+        push: true
+        build-args: environment=${{ env.APP_ENVIRONMENT }}
+        tags: "eccr.ecmwf.int/c3s-applications/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}"
+  
+  deployment:
+    name: Deploy application with helm
+    needs:
+      - build_and_push
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set development environment variables
+      if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+        cat environments/actions.env.dev >> $GITHUB_ENV
+    - name: Set production environment variables
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        cat environments/actions.env.prod >> $GITHUB_ENV
+
+    - name: Populate values.yaml
+      run: |
+        echo sed -i "s/DUMMY_IMAGE_TAG/${IMAGE_TAG}/g" values.yaml;
+        sed -i "s?DUMMY_IMAGE_TAG?${IMAGE_TAG}?g" values.yaml;
+        sed -i "s?DUMMY_APP_NAME?${APP_NAME}?g" values.yaml;
+        sed -i "s?DUMMY_APP_PATH?${APP_PATH}?g" values.yaml;
+        sed -i "s?DUMMY_HOSTNAME?${APP_HOSTNAME}?g" values.yaml;
+        echo Upgrading/Installing app with following values;
+        cat values.yaml;
+
+    - name: 'Add repo'
+      run: helm repo add --username ${{ secrets.HARBOR_USERNAME  }} --password ${{ secrets.HARBOR_PASSWORD  }} c3s-applications https://eccr.ecmwf.int/chartrepo/c3s-applications
+    - name: "Update Helm Chart"
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml && chmod 400 kubeconfig.yaml;
+        echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications || helm install -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications --values values.yaml"
+        helm upgrade -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications || helm install -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications --values values.yaml
+      env:
+        KUBECONFIG: kubeconfig.yaml
+    - name: "Force update of pods"
+      run: |
+        echo kubectl delete pods -n $APP_NAMESPACE -l app=$APP_NAME
+        kubectl delete pods -n $APP_NAMESPACE -l app=$APP_NAME
+      env:
+        KUBECONFIG: kubeconfig.yaml   
+      
