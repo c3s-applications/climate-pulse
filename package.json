@@ -25,11 +25,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "env-cmd -f environments/.env.local craco start",
+    "start": "craco start",
     "build": "craco build",
-    "build:local": "env-cmd -f environments/.env.local craco build",
-    "build:development": "env-cmd -f environments/.env.development craco build",
-    "build:production": "env-cmd -f environments/.env.production craco build",
     "test": "craco test",
     "eject": "craco eject"
   },
