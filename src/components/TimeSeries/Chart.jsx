@@ -27,6 +27,7 @@ const TimeSeriesChart = () => {
     const quantity = useSelector(state => state.timeSeries.quantity);
 
     const reset = useSelector(state => state.timeSeries.reset);
+    const loaded = useSelector(state => state.timeSeries.loaded);
     const prevReset = useRef()
 
     const highlightYears = useSelector(state => state.timeSeries.highlightYears);
@@ -71,6 +72,7 @@ const TimeSeriesChart = () => {
     }
 
     const fetchJson = () => {
+        dispatch(updateTimeSeries({loaded: false}))
         fetch(jsonSrc)
             .then(resp => resp.json())
             .then((data)=> {
@@ -78,6 +80,7 @@ const TimeSeriesChart = () => {
                 setPlotlyPlot(data)
             })
             .then(() => setHighlightsApplied(false))
+            .then(() => dispatch(updateTimeSeries({loaded: true})))
 
     }
 

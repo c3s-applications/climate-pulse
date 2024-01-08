@@ -6,6 +6,8 @@ import { Image, Grid } from 'semantic-ui-react'
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
+
+
 const getShortName = (variable) => {
     switch (variable) {
         case 'air-temperature':
@@ -35,11 +37,13 @@ function getHeight() {
 
 const Chart = () => {
     const globeEl = useRef();
+    const imgEl = useRef();
     const [setUp, setSetUp] = useState(false);
     const [coastlines, setCoastlines] = useState();  
 
     const [globeImageUrl, setGlobeImageUrl] = useState(0);
     const [legendImageUrl, setLegendImageUrl] = useState(0);
+    const [realGlobeImageUrl, setRealGlobeImageUrl] = useState(0);
   
     const variable = useSelector(state => state.variable);
     const quantity = useSelector(state => state.globe.quantity)
@@ -89,9 +93,15 @@ const Chart = () => {
             });
             setCoastlines(cablePaths);
             });
+
+        // var loader = new THREE.TextureLoader();
+        // loader.setCrossOrigin("anonymous");
+        // var clothTexture = loader.load('https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/monthly/2t/anomaly/');
+
         globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
         setSetUp(true)
         }
+        console.log(imgEl.current)
     }, [variable, quantity, dateTime]);
 
     const updateGlobeImage = () => {
@@ -99,10 +109,13 @@ const Chart = () => {
         let month = ('0' + (dateTime.getMonth()+1)).slice(-2)
         let day = ('0' + dateTime.getDate()).slice(-2)
         let shortName = getShortName(variable)
-        var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+
+        // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${year}/climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${year}${month}${day}.png`
         setGlobeImageUrl(url)
 
-        var legendUrl = `colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}.png`
+        // var legendUrl = `colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}.png`
+        var legendUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}.png`
         console.log(legendUrl)
         setLegendImageUrl(legendUrl)
     }
@@ -135,6 +148,7 @@ const Chart = () => {
                 <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'>
                 </Grid.Column>
                 <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
+
                 <ReactGlobe
                     ref={globeEl}
                     width={width}
@@ -148,8 +162,8 @@ const Chart = () => {
                     pathColor={() => ((variable === 'air-temperature') ? '#888888' : '#eeeeee')}
                     globeMaterial={globeMaterial}
                     globeImageUrl={globeImageUrl}
-                    // onGlobeReady={globeIsLoaded()}
                 />
+
                 </Grid.Column>
                 <Grid.Column computer={2} textAlign='center' verticalAlign='middle'>
                     <Image
@@ -159,7 +173,6 @@ const Chart = () => {
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-      {/* <Image id='controlImage' hidden src={globeImageUrl} onLoad={() => loadGlobe()}/> */}
       </>
     )
     

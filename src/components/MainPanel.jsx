@@ -18,20 +18,23 @@ import TimeSeriesControls from './TimeSeries/Controls'
 import TimeSeriesDownload from './TimeSeries/Download'
 
 
-const MainPanel = () => (
+const MainPanel = () => {
+  const timeSeriesLoaded = useSelector(state => state.timeSeries.loaded)
+
+  return(
     <Grid columns='equal' celled stackable divided centered >
       <Grid.Row centered>
         <Grid.Column textAlign="center">
           <TimeSeriesMenu />
-          {/* <Dimmer.Dimmable dimmed={!useSelector(state => state.controls.timeSeriesLoaded)} >
-            <Transition visible={!useSelector(state => state.controls.timeSeriesLoaded)} animation='fade' duration={1000}>
-            <Dimmer active={!useSelector(state => state.controls.timeSeriesLoaded)} inverted >
+          <Dimmer.Dimmable dimmed={!timeSeriesLoaded} >
+            <Transition visible={!timeSeriesLoaded} animation='fade' duration={250}>
+            <Dimmer active={!timeSeriesLoaded} inverted >
               <Loader size='massive' />
             </Dimmer>
-            </Transition> */}
+            </Transition>
             <TimeSeriesChart />
             <TimeSeriesControls />
-          {/* </Dimmer.Dimmable> */}
+          </Dimmer.Dimmable>
           <Divider />
         <TimeSeriesDownload />
         </Grid.Column>
@@ -57,7 +60,8 @@ const MainPanel = () => (
         </Grid.Column>
       </Grid.Row>
     </Grid>
-)
+  )
+}
 
 
 export default MainPanel

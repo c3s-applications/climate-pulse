@@ -9,7 +9,7 @@ const initialState = {
     highlightYears: ["2023"],
     defaultHighlightYears: ["2023"],
     reset: 0,
-    loaded: true,
+    loaded: false,
   },
   globe: {
     quantity: "anomaly",

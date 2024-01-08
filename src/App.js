@@ -2,7 +2,7 @@ import './App.css';
 import { Grid, Divider, Container, Segment } from 'semantic-ui-react';
 import MainPanel from './components/MainPanel';
 import Menu from './components/Menu';
-import Methodology from './components/Methodology';
+import InformationSegment from './components/InformationSegment';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { Provider } from 'react-redux'
@@ -34,11 +34,10 @@ const App = () => (
       <Container textAlign='justified' >
         <Segment secondary color='purple'>
             <p>
-            <b>Climate Pulse</b> is being actively developed by the Copernicus Climate
-            Change Service (C3S) and is currently in the <b>beta</b> phase of development.
-            </p>
-            <p>
-            
+            <strong>Climate Pulse</strong> is a new tool provided by
+            the <strong>Copernicus Climate Change Service (C3S)</strong> which
+            provides near real-time updates of global average air- and sea-surface
+            temperatures.
             </p>
         </Segment>
       </Container>
@@ -59,7 +58,7 @@ const App = () => (
       </Grid.Row>
       <Grid.Row>
         <Grid.Column>
-        <Methodology />
+        <InformationSegment />
         <Divider hidden/>
         </Grid.Column>
       </Grid.Row>

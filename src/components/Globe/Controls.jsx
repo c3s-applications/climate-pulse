@@ -143,6 +143,31 @@ const GlobeControls = () => {
 
       jumpToDate(result)
     }
+  
+    function incrementMonth(months) {      
+      var result = new Date(dateTime);
+      result.setMonth(result.getMonth() + months);
+
+      if (result > maxDate) {
+        result = maxDate
+      } else if (result < minDate) {
+        result = minDate
+      }
+
+      jumpToDate(result)
+    }
+  
+    function incrementYear(year) {      
+      var result = new Date(dateTime.getFullYear() + years, dateTime.getMonth(), dateTime.getDate());
+
+      if (result > maxDate) {
+        result = maxDate
+      } else if (result < minDate) {
+        result = minDate
+      }
+
+      jumpToDate(result)
+    }
 
     function getVariable() {
         if (variable === 'air-temperature') {
@@ -159,41 +184,110 @@ const GlobeControls = () => {
             return 'anomaly '
         }
     }
+
+    const bigNegative = () => {
+        switch(temporalResolution) {
+            case 'daily':
+                return {
+                    onClick: () => incrementDay(-5),
+                    content: <><Icon name='angle double left' />5 days</>,
+                }
+            case 'monthly':
+                return {
+                    onClick: () => incrementMonth(-12),
+                    content: <><Icon name='angle double left' />12 months</>,
+                }
+            case 'annual':
+                return {
+                    onClick: () => incrementYear(-5),
+                    content: <><Icon name='angle double left' />5 years</>,
+                }
+        }
+    }
+
+    const bigPositive = () => {
+        switch(temporalResolution) {
+            case 'daily':
+                return {
+                    onClick: () => incrementDay(5),
+                    content: <><Icon name='angle double right' />5 days</>,
+                }
+            case 'monthly':
+                return {
+                    onClick: () => incrementMonth(12),
+                    content: <><Icon name='angle double right' />12 months</>,
+                }
+            case 'annual':
+                return {
+                    onClick: () => incrementYear(5),
+                    content: <><Icon name='angle double right' />5 years</>,
+                }
+        }
+    }
+
+    const smallNegative = () => {
+        switch(temporalResolution) {
+            case 'daily':
+                return {
+                    onClick: () => incrementDay(-1),
+                    content: <><Icon name='angle left' />1 day</>,
+                }
+            case 'monthly':
+                return {
+                    onClick: () => incrementMonth(-1),
+                    content: <><Icon name='angle left' />1 month</>,
+                }
+            case 'annual':
+                return {
+                    onClick: () => incrementYear(-1),
+                    content: <><Icon name='angle left' />1 year</>,
+                }
+        }
+    }
+
+    const smallPositive = () => {
+        switch(temporalResolution) {
+            case 'daily':
+                return {
+                    onClick: () => incrementDay(1),
+                    content: <><Icon name='angle right' />1 day</>,
+                }
+            case 'monthly':
+                return {
+                    onClick: () => incrementMonth(1),
+                    content: <><Icon name='angle right' />1 month</>,
+                }
+            case 'annual':
+                return {
+                    onClick: () => incrementYear(1),
+                    content: <><Icon name='angle right' />1 year</>,
+                }
+        }
+    }
+
     return (
         <>
             <Button.Group basic size='mini' color='teal'>
                 <Button
                     icon
                     disabled={dateTime <= minDate}
-                    onClick={() => incrementDay(-5)}
-                >
-                    <Icon name='angle double left' />
-                    5 days
-                </Button>
+                    {...bigNegative()}
+                />
                 <Button
                     icon
                     disabled={dateTime <= minDate}
-                    onClick={() => incrementDay(-1)}
-                >
-                    <Icon name='angle left' />
-                    1 day
-                </Button>
+                    {...smallNegative()}
+                />
                 <Button
                     icon
                     disabled={dateTime >= maxDate}
-                    onClick={() => incrementDay(1)}
-                >
-                    1 day
-                    <Icon name='angle right' />
-                </Button>
+                    {...smallPositive()}
+                />
                 <Button
                     icon
                     disabled={dateTime >= maxDate}
-                    onClick={() => incrementDay(5)}
-                >
-                    5 days
-                    <Icon name='angle double right' />
-                </Button>
+                    {...bigPositive()}
+                />
             </Button.Group>&nbsp;
             <Button.Group size='mini' basic color='teal'>
                 <Button
