@@ -1,0 +1,4 @@
+APP_NAMESPACE=cads-apps-dev
+APP_NAME=climate-pulse
+APP_PATH=/c3s-apps/climate-pulse/
+HOSTNAME=ecds-dev.copernicus-climate.eu
