@@ -16,6 +16,12 @@ const initialState = {
     temporalResolution: "daily",
     dateTime: new Date("2023-12-31"),
     loaded: true,
+    maxDaily: new Date("2024-01-05"),
+    minDaily: new Date("2023-01-01"),
+    maxMonthly: new Date("2023-12-31"),
+    minMonthly: new Date("2022-01-01"),
+    maxAnnual: new Date("2023-12-31"),
+    minAnnual: new Date("1979-01-01"),
   },
 }
 

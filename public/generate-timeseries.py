@@ -180,7 +180,7 @@ def timeseries(
         legend=dict(
             orientation="h",
             yanchor="top",
-            y=-0.1,
+            y=1.05,
             xanchor="left",
         ),
         plot_bgcolor="white",

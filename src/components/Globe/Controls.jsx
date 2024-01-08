@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { updateGlobe } from "../../actions/actions"
 import { Button, Icon, Popup, Dropdown, Label } from 'semantic-ui-react'
@@ -14,9 +14,37 @@ const GlobeControls = () => {
     const quantity = useSelector(state => state.globe.quantity);
 
     const dateTime = useSelector(state => state.globe.dateTime);
-    const maxDate = useSelector(state => state.maxDate);
-    const minDate = useSelector(state => state.minDate);
+
+    const maxDaily = useSelector(state => state.globe.maxDaily);
+    const minDaily = useSelector(state => state.globe.minDaily);
+    const maxMonthly = useSelector(state => state.globe.maxMonthly);
+    const minMonthly = useSelector(state => state.globe.minMonthly);
+    const maxAnnual = useSelector(state => state.globe.maxAnnual);
+    const minAnnual = useSelector(state => state.globe.minAnnual);
+    
     const temporalResolution = useSelector(state => state.globe.temporalResolution)
+
+    const maxDate = (res=temporalResolution) => {
+        switch (res) {
+            case 'daily':
+                return maxDaily
+            case 'monthly':
+                return maxMonthly
+            case 'annual':
+                return maxAnnual
+        }
+    }
+
+    const minDate = (res=temporalResolution) => {
+        switch (res) {
+            case 'daily':
+                return minDaily
+            case 'monthly':
+                return minMonthly
+            case 'annual':
+                return minAnnual
+        }
+    }
 
     const temporalResolutions = [
         {key: 'daily', text: 'Daily', value: 'daily'},
@@ -73,19 +101,32 @@ const GlobeControls = () => {
         {key: "dec", text: "December", value: 11, active: dateTime.getMonth()===11, disabled: invalidMonth(11)},
     ]
 
-    const years = [
-        {key: 2023, text: '2023', value: 2023},
-        {key: 2024, text: '2024', value: 2024},
-    ]
+    const years = () => {
+        var step = 1
+        var result = []
+        var start = minDate().getFullYear()
+        var stop = maxDate().getFullYear() + 1
+    
+        for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+            let label = i.toString()
+            result.push(
+                {
+                    key: i,
+                    text: label,
+                    value: i,
+                });
+        }
+        return result;
+    };
 
     function invalidDay(day) {
         return (
             (non31DayMonths.includes(dateTime.getMonth()) && day===31) ||
             (dateTime.getMonth()===1 && day>=29) ||
             (
-                (dateTime.getFullYear() === maxDate.getFullYear()) &&
-                (dateTime.getMonth() === maxDate.getMonth()) &&
-                (day > maxDate.getDate())
+                (dateTime.getFullYear() === maxDate().getFullYear()) &&
+                (dateTime.getMonth() === maxDate().getMonth()) &&
+                (day > maxDate().getDate())
             )
         )
     }
@@ -93,11 +134,11 @@ const GlobeControls = () => {
     function invalidMonth(month) {
         return (
             (
-                (dateTime.getFullYear() === maxDate.getFullYear()) &&
-                (month > maxDate.getMonth())
+                (dateTime.getFullYear() === maxDate().getFullYear()) &&
+                (month > maxDate().getMonth())
             ) || (
-                (dateTime.getFullYear() === minDate.getFullYear()) &&
-                (month < minDate.getMonth())
+                (dateTime.getFullYear() === minDate().getFullYear()) &&
+                (month < minDate().getMonth())
             )
         )
     }
@@ -114,12 +155,18 @@ const GlobeControls = () => {
 
     function updateYear(event, data) {
         var year = data.value
-        dispatch(updateGlobe({dateTime: new Date(dateTime.getMonth(), dateTime.getDate())}))
+        dispatch(updateGlobe({dateTime: new Date(year, dateTime.getMonth(), dateTime.getDate())}))
     }
 
 
   
-    function jumpToDate(date) {
+    function jumpToDate(date, res=temporalResolution) {
+        console.log(minDate(res))
+        if (date > maxDate(res)) {
+            date = maxDate(res)
+        } else if (date < minDate(res)) {
+            date = minDate(res)
+        }
         dispatch(updateGlobe({dateTime: date}))
     }
   
@@ -135,10 +182,10 @@ const GlobeControls = () => {
         }
       }
 
-      if (result > maxDate) {
-        result = maxDate
-      } else if (result < minDate) {
-        result = minDate
+      if (result > maxDate()) {
+        result = maxDate()
+      } else if (result < minDate()) {
+        result = minDate()
       }
 
       jumpToDate(result)
@@ -148,41 +195,25 @@ const GlobeControls = () => {
       var result = new Date(dateTime);
       result.setMonth(result.getMonth() + months);
 
-      if (result > maxDate) {
-        result = maxDate
-      } else if (result < minDate) {
-        result = minDate
+      if (result > maxDate()) {
+        result = maxDate()
+      } else if (result < minDate()) {
+        result = minDate()
       }
 
       jumpToDate(result)
     }
   
     function incrementYear(year) {      
-      var result = new Date(dateTime.getFullYear() + years, dateTime.getMonth(), dateTime.getDate());
+      var result = new Date(dateTime.getFullYear() + year, dateTime.getMonth(), dateTime.getDate());
 
-      if (result > maxDate) {
-        result = maxDate
-      } else if (result < minDate) {
-        result = minDate
+      if (result > maxDate()) {
+        result = maxDate()
+      } else if (result < minDate()) {
+        result = minDate()
       }
 
       jumpToDate(result)
-    }
-
-    function getVariable() {
-        if (variable === 'air-temperature') {
-            return 'surface air temperature'
-        } else {
-            return 'sea surface temperature'
-        }
-    }
-
-    function getVariableType() {
-        if (quantity === 'absolute') {
-            return ''
-        } else {
-            return 'anomaly '
-        }
     }
 
     const bigNegative = () => {
@@ -265,34 +296,39 @@ const GlobeControls = () => {
         }
     }
 
+    useEffect(() => {
+        console.log("JUMPING")
+        jumpToDate(dateTime)
+    }, [dateTime])
+
     return (
         <>
             <Button.Group basic size='mini' color='teal'>
                 <Button
                     icon
-                    disabled={dateTime <= minDate}
+                    disabled={dateTime <= minDate()}
                     {...bigNegative()}
                 />
                 <Button
                     icon
-                    disabled={dateTime <= minDate}
+                    disabled={dateTime <= minDate()}
                     {...smallNegative()}
                 />
                 <Button
                     icon
-                    disabled={dateTime >= maxDate}
+                    disabled={dateTime >= maxDate()}
                     {...smallPositive()}
                 />
                 <Button
                     icon
-                    disabled={dateTime >= maxDate}
+                    disabled={dateTime >= maxDate()}
                     {...bigPositive()}
                 />
             </Button.Group>&nbsp;
             <Button.Group size='mini' basic color='teal'>
                 <Button
                     size='mini'
-                    onClick={() => jumpToDate(maxDate)}
+                    onClick={() => jumpToDate(maxDate())}
                 >
                     Latest
                 </Button>
@@ -337,7 +373,7 @@ const GlobeControls = () => {
                         </>
                     }
                     <Dropdown
-                        options={years}
+                        options={years()}
                         selection
                         compact
                         style={{minWidth: "80px"}}
@@ -360,7 +396,7 @@ const GlobeControls = () => {
                 pinned
                 defaultValue={temporalResolution}
                 onChange={(e, data) => {
-                    dispatch(updateGlobe({temporalResolution: data.value}))
+                    dispatch(updateGlobe({temporalResolution: data.value, dateTime: new Date(dateTime)}))
                 }}
             />
         </>

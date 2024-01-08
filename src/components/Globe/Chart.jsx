@@ -42,7 +42,8 @@ const Chart = () => {
     const [coastlines, setCoastlines] = useState();  
 
     const [globeImageUrl, setGlobeImageUrl] = useState(0);
-    const [legendImageUrl, setLegendImageUrl] = useState(0);
+    const [legendImageUrl, setLegendImageUrl] = useState([]);
+    const [legendOrientation, setLegendOrientation] = useState('vertical');
     const [realGlobeImageUrl, setRealGlobeImageUrl] = useState(0);
   
     const variable = useSelector(state => state.variable);
@@ -73,6 +74,44 @@ const Chart = () => {
         }
     }
 
+    function getTimeTitle() {
+        switch(temporalResolution) {
+            case 'daily':
+                return dateTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})
+            case 'monthly':
+                return dateTime.toLocaleDateString("en-GB", {month: 'long', year: 'numeric'})
+            case 'annual':
+                return dateTime.toLocaleDateString("en-GB", {year: 'numeric'})
+            default:
+                return null
+        }
+    }
+
+    function getTimeString(year, month, day) {
+        switch (temporalResolution) {
+            case 'daily':
+                return `${year}${month}${day}`
+            case 'monthly':
+                return `${year}${month}`
+            case 'annual':
+                return `${year}`
+            default:
+                
+        }
+    }
+
+    const updateLegendSrc = () => {
+        let shortName = getShortName(variable)
+        if (window.innerWidth < 768) {
+            var orientation = 'horizontal'
+        } else {
+            var orientation = 'vertical'
+        }
+        var legendUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${orientation}.png`
+        setLegendImageUrl(legendUrl)
+    }
+
+
     useEffect(() => {
 
         updateGlobeImage()
@@ -80,6 +119,7 @@ const Chart = () => {
         if (setUp === false) {
         function handleResize() {
             setWidth(getWidth(getHeight(), padWidescreen, padMobile, mode))
+            updateLegendSrc()
         }
         window.addEventListener('resize', handleResize)
         fetch('coastlines.geojson')
@@ -93,15 +133,9 @@ const Chart = () => {
             });
             setCoastlines(cablePaths);
             });
-
-        // var loader = new THREE.TextureLoader();
-        // loader.setCrossOrigin("anonymous");
-        // var clothTexture = loader.load('https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/monthly/2t/anomaly/');
-
         globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
         setSetUp(true)
         }
-        console.log(imgEl.current)
     }, [variable, quantity, dateTime]);
 
     const updateGlobeImage = () => {
@@ -110,14 +144,16 @@ const Chart = () => {
         let day = ('0' + dateTime.getDate()).slice(-2)
         let shortName = getShortName(variable)
 
+        let timeString = getTimeString(year, month, day)
+
+        let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
+
         // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
-        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${year}/climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${year}${month}${day}.png`
+
+        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
 
-        // var legendUrl = `colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}.png`
-        var legendUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}.png`
-        console.log(legendUrl)
-        setLegendImageUrl(legendUrl)
+        updateLegendSrc()
     }
 
 
@@ -134,7 +170,7 @@ const Chart = () => {
               color: "#2A3F5F",
           }}
       >
-          <b>Global {getVariable()} {getVariableType()}- {dateTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})}</b>
+          <b>Global {getVariable()} {getVariableType()}- {getTimeTitle()}</b>
           <br></br>
           <sup>
           Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
@@ -160,6 +196,7 @@ const Chart = () => {
                     pathPointLng={p => p[0]}
                     pathPointAlt={0.001}
                     pathColor={() => ((variable === 'air-temperature') ? '#888888' : '#eeeeee')}
+                    pathStroke={1.25}
                     globeMaterial={globeMaterial}
                     globeImageUrl={globeImageUrl}
                 />
@@ -169,6 +206,7 @@ const Chart = () => {
                     <Image
                         src={legendImageUrl}
                         verticalAlign='middle'
+                        size='large'
                     />
                 </Grid.Column>
             </Grid.Row>
