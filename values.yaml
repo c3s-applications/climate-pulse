@@ -1,0 +1,9 @@
+name: DUMMY_APP_NAME
+deployment:
+  image: eccr.ecmwf.int/c3s-applications/DUMMY_APP_NAME
+  tag: DUMMY_IMAGE_TAG
+  port: 80
+ingress:
+  hostname: DUMMY_HOSTNAME
+  path: /DUMMY_APP_PATH/
+  
