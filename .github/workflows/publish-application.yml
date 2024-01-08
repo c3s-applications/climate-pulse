@@ -10,46 +10,46 @@ on:
     - '*'
 
 jobs:
-  # build_and_push:
-  #   name: Build and push image to Harbor
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: docker/login-action@v3
-  #     with:
-  #       registry: eccr.ecmwf.int
-  #       username: ${{ secrets.HARBOR_USERNAME  }}
-  #       password: ${{ secrets.HARBOR_PASSWORD }}
+  build_and_push:
+    name: Build and push image to Harbor
+    runs-on: ubuntu-latest
+    steps:
+    - uses: docker/login-action@v3
+      with:
+        registry: eccr.ecmwf.int
+        username: ${{ secrets.HARBOR_USERNAME  }}
+        password: ${{ secrets.HARBOR_PASSWORD }}
 
-  #   - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-  #   - name: Set development environment variables
-  #     if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
-  #     run: |
-  #       echo "IMAGE_TAG=latest" >> $GITHUB_ENV
-  #       cat environments/actions.env.dev >> $GITHUB_ENV
-  #   - name: Set production environment variables
-  #     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-  #     run: |
-  #       echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-  #       cat environments/actions.env.prod >> $GITHUB_ENV
+    - name: Set development environment variables
+      if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+        cat environments/actions.env.dev >> $GITHUB_ENV
+    - name: Set production environment variables
+      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      run: |
+        echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        cat environments/actions.env.prod >> $GITHUB_ENV
       
-  #   - name: Set up Docker Buildx
-  #     uses: docker/setup-buildx-action@v3
-  #     with:
-  #       buildkitd-flags: --debug
-  #   - name: Build the Docker image
-  #     uses: docker/build-push-action@v5
-  #     with: 
-  #       context: .
-  #       platforms: linux/amd64
-  #       push: true
-  #       build-args: environment=${{ env.APP_ENVIRONMENT }}
-  #       tags: "eccr.ecmwf.int/c3s-applications/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}"
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        buildkitd-flags: --debug
+    - name: Build the Docker image
+      uses: docker/build-push-action@v5
+      with: 
+        context: .
+        platforms: linux/amd64
+        push: true
+        build-args: environment=${{ env.APP_ENVIRONMENT }}
+        tags: "eccr.ecmwf.int/c3s-applications/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}"
   
   deployment:
     name: Deploy application with helm
-    # needs:
-    #   - build_and_push
+    needs:
+      - build_and_push
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v1
