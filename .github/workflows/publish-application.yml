@@ -67,9 +67,9 @@ jobs:
 
     - name: Populate values.yaml
       run: |
-        echo sed -i 's/DUMMY_IMAGE_TAG/${GITHUB_REF#refs/*/}/g' values.yaml;
-        echo sed -i "s/DUMMY_IMAGE_TAG/${GITHUB_REF#refs/*/}/g" values.yaml;
-        sed -i 's/DUMMY_IMAGE_TAG/${GITHUB_REF#refs/*/}/g' values.yaml;
+        echo sed -i 's/DUMMY_IMAGE_TAG/${IMAGE_TAG}/g' values.yaml;
+        echo sed -i "s/DUMMY_IMAGE_TAG/${IMAGE_TAG}/g" values.yaml;
+        sed -i 's/DUMMY_IMAGE_TAG/${IMAGE_TAG}/g' values.yaml;
         sed -i 's/DUMMY_APP_NAME/${APP_NAME}/g' values.yaml;
         sed -i 's/DUMMY_APP_PATH/${APP_PATH}/g' values.yaml;
         sed -i 's/DUMMY_HOSTNAME/${APP_HOSTNAME}/g' values.yaml;
