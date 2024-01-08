@@ -10,41 +10,32 @@ const Header = () => (
       <Grid.Row>
 
         {/* Main Climate Pulse logo */}
-        <Grid.Column width={7} textAlign='center' only='computer' >
+        <Grid.Column width={6} textAlign='center' only='computer' >
           <ClimatePulseLogo size='medium' />
         </Grid.Column>
         <Grid.Column width={7} textAlign='center' only='tablet' >
           <ClimatePulseLogo size='medium' />
         </Grid.Column>
         <Grid.Column width={7} textAlign='center' only='mobile' >
-          <ClimatePulseLogo size='medium' centered />
+          <ClimatePulseLogo size='small' centered />
         </Grid.Column>
   
         {/* Organisation logos */}
         <Grid.Column width={7} only='computer'>
           <Grid verticalAlign='middle' textAlign='center'>
-              <Grid.Column width={4}><EULogo size='medium' centered /></Grid.Column>
-              <Grid.Column width={4}><CopernicusLogo size='small' centered /></Grid.Column>
-              <Grid.Column width={4}><ECMWFLogo size='small' centered /></Grid.Column>
-              <Grid.Column width={4}><C3SLogo size='small' centered /></Grid.Column>
+              <Grid.Column width={4}><EULogo size='small' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><CopernicusLogo size='tiny' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><ECMWFLogo size='tiny' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><C3SLogo size='tiny' mode='negative' centered /></Grid.Column>
           </Grid>
         </Grid.Column>
 
         <Grid.Column width={7} only='tablet'>
           <Grid verticalAlign='middle' textAlign='center'>
-              <Grid.Column width={4}><EULogo size='medium' centered /></Grid.Column>
-              <Grid.Column width={4}><CopernicusLogo size='small' centered /></Grid.Column>
-              <Grid.Column width={4}><ECMWFLogo size='small' centered /></Grid.Column>
-              <Grid.Column width={4}><C3SLogo size='small' centered /></Grid.Column>
-          </Grid>
-        </Grid.Column>
-
-        <Grid.Column width={7} only='mobile'>
-          <Grid verticalAlign='middle' textAlign='center'>
-              <Grid.Column width={3}><EULogo size='small' centered /></Grid.Column>
-              <Grid.Column width={3}><CopernicusLogo size='tiny' centered /></Grid.Column>
-              <Grid.Column width={3}><ECMWFLogo size='tiny' centered /></Grid.Column>
-              <Grid.Column width={3}><C3SLogo size='tiny' centered /></Grid.Column>
+              <Grid.Column width={4}><EULogo size='medium' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><CopernicusLogo size='small' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><ECMWFLogo size='small' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><C3SLogo size='small' mode='negative' centered /></Grid.Column>
           </Grid>
         </Grid.Column>
   

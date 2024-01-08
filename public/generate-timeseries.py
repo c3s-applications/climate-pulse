@@ -180,12 +180,11 @@ def timeseries(
         legend=dict(
             orientation="h",
             yanchor="top",
-            y=-0.1,
+            y=-0.05,
             xanchor="left",
         ),
         plot_bgcolor="white",
         hovermode="closest",
-        hoverdistance=-1,
         hoverlabel=dict(font=dict(size=12, family="Lato")),
         yaxis=dict(
             showgrid=True,
@@ -198,6 +197,7 @@ def timeseries(
             tickformat="%b",
             ticklabelmode="period",
             range=["2000-12-25", "2001-12-31"],
+            tickangle=0,
         ),
         margin=dict(
             l=10, r=10, b=50, t=75,
@@ -213,9 +213,9 @@ if __name__ == "__main__":
     csv_file = "era5_daily_series_2t_global_1940-2024.csv"
     var_name = "temp"
     timeseries(csv_file, var_name, target="time-series-air-temperature-absolute.json", anomalies=False)
-    timeseries(csv_file, var_name, target="time-series-air-temperature-anomalies.json", anomalies=True)
+    timeseries(csv_file, var_name, target="time-series-air-temperature-anomaly.json", anomalies=True)
     
     csv_file = "era5_daily_series_sst_60S-60N_1979-2024.csv"
     var_name = "sst"
     timeseries(csv_file, var_name, target="time-series-sea-temperature-absolute.json", anomalies=False)
-    timeseries(csv_file, var_name, target="time-series-sea-temperature-anomalies.json", anomalies=True)
+    timeseries(csv_file, var_name, target="time-series-sea-temperature-anomaly.json", anomalies=True)
