@@ -18,6 +18,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 
 FROM prepare AS build
+RUN npm run build
 
 FROM nginx:1.21-alpine
 COPY --from=build /app/build /usr/share/nginx/html/
