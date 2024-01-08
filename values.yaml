@@ -5,5 +5,5 @@ deployment:
   port: 80
 ingress:
   hostname: DUMMY_HOSTNAME
-  path: /DUMMY_APP_PATH/
+  path: DUMMY_APP_PATH
   

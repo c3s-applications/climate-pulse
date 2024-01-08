@@ -85,7 +85,7 @@ jobs:
       env:
         KUBECONFIG: kubeconfig.yaml
     - name: "Force update of pods"
-      run: kubectl delete pods -l app=hello-world
+      run: kubectl delete pods -n $APP_NAMESPACE l app=hello-world
       env:
         KUBECONFIG: kubeconfig.yaml   
       
