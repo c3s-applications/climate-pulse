@@ -29,7 +29,6 @@ jobs:
         echo "DEPLOYMENT_ENVIRONMENT=prod" >> $GITHUB_ENV
         echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Set deployment environment variables
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       run: |
         cat environments/actions.env.common >> $GITHUB_ENV
         cat environments/actions.env.$DEPLOYMENT_ENVIRONMENT >> $GITHUB_ENV
@@ -66,7 +65,6 @@ jobs:
         echo "DEPLOYMENT_ENVIRONMENT=prod" >> $GITHUB_ENV
         echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: Set deployment environment variables
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       run: |
         cat environments/actions.env.common >> $GITHUB_ENV
         cat environments/actions.env.$DEPLOYMENT_ENVIRONMENT >> $GITHUB_ENV
