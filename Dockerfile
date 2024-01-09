@@ -1,11 +1,14 @@
 # PREPARE STAGE
 FROM node:16 AS prepare
 
+ARG environment
+
 WORKDIR /app
 
 COPY public/ /app/public
 COPY src/ /app/src
 COPY package*.json craco.config.js /app/
+COPY environments/.env.${environment} /app/.env
 
 RUN npm install
 
