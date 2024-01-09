@@ -32,7 +32,7 @@ const MainPanel = () => {
   )
 
   return(
-    <Grid columns='equal' celled={window.innerWidth >= 768} divided centered >
+    <Grid columns='equal' celled divided centered >
       <Grid.Row centered>
         <Grid.Column computer={8} tablet={16} textAlign="center">
 
