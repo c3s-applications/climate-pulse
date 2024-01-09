@@ -8,6 +8,7 @@ const Logo = ({ organisation, mode = 'positive', ...props }) => (
 export const ClimatePulseLogo = (props) => (
     <Image
         src='logos/climate-pulse-negative.png'
+        href='./'
         {...props}
     />
 )

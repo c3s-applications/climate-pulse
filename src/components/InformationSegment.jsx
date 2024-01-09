@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Header, TabPane, Tab, Segment, Button } from 'semantic-ui-react'
+import { Container, TabPane, Tab, Segment } from 'semantic-ui-react'
 
 const Methodology = (
   <TabPane>

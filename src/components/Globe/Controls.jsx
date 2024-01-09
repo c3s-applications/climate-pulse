@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { updateGlobe } from "../../actions/actions"
-import { Button, Icon, Popup, Dropdown, Label } from 'semantic-ui-react'
+import { Button, Icon, Popup, Dropdown } from 'semantic-ui-react'
 
 
 const non31DayMonths = [1, 3, 5, 8, 10]
@@ -114,6 +114,7 @@ const GlobeControls = () => {
                     key: i,
                     text: label,
                     value: i,
+                    disabled: invalidYear(i)
                 });
         }
         return result;
@@ -127,6 +128,10 @@ const GlobeControls = () => {
                 (dateTime.getFullYear() === maxDate().getFullYear()) &&
                 (dateTime.getMonth() === maxDate().getMonth()) &&
                 (day > maxDate().getDate())
+            ) || (
+                (dateTime.getFullYear() === minDate().getFullYear()) &&
+                (dateTime.getMonth() === minDate().getMonth()) &&
+                (day < minDate().getDate())
             )
         )
     }
@@ -141,6 +146,45 @@ const GlobeControls = () => {
                 (month < minDate().getMonth())
             )
         )
+    }
+
+    function invalidYear(year) {
+        switch (temporalResolution) {
+            case 'monthly':
+                return (
+                    (
+                        (year === maxDate().getFullYear()) &&
+                        (dateTime.getMonth() > maxDate().getMonth())
+                    ) || (
+                        (year === minDate().getFullYear()) &&
+                        (dateTime.getMonth() < minDate().getMonth())
+                    )
+                )
+            case 'daily':
+                return (
+                    (
+                        (year === maxDate().getFullYear()) &&
+                        (
+                            (dateTime.getMonth() > maxDate().getMonth()) ||
+                            (
+                                (dateTime.getMonth() == maxDate().getMonth()) &&
+                                (dateTime.getDate() > maxDate().getDate())
+                            )
+                        )
+                    ) || (
+                        (year === minDate().getFullYear()) &&
+                        (
+                            (dateTime.getMonth() < minDate().getMonth()) ||
+                            (
+                                (dateTime.getMonth() == minDate().getMonth()) &&
+                                (dateTime.getDate() < minDate().getDate())
+                            )
+                        )
+                    )
+                )
+            default:
+                return false
+        }
     }
 
     function updateMonth(event, data) {

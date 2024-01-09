@@ -23,10 +23,10 @@ const Header = () => (
         {/* Organisation logos */}
         <Grid.Column width={7} only='computer'>
           <Grid verticalAlign='middle' textAlign='center'>
-              <Grid.Column width={4}><EULogo size='small' mode='negative' centered /></Grid.Column>
-              <Grid.Column width={4}><CopernicusLogo size='tiny' mode='negative' centered /></Grid.Column>
-              <Grid.Column width={4}><ECMWFLogo size='tiny' mode='negative' centered /></Grid.Column>
-              <Grid.Column width={4}><C3SLogo size='tiny' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><EULogo size='medium' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><CopernicusLogo size='small' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><ECMWFLogo size='small' mode='negative' centered /></Grid.Column>
+              <Grid.Column width={4}><C3SLogo size='small' mode='negative' centered /></Grid.Column>
           </Grid>
         </Grid.Column>
 

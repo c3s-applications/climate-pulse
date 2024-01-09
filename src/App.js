@@ -1,8 +1,9 @@
 import './App.css';
-import { Grid, Divider, Container, Segment } from 'semantic-ui-react';
+import { Grid, Divider, Container } from 'semantic-ui-react';
 import MainPanel from './components/MainPanel';
 import Menu from './components/Menu';
 import InformationSegment from './components/InformationSegment';
+import Tagline from './components/Tagline';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { Provider } from 'react-redux'
@@ -30,18 +31,7 @@ const App = () => (
       </Grid.Row>
 
     <Grid.Row textAlign='left'>
-
-      <Container textAlign='justified' >
-        <Segment secondary color='purple'>
-            <p>
-            <strong>Climate Pulse</strong> is a new tool provided by
-            the <strong>Copernicus Climate Change Service (C3S)</strong> which
-            provides near real-time updates of global average air- and sea-surface
-            temperatures.
-            </p>
-        </Segment>
-      </Container>
-      <Divider />
+      <Tagline />
     </Grid.Row>
 
       <Grid.Row>
