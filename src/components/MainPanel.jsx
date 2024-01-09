@@ -65,7 +65,7 @@ const MainPanel = () => {
           <Grid centered>
             <Grid.Column floated='left' width={2} />
             <Grid.Column textAlign='center' width={12}>
-              <Header as='h3'>Global view ({globeStart}-present)</Header>
+              <Header as='h3'>{globeTemporalResolution.charAt(0).toUpperCase() + globeTemporalResolution.slice(1)} data ({globeStart}-present)</Header>
             </Grid.Column>
             <Grid.Column textAlign='right' width={2}>
               <Icon name='question circle' size='large' color='grey'/>

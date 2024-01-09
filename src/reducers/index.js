@@ -2,7 +2,7 @@ import { UPDATE_STATE, UPDATE_TIMESERIES, UPDATE_GLOBE } from '../actions/action
 
 const initialState = {
   variable: "air-temperature",
-  maxDate: new Date("2024-01-02"),
+  maxDate: new Date("2024-01-07"),
   minDate: new Date("2023-12-01"),
   timeSeries: {
     quantity: "absolute",
@@ -14,14 +14,14 @@ const initialState = {
   globe: {
     quantity: "anomaly",
     temporalResolution: "daily",
-    dateTime: new Date("2023-12-31"),
+    dateTime: new Date("2024-01-05"),
     loaded: true,
     maxDaily: new Date("2024-01-05"),
     minDaily: new Date("2023-01-01"),
-    maxMonthly: new Date("2023-12-31"),
-    minMonthly: new Date("2022-01-01"),
-    maxAnnual: new Date("2023-12-31"),
-    minAnnual: new Date("1979-01-01"),
+    maxMonthly: new Date("2023-12-15"),
+    minMonthly: new Date("2022-01-15"),
+    maxAnnual: new Date("2023-06-01"),
+    minAnnual: new Date("1979-06-01"),
   },
 }
 
@@ -41,6 +41,7 @@ const controls = (state = initialState, action) => {
           }
         }
     case UPDATE_GLOBE:
+        console.log(action)
         return {
           ...state,
           globe: {

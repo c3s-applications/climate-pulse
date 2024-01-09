@@ -1,23 +1,11 @@
 import React, { useState, useEffect, useRef } from "react"
 import ReactGlobe from 'react-globe.gl';
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import * as THREE from 'three'
 import { Image, Grid } from 'semantic-ui-react'
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
-
-
-const getShortName = (variable) => {
-    switch (variable) {
-        case 'air-temperature':
-            return '2t'
-        case 'sea-temperature':
-            return 'sst'
-        default:
-            return null;
-    }
-}
 
 function getWidth(maxHeight, padWidescreen, padMobile, mode) {
     if (window.innerWidth < 991) {
@@ -37,14 +25,11 @@ function getHeight() {
 
 const Chart = () => {
     const globeEl = useRef();
-    const imgEl = useRef();
     const [setUp, setSetUp] = useState(false);
     const [coastlines, setCoastlines] = useState();  
 
-    const [globeImageUrl, setGlobeImageUrl] = useState(0);
-    const [legendImageUrl, setLegendImageUrl] = useState([]);
-    const [legendOrientation, setLegendOrientation] = useState('vertical');
-    const [realGlobeImageUrl, setRealGlobeImageUrl] = useState(0);
+    const [globeImageUrl, setGlobeImageUrl] = useState();
+    const [legendOrientation, setLegendOrientation] = useState((window.innerWidth < 768) ? 'horizontal' : 'vertical');
   
     const variable = useSelector(state => state.variable);
     const quantity = useSelector(state => state.globe.quantity)
@@ -57,6 +42,9 @@ const Chart = () => {
     const altitude = 1.75
 
     const [width, setWidth] = useState([getWidth(getHeight(), padWidescreen, padMobile, mode)]);
+
+    const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
+    const legendImageUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${legendOrientation}.png`
 
     function getVariable() {
         if (variable === 'air-temperature') {
@@ -100,49 +88,44 @@ const Chart = () => {
         }
     }
 
-    const updateLegendSrc = () => {
-        let shortName = getShortName(variable)
-        if (window.innerWidth < 768) {
-            var orientation = 'horizontal'
+    const updateLegendOrientation = () => {
+        if (window.innerWidth < 768 && legendOrientation === 'vertical') {
+            setLegendOrientation('horizontal')
         } else {
-            var orientation = 'vertical'
+            setLegendOrientation('vertical')
         }
-        var legendUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${orientation}.png`
-        setLegendImageUrl(legendUrl)
     }
 
-
     useEffect(() => {
-
+        
         updateGlobeImage()
     
         if (setUp === false) {
-        function handleResize() {
-            setWidth(getWidth(getHeight(), padWidescreen, padMobile, mode))
-            updateLegendSrc()
+            function handleResize(legendUrl) {
+                setWidth(getWidth(getHeight(), padWidescreen, padMobile, mode))
+                updateLegendOrientation(legendUrl)
+            }
+            window.addEventListener('resize', handleResize)
+            fetch('coastlines.geojson')
+                .then(r => r.json())
+                .then(cablesGeo => {
+                let cablePaths = [];
+                cablesGeo.features.forEach(({ geometry, properties }) => {
+                    geometry.coordinates.forEach(
+                        coords => cablePaths.push({ coords, properties })
+                    );
+                });
+                setCoastlines(cablePaths);
+                });
+            globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
+            setSetUp(true)
         }
-        window.addEventListener('resize', handleResize)
-        fetch('coastlines.geojson')
-            .then(r => r.json())
-            .then(cablesGeo => {
-            let cablePaths = [];
-            cablesGeo.features.forEach(({ geometry, properties }) => {
-                geometry.coordinates.forEach(
-                    coords => cablePaths.push({ coords, properties })
-                );
-            });
-            setCoastlines(cablePaths);
-            });
-        globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
-        setSetUp(true)
-        }
-    }, [variable, quantity, dateTime]);
+    }, [variable, quantity, dateTime, legendOrientation]);
 
     const updateGlobeImage = () => {
         let year = dateTime.getFullYear()
         let month = ('0' + (dateTime.getMonth()+1)).slice(-2)
         let day = ('0' + dateTime.getDate()).slice(-2)
-        let shortName = getShortName(variable)
 
         let timeString = getTimeString(year, month, day)
 
@@ -152,8 +135,6 @@ const Chart = () => {
 
         var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
-
-        updateLegendSrc()
     }
 
 
