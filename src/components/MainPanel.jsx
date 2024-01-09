@@ -1,11 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { Grid, Dimmer, Divider, Loader, Transition } from 'semantic-ui-react'
-// import GlobeContainer from './GlobeContainer';
-// import GlobeControls from './GlobeControls';
-// import GlobeMenu from './GlobeMenu';
-// import DownloadGlobe from './DownloadGlobe';
-// import DownloadTimeSeries from './DownloadTimeSeries';
+import { Grid, Dimmer, Divider, Loader, Transition, Header, Icon } from 'semantic-ui-react'
 
 import GlobeMenu from './Globe/Menu'
 import GlobeChart from './Globe/Chart'
@@ -17,14 +12,41 @@ import TimeSeriesChart from './TimeSeries/Chart'
 import TimeSeriesControls from './TimeSeries/Controls'
 import TimeSeriesDownload from './TimeSeries/Download'
 
-
 const MainPanel = () => {
   const timeSeriesLoaded = useSelector(state => state.timeSeries.loaded)
+  const variable = useSelector(state => state.variable)
+
+  const globeTemporalResolution = useSelector(state => state.globe.temporalResolution)
+  const globeMinDaily = useSelector(state => state.globe.minDaily)
+  const globeMinMonthly = useSelector(state => state.globe.minMonthly)
+  const globeMinAnnual = useSelector(state => state.globe.minAnnual)
+
+  const timeSeriesStart = ((variable === 'air-temperature') ? 1940 : 1979)
+
+  const globeStart = (
+    (globeTemporalResolution === 'daily') ?
+      globeMinDaily.toLocaleString("en-GB", {day: 'numeric', month: 'short', year: 'numeric'}) : 
+      (globeTemporalResolution === 'monthly') ? 
+        globeMinMonthly.toLocaleString("en-GB", {month: 'short', year: 'numeric'}) : 
+        globeMinAnnual.toLocaleDateString("en-GB", {year: 'numeric'})
+  )
 
   return(
-    <Grid columns='equal' celled stackable divided centered >
+    <Grid columns='equal' celled={window.innerWidth >= 768} divided centered >
       <Grid.Row centered>
-        <Grid.Column textAlign="center">
+        <Grid.Column computer={8} tablet={16} textAlign="center">
+
+          <Grid verticalAlign='middle' padded={'horizontally'} centered>
+            <Grid.Column floated='left' width={2} />
+            <Grid.Column textAlign='center' width={12}>
+              <Header as='h3'>Daily averages ({timeSeriesStart}-present)</Header>
+            </Grid.Column>
+            <Grid.Column textAlign='right' width={2}>
+              <Icon name='question circle' size='large' color='grey'/>
+            </Grid.Column>
+          </Grid>
+           
+          <Divider />
           <TimeSeriesMenu />
           <Dimmer.Dimmable dimmed={!timeSeriesLoaded} >
             <Transition visible={!timeSeriesLoaded} animation='fade' duration={250}>
@@ -38,11 +60,24 @@ const MainPanel = () => {
           <Divider />
         <TimeSeriesDownload />
         </Grid.Column>
-        <Grid.Column textAlign="center" verticalAlign="middle">
+        <Grid.Column computer={8} tablet={16} textAlign="center" verticalAlign="middle">
+
+          <Grid centered>
+            <Grid.Column floated='left' width={2} />
+            <Grid.Column textAlign='center' width={12}>
+              <Header as='h3'>Global view ({globeStart}-present)</Header>
+            </Grid.Column>
+            <Grid.Column textAlign='right' width={2}>
+              <Icon name='question circle' size='large' color='grey'/>
+            </Grid.Column>
+          </Grid>
+
+          <Divider />
           <GlobeMenu />
           <div id='globeContainer'>
           <GlobeChart />
           </div>
+          <Divider hidden />
           <GlobeControls />
           <Divider />
         <GlobeDownload />

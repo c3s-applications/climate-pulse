@@ -31,20 +31,20 @@ function GlobeDataDownload() {
             </Modal.Content>
             <Modal.Actions>
                 <Button
-                    positive
+                    color='purple'
                     onClick={() => window.open(era5HourlyURL, '_blank').focus()}
                 >
-                Access hourly data
+                ERA5 hourly
                 </Button>
                 <Button
-                    positive
+                    color='purple'
                     onClick={() => window.open(era5MonthlyURL, '_blank').focus()}
                 >
-                Access monthly data
+                ERA5 monthly
                 </Button>
-                <Button onClick={() => setOpen(false)}>
-                Not now
-                </Button>
+                {/* <Button onClick={() => setOpen(false)}>
+                Back
+                </Button> */}
             </Modal.Actions>
         </Modal>
     )

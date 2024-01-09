@@ -156,31 +156,31 @@ def timeseries(
         fig.add_trace(latest_marker)
 
     fig.update_layout(
-        images=[
-            dict(
-                source="logos/c3s-positive.png",
-                xref="paper", yref="paper",
-                x=1, y=0.985,
-                sizex=0.2, sizey=0.2,
-                xanchor="right", yanchor="bottom"
-            ),
-        ],
-        title={
-            'text': (
-                f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}({DOMAINS[var_name]})</b><br>"
-                f"<sup>Data: ERA5 {start_year}-{end_year} ● Credit: C3S/ECMWF</sup>"
-            ),
-            'y': 0.93,
-            'x': 0.08,
-            'xanchor': 'left',
-            'yanchor': 'top'
-        },
+        # images=[
+        #     dict(
+        #         source="logos/c3s-positive.png",
+        #         xref="paper", yref="paper",
+        #         x=1, y=0.985,
+        #         sizex=0.2, sizey=0.2,
+        #         xanchor="right", yanchor="bottom"
+        #     ),
+        # ],
+        # title={
+        #     'text': (
+        #         f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}({DOMAINS[var_name]})</b><br>"
+        #         f"<sup>Data: ERA5 {start_year}-{end_year} ● Credit: C3S/ECMWF</sup>"
+        #     ),
+        #     'y': 0.93,
+        #     'x': 0.08,
+        #     'xanchor': 'left',
+        #     'yanchor': 'top'
+        # },
         font_family="Lato",
         autosize=True,
         legend=dict(
             orientation="h",
-            yanchor="top",
-            y=-0.05,
+            yanchor="bottom",
+            y=0.98,
             xanchor="left",
         ),
         plot_bgcolor="white",
@@ -200,10 +200,10 @@ def timeseries(
             tickangle=0,
         ),
         margin=dict(
-            l=10, r=10, b=50, t=75,
+            l=10, r=10, b=50, t=0,
         ),
         datarevision=0,
-        height=527,
+        height=500,
     )
 
     with open(target, "w") as f:
