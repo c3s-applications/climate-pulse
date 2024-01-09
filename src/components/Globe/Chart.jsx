@@ -89,7 +89,7 @@ const Chart = () => {
     }
 
     const updateLegendOrientation = () => {
-        if (window.innerWidth < 768 && legendOrientation === 'vertical') {
+        if (window.innerWidth < 768) {
             setLegendOrientation('horizontal')
         } else {
             setLegendOrientation('vertical')
@@ -165,7 +165,7 @@ const Chart = () => {
             <Grid.Row>
                 {/* <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'> */}
                 {/* </Grid.Column> */}
-                <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
+                <Grid.Column computer={13} tablet={14} mobile={16} textAlign='right' verticalAlign='middle'>
 
                 <ReactGlobe
                     ref={globeEl}
