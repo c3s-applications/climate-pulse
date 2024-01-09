@@ -31,7 +31,7 @@ jobs:
     - name: Set deployment environment variables
       run: |
         cat environments/actions.env.common >> $GITHUB_ENV
-        cat environments/actions.env.$DEPLOYMENT_ENVIRONMENT >> $GITHUB_ENV
+        cat "environments/actions.env.${DEPLOYMENT_ENVIRONMENT}" >> $GITHUB_ENV
         cat $GITHUB_ENV
 
     - name: Set up Docker Buildx
@@ -68,6 +68,7 @@ jobs:
       run: |
         cat environments/actions.env.common >> $GITHUB_ENV
         cat environments/actions.env.$DEPLOYMENT_ENVIRONMENT >> $GITHUB_ENV
+        cat $GITHUB_ENV
 
     - name: Populate values.yaml
       run: |
