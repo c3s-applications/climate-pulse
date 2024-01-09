@@ -87,8 +87,8 @@ jobs:
     - name: "Update Helm Chart"
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml && chmod 400 kubeconfig.yaml;
-        echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml"
-        helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml
+        echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml"
+        helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml
       env:
         KUBECONFIG: kubeconfig.yaml
     - name: "Force update of pods"
@@ -97,4 +97,3 @@ jobs:
         kubectl delete pods -n $APP_NAMESPACE -l app=$APP_NAME
       env:
         KUBECONFIG: kubeconfig.yaml   
-      
