@@ -8,14 +8,18 @@ const TimeSeriesMenu = () => {
   const quantity = useSelector(state => state.timeSeries.quantity)
 
   return (
-    <Button.Group basic widths={2} >
+    <Button.Group widths={2} >
       <Button
+        color='purple'
+        basic={quantity !== 'absolute'}
         active={quantity === 'absolute'}
         onClick={() => dispatch(updateTimeSeries({quantity: 'absolute'}))}
       >
         Absolute values
       </Button>
       <Button
+        color='purple'
+        basic={quantity !== 'anomaly'}
         active={quantity === 'anomaly'}
         onClick={() => dispatch(updateTimeSeries({quantity: 'anomaly'}))}
       >

@@ -5,6 +5,7 @@ import Plot from 'react-plotly.js'
 import defaultPlot from './default.json';
 import { getAnnualValue, getStartYear, sanitiseYears } from './AnnualValues'
 import { applyColormap } from './Colors'
+import { Image, Grid } from 'semantic-ui-react'
 
 
 const plotlyConfig = {
@@ -76,7 +77,7 @@ const TimeSeriesChart = () => {
         fetch(jsonSrc)
             .then(resp => resp.json())
             .then((data)=> {
-                data.layout["height"] = ((window.innerHeight < 768) ? 400 : 527)
+                data.layout["height"] = ((window.innerHeight < 768) ? 400 : 495)
                 setPlotlyPlot(data)
             })
             .then(() => setHighlightsApplied(false))
@@ -113,9 +114,27 @@ const TimeSeriesChart = () => {
     }, )
 
     return (
-        <div>
+        <div id='timeseries'>
+        <Image src='logos/c3s-mini-positive.png' size='mini' floated='right'/>
+        <h3
+            align="left"
+            style={{
+                marginLeft: 35,
+                marginTop: 18,
+                marginBottom: 0,
+                fontWeight: "normal",
+                fontSize: 17,
+                color: "#2A3F5F",
+            }}
+        >
+            <b>Daily surface air temperature (global)</b>
+            <br></br>
+            <sup>
+            Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
+            </sup>
+  
+        </h3>
         <Plot
-            divId="timeseries"
             ref={timeSeriesRef}
             data={plotlyPlot.data}
             layout={plotlyPlot.layout}

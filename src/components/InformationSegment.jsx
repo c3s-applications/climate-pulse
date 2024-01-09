@@ -22,13 +22,13 @@ const About = (
 const panes = [
   { menuItem: 'Methodology', render: () =>  Methodology},
   { menuItem: 'Attribution', render: () => Attribution },
-  { menuItem: 'About C3S', render: () => About },
+  { menuItem: 'About', render: () => About },
 ]
 
 const InformationSegment = () => (
   <Container textAlign='justified'>
     <Segment secondary color='purple'>
-    <Tab panes={panes} />
+    <Tab menu={{tabular: true, attached: true, widths: [4, 4, 4]}} panes={panes} />
     </Segment>
   </Container>
 )

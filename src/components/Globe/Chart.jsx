@@ -20,7 +20,7 @@ const getShortName = (variable) => {
 }
 
 function getWidth(maxHeight, padWidescreen, padMobile, mode) {
-    if (window.innerWidth < 768 || mode === 'mobile') {
+    if (window.innerWidth < 991) {
       return Math.min(maxHeight, window.innerWidth-padMobile);
     } else {
       return Math.min(maxHeight, (window.innerWidth/2)-padWidescreen);
@@ -148,9 +148,9 @@ const Chart = () => {
 
         let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
 
-        // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+        var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
-        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
+        // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
 
         updateLegendSrc()
@@ -159,10 +159,11 @@ const Chart = () => {
 
     return (
       <>
+      <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/>
       <h3
           align="left"
           style={{
-              marginLeft: 50,
+              marginLeft: 35,
               marginTop: 18,
               marginBottom: 0,
               fontWeight: "normal",
@@ -181,8 +182,8 @@ const Chart = () => {
 
       <Grid padded={false} stackable>
             <Grid.Row>
-                <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'>
-                </Grid.Column>
+                {/* <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'> */}
+                {/* </Grid.Column> */}
                 <Grid.Column computer={13} tablet={14} textAlign='right' verticalAlign='middle'>
 
                 <ReactGlobe
@@ -202,11 +203,11 @@ const Chart = () => {
                 />
 
                 </Grid.Column>
-                <Grid.Column computer={2} textAlign='center' verticalAlign='middle'>
+                <Grid.Column computer={3} tablet={2} textAlign='center' verticalAlign='middle'>
                     <Image
                         src={legendImageUrl}
                         verticalAlign='middle'
-                        size='large'
+                        size={(window.innerWidth < 991) ? 'large' : 'tiny'}
                     />
                 </Grid.Column>
             </Grid.Row>
