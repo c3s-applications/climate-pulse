@@ -131,9 +131,9 @@ const Chart = () => {
 
         let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
 
-        // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+        var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
-        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
+        // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
     }
 
@@ -177,7 +177,7 @@ const Chart = () => {
                     pathPointLat={p => p[1]}
                     pathPointLng={p => p[0]}
                     pathPointAlt={0.001}
-                    pathColor={() => ((variable === 'air-temperature') ? '#888888' : '#eeeeee')}
+                    pathColor={() => ((variable === 'air-temperature' && quantity === 'anomaly') ? '#888888' : '#eeeeee')}
                     pathStroke={1.25}
                     globeMaterial={globeMaterial}
                     globeImageUrl={globeImageUrl}

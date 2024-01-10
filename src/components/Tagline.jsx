@@ -7,12 +7,11 @@ const Tagline = () => {
     const maxDate = useSelector(state => state.maxDate)
     return (
         <>
-        <Container text textAlign='left' >
-                <Header as='h3' style={{fontWeight: 'normal', fontFamily: 'Lato'}}>
-                    <Divider />
-                    <span style={{color: '#941933', fontWeight: 'bold'}}>Climate Pulse</span> provides
-                    near real-time updates of global average air- and sea-surface temperatures from
-                    the <span style={{color: '#941933', fontWeight: 'bold'}}>Copernicus Climate Change Service (C3S)</span>.
+        <Container textAlign='center' >
+                <Header as={(window.innerWidth < 768) ? 'h4' : 'h3'} style={{fontWeight: 'normal', fontFamily: 'Lato'}}>
+                    <Divider hidden />
+                    Near real-time updates of global average temperatures from
+                    the <span style={{color: '#941933', fontWeight: 'bold'}}>Copernicus Climate Change Service (C3S)</span>
                 </Header>
         </Container>
         <Container text>
