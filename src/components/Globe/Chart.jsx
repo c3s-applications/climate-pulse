@@ -106,7 +106,7 @@ const Chart = () => {
                 updateLegendOrientation(legendUrl)
             }
             window.addEventListener('resize', handleResize)
-            fetch('coastlines.geojson')
+            fetch('coastlines-med.geojson')
                 .then(r => r.json())
                 .then(cablesGeo => {
                 let cablePaths = [];
