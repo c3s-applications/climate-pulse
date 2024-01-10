@@ -197,7 +197,7 @@ def timeseries(
             tickformat="%b",
             ticklabelmode="period",
             range=["2000-12-25", "2001-12-31"],
-            tickangle=0,
+            # tickangle=0,
         ),
         margin=dict(
             l=10, r=10, b=50, t=0,
