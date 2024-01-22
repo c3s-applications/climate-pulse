@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateTimeSeries } from "../../actions/actions"
-import { Icon, Dropdown, Label, Popup, Button } from 'semantic-ui-react'
+import { Icon, Dropdown, Label, Popup, Button, Divider } from 'semantic-ui-react'
 import { getStartYear, yearRange } from './AnnualValues'
 
 const sortByOptions = [
@@ -38,7 +38,7 @@ const TimeSeriesControls = () => {
         <>
         <Popup
             trigger={
-                <Button basic color='teal' size='mini'>
+                <Button basic color='teal' size='small'>
                     <Icon name='plus'/>Add years to compare with &nbsp;
                     <span style={{color: '#941333', fontWeight: 'bold'}}>
                         {maxDate.getFullYear()}
@@ -46,23 +46,25 @@ const TimeSeriesControls = () => {
                 </Button>
             }
             on='click'
-            size='mini'
+            size='small'
             hoverable={false}
             style={{minWidth: "300px"}}
             hideOnScroll={false}
         >            
             <Label.Group>              
-                    <Icon name='sort' />
                     Sort years by &nbsp;
-                <Label>
                     <Dropdown
+                        as={Button}
+                        compact
+                        color='teal'
+                        size='small'
                         options={sortByOptions}
                         defaultValue={sortYears}
                         onChange={function(e, data){setSortYears(data.value)}}
                     />
-                </Label>
                 
             </Label.Group>
+            <Divider fitted hidden />
                 <Dropdown
                     placeholder='Select years'
                     fluid
@@ -83,12 +85,12 @@ const TimeSeriesControls = () => {
                 />
             </Popup>
             <Button
+                icon
                 color='teal'
-                size='mini'
+                size='small'
                 onClick={() => dispatch(updateTimeSeries({reset: reset+1}))}
             >
                 <Icon name='undo' />
-                Reset chart
             </Button> 
             </>
     )

@@ -4,7 +4,7 @@ import { ECMWFLogo, C3SLogo, CopernicusLogo, EULogo } from './Logos'
 
 const Footer = () => (
     <Grid centered verticalAlign='middle'>
-        <Grid.Row color='black'>
+        <Grid.Row color='purple'>
         <Grid.Column computer={3} textAlign='left' mobile={4}>
             <EULogo mode='negative' size='medium' centered/>
         </Grid.Column>
@@ -18,7 +18,7 @@ const Footer = () => (
             <C3SLogo mode='negative' size='small' centered/>
         </Grid.Column>
         </Grid.Row>
-        <Grid.Row textAlign='left' color='black'>
+        <Grid.Row textAlign='left' color='purple'>
         <Grid.Column computer={8} tablet={8} mobile={16}>
             <Container textAlign='left' text inverted>
                 <Header inverted as='h3'>Climate Pulse</Header>
@@ -32,6 +32,21 @@ const Footer = () => (
             <Divider hidden/>
         </Grid.Column>
         </Grid.Row>
+
+        <Grid.Row />
+        <Grid.Row>
+        <Grid.Column computer={2} textAlign='left' mobile={5}>
+            <Header href="https://climate.copernicus.eu/about-us" color="purple">About us</Header>
+        </Grid.Column>
+        <Grid.Column computer={2} textAlign='center' mobile={5}>
+            <Header href="https://confluence.ecmwf.int/site/support" color="purple">Contact us</Header>
+        </Grid.Column>
+        <Grid.Column computer={2} textAlign='center' mobile={5}>
+            <Header href="https://climate.copernicus.eu/data-protection-and-privacy-statement" color="purple">Privacy</Header>
+        </Grid.Column>
+        </Grid.Row>
+        <Grid.Row />
+
     </Grid>
 )
 

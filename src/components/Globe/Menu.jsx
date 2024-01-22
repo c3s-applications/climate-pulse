@@ -8,9 +8,11 @@ const GlobeMenu = () => {
   const quantity = useSelector(state => state.globe.quantity)
 
   return (
-    <Button.Group widths={2} >
+    <>
+    <Button.Group size='medium' compact widths={2} >
       <Button
-        color='purple'
+        fluid
+        color='teal'
         basic={quantity !== 'absolute'}
         active={quantity === 'absolute'}
         onClick={() => dispatch(updateGlobe({quantity: 'absolute'}))}
@@ -18,7 +20,8 @@ const GlobeMenu = () => {
         Absolute values
       </Button>
       <Button
-        color='purple'
+      fluid
+        color='teal'
         basic={quantity !== 'anomaly'}
         active={quantity === 'anomaly'}
         onClick={() => dispatch(updateGlobe({quantity: 'anomaly'}))}
@@ -26,6 +29,7 @@ const GlobeMenu = () => {
         Anomalies
       </Button>
     </Button.Group>
+    </>
   );
 }
 

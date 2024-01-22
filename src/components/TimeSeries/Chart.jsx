@@ -5,7 +5,7 @@ import Plot from 'react-plotly.js'
 import defaultPlot from './default.json';
 import { getAnnualValue, getStartYear, sanitiseYears } from './AnnualValues'
 import { applyColormap } from './Colors'
-import { Image, Grid } from 'semantic-ui-react'
+import { Divider } from 'semantic-ui-react'
 
 
 const plotlyConfig = {
@@ -25,6 +25,7 @@ const TimeSeriesChart = () => {
     const [revision, setRevision] = useState(0);
 
     const variable = useSelector(state => state.variable);
+    const maxDate = useSelector(state => state.maxDate);
     const quantity = useSelector(state => state.timeSeries.quantity);
 
     const reset = useSelector(state => state.timeSeries.reset);
@@ -42,12 +43,42 @@ const TimeSeriesChart = () => {
 
     const [plotlyPlot, setPlotlyPlot] = useState(defaultPlot);
 
+    function getVariable() {
+        if (variable === 'air-temperature') {
+            return 'Surface air temperature'
+        } else {
+            return 'Sea surface temperature'
+        }
+    }
+
+    function getQuantity() {
+        if (quantity === 'absolute') {
+            return 'mean'
+        } else {
+            return 'anomaly'
+        }
+    }
+
+    function getExtent() {
+        if (variable === 'air-temperature') {
+            return 'global'
+        } else {
+            return '60°S - 60°N'
+        }
+    }
+
     const applyHighlights = (years) => {
         years = sanitiseYears(variable, years)
         years.sort(function(a, b){
             return getAnnualValue(variable, b)-getAnnualValue(variable, a)
         })
         var colors = applyColormap(years.length)
+
+        var hovertemplate = ((quantity == 'absolute') ? 
+            " - %{x|%B %-d}</b><br>Temperature: %{y}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<br>Anomaly: %{customdata[1]:.2f}°C<extra></extra>"
+            :
+            " - %{x|%B %-d}</b><br>Anomaly: %{y:+.2g}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<extra></extra>"
+        )
 
         for (var i = 0; i < years.length; i++) {
             let year = years[i]
@@ -59,7 +90,7 @@ const TimeSeriesChart = () => {
                     x: trace.x,
                     y: trace.y,
                     line: {color: colors[i], width: 2},
-                    hovertemplate: "<b>" + year.toString() + " - %{x|%B %-d}</b><br>Temperature: %{y}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<br>Anomaly: %{customdata[1]:.2f}°C<extra></extra>",
+                    hovertemplate: "<b>" + year.toString() + hovertemplate,
                     customdata: trace.customdata,
                     name: year.toString(),
                     isHighlight:true
@@ -77,7 +108,7 @@ const TimeSeriesChart = () => {
         fetch(jsonSrc)
             .then(resp => resp.json())
             .then((data)=> {
-                data.layout["height"] = ((window.innerHeight < 768) ? 400 : 495)
+                data.layout["height"] = ((window.innerWidth < 768) ? 400 : 593)
                 setPlotlyPlot(data)
             })
             .then(() => setHighlightsApplied(false))
@@ -115,7 +146,7 @@ const TimeSeriesChart = () => {
 
     return (
         <div id='timeseries'>
-        <Image src='logos/c3s-mini-positive.png' size='mini' floated='right'/>
+        {/* <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/> */}
         <h3
             align="left"
             style={{
@@ -123,17 +154,23 @@ const TimeSeriesChart = () => {
                 marginTop: 18,
                 marginBottom: 0,
                 fontWeight: "normal",
-                fontSize: 17,
+                fontSize: 19,
+                lineHeight: 1,
                 color: "#2A3F5F",
             }}
         >
-            <b>Daily surface air temperature (global)</b>
+            <b>{getVariable()}</b>
             <br></br>
-            <sup>
-            Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
-            </sup>
+            <span style={{fontSize: 14}}>ERA5 {getStartYear(variable)}-{maxDate.getFullYear()} ({getExtent()} {getQuantity()})</span>
+            <br></br>
+            <span style={{fontSize: 13}}>
+            Data: ERA5 ● Credit: C3S/ECMWF
+            </span>
   
         </h3>
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <div>
         <Plot
             ref={timeSeriesRef}
             data={plotlyPlot.data}
@@ -150,6 +187,7 @@ const TimeSeriesChart = () => {
                 }
             }}
         />
+        </div>
         </div>
     )
 }

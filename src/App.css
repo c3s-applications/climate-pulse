@@ -11,6 +11,11 @@
   pointer-events: none;
 }
 
+#grad {
+  /* background-image: linear-gradient(to bottom right, #E3876C, #F2CCBF, #FBECE4, #FBF6F3, #FBF6F3, #FBF6F3, #FBF6F3); */
+  background-color: #F3F4F5;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -23,6 +28,10 @@ g.hovertext > path {
 }
 
 g.points {
+  animation: Pulsing-dot infinite 1s linear !important;
+}
+
+#latestDot {
   animation: Pulsing-dot infinite 1s linear !important;
 }
 
