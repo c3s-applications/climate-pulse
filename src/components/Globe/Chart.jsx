@@ -125,7 +125,6 @@ const Chart = () => {
             globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
             setSetUp(true)
         }
-        console.log(globeEl.current.renderer())
     }, [variable, quantity, dateTime, legendOrientation]);
 
     const updateGlobeImage = () => {
