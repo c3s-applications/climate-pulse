@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react"
 import ReactGlobe from 'react-globe.gl';
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import * as THREE from 'three'
-import { Image, Grid } from 'semantic-ui-react'
+import { Image, Grid, Button } from 'semantic-ui-react'
+import { updateGlobe } from "../../actions/actions"
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
+const defaultPOV = { lat: 52, lng: 16, altitude: 1.62 }
 
 function getWidth(maxHeight, padWidescreen, padMobile, mode) {
     if (window.innerWidth < 991) {
@@ -24,11 +26,14 @@ function getHeight() {
   }
 
 const Chart = () => {
+
+    const dispatch = useDispatch()
+
     const globeEl = useRef();
     const [setUp, setSetUp] = useState(false);
-    const [coastlines, setCoastlines] = useState();  
+    const [coastlines, setCoastlines] = useState();
 
-    const [globeImageUrl, setGlobeImageUrl] = useState('https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74167/world.200410.3x5400x2700.jpg');
+    const [globeImageUrl, setGlobeImageUrl] = useState('');
     const [legendOrientation, setLegendOrientation] = useState((window.innerWidth < 768) ? 'horizontal' : 'horizontal');
   
     const variable = useSelector(state => state.variable);
@@ -39,7 +44,6 @@ const Chart = () => {
     const padWidescreen = 40
     const padMobile = 80
     const mode = 'adaptive'
-    const altitude = 1.62
 
     const [width, setWidth] = useState([getWidth(getHeight(), padWidescreen, padMobile, mode)]);
 
@@ -101,10 +105,9 @@ const Chart = () => {
     }
 
     useEffect(() => {
-        
-        updateGlobeImage()
-    
+
         if (setUp === false) {
+            updateGlobeImage()
             function handleResize(legendUrl) {
                 setWidth(getWidth(getHeight(), padWidescreen, padMobile, mode))
                 updateLegendOrientation(legendUrl)
@@ -120,9 +123,11 @@ const Chart = () => {
                     );
                 });
                 setCoastlines(cablePaths);
+                globeEl.current.pointOfView(defaultPOV);
                 });
-            globeEl.current.pointOfView({ lat: 52, lng: 16, altitude: altitude });
             setSetUp(true)
+        } else {
+            updateGlobeImage()
         }
     }, [variable, quantity, dateTime, legendOrientation]);
 
@@ -135,18 +140,15 @@ const Chart = () => {
 
         let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
 
-        var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+        // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
         // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
-        // var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
-        fetch(url)
-            .then(setGlobeImageUrl(url))
+        var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
+        setGlobeImageUrl(url)
     }
-
 
     return (
       <>
-      {/* <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/> */}
       <h3
           align="left"
           style={{
@@ -173,22 +175,24 @@ const Chart = () => {
             <Grid.Row>
                 <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
                 <div>
-                <ReactGlobe
-                    ref={globeEl}
-                    width={width}
-                    height={getHeight()}
-                    backgroundColor="#ffffff00"
-                    pathsData={coastlines}
-                    pathPoints="coords"
-                    pathPointLat={p => p[1]}
-                    pathPointLng={p => p[0]}
-                    pathPointAlt={0.001}
-                    pathColor={() => ((variable === 'air-temperature') ? '#333' : '#eeeeee')}
-                    pathStroke={1}
-                    globeMaterial={globeMaterial}
-                    globeImageUrl={globeImageUrl}
-                    showAtmosphere={true}
-                />
+                    <ReactGlobe
+                        ref={globeEl}
+                        width={width}
+                        height={getHeight()}
+                        backgroundColor="#ffffff00"
+                        pathsData={coastlines}
+                        pathPoints="coords"
+                        pathPointLat={p => p[1]}
+                        pathPointLng={p => p[0]}
+                        pathPointAlt={0.001}
+                        pathColor={() => ((variable === 'air-temperature') ? '#333' : '#eeeeee')}
+                        pathStroke={1}
+                        pathTransitionDuration={0}
+                        globeMaterial={globeMaterial}
+                        globeImageUrl={globeImageUrl}
+                        showAtmosphere={true}
+                        animateIn={true}
+                    />
                 </div>
 
                 </Grid.Column>

@@ -40,6 +40,7 @@ const MainPanel = () => {
 
   const [mobileVisualisation, setMobileVisualisation] = useState('timeSeries')
 
+  const globeLoaded = useSelector(state => state.globe.loaded)
   const globeTemporalResolution = useSelector(state => state.globe.temporalResolution)
   const globeMinDaily = useSelector(state => state.globe.minDaily)
   const globeMinMonthly = useSelector(state => state.globe.minMonthly)
@@ -83,6 +84,13 @@ const MainPanel = () => {
           <GlobeMenu />
         </Grid.Column>
       </Grid>
+
+      <Dimmer.Dimmable dimmed={!globeLoaded} >
+        <Transition visible={!globeLoaded} animation='fade' duration={250}>
+        <Dimmer active={!globeLoaded} inverted >
+          <Loader size='massive' />
+        </Dimmer>
+        </Transition>
       <div id='globeContainer'>
         <GlobeChart />
       </div>
@@ -94,6 +102,7 @@ const MainPanel = () => {
       <Divider fitted hidden />
       <GlobeControls />
       <GlobeButtons />
+      </Dimmer.Dimmable>
     </>
   )
 

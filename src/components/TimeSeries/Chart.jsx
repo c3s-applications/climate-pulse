@@ -113,7 +113,6 @@ const TimeSeriesChart = () => {
             })
             .then(() => setHighlightsApplied(false))
             .then(() => dispatch(updateTimeSeries({loaded: true})))
-
     }
 
     useEffect(() => {
