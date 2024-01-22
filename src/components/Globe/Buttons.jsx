@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Button, Icon, Divider, Modal } from 'semantic-ui-react'
+import { Button, Icon, Popup, Modal } from 'semantic-ui-react'
 
 
 const CdsUrl = 'https://cds.climate.copernicus.eu/cdsapp#!/dataset/'
@@ -55,8 +55,19 @@ const GlobeButtons = () => {
 
     return (
         <Button.Group basic size='small' attached={false} color='teal'>
-        <Button icon color='teal' size='small' ><Icon name="download" /></Button>
-        <Button icon color='teal' size='small' ><Icon name="camera" /></Button>
+        <Popup
+          size='small'
+          trigger={<Button icon color='teal' size='small' ><Icon name="download" /></Button>}
+        >
+          Download data (GRIB/NetCDF)
+        </Popup>
+        <Popup
+          size='small'
+          trigger={<Button icon color='teal' size='small' ><Icon name="camera" /></Button>}
+        >
+          Download image (PNG)
+        </Popup>
+        
         <Modal
             closeIcon
             size='fullscreen'
