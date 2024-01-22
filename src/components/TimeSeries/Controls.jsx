@@ -84,14 +84,22 @@ const TimeSeriesControls = () => {
                     }}
                 />
             </Popup>
-            <Button
+
+            <Popup
+            size='small'
+            trigger={
+              <Button
                 icon
                 color='teal'
                 size='small'
                 onClick={() => dispatch(updateTimeSeries({reset: reset+1}))}
-            >
+              >
                 <Icon name='undo' />
-            </Button> 
+              </Button> 
+              }
+            >
+              Reset chart
+            </Popup>
             </>
     )
 

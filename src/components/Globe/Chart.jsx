@@ -45,7 +45,7 @@ const Chart = () => {
     const [width, setWidth] = useState([getWidth(getHeight(), padWidescreen, padMobile, mode)]);
 
     const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
-    const legendImageUrl = `https://sites.ecmwf.int/data/c3sci/.climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${legendOrientation}.png`
+    const legendImageUrl = `https://sites.ecmwf.int/data/climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${legendOrientation}.png`
 
     function getVariable() {
         if (variable === 'air-temperature') {
@@ -139,7 +139,7 @@ const Chart = () => {
         // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
         // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
-        var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}p_${shortName}_${quantity}_${timeString}.png`
+        var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
     }
 

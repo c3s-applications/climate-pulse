@@ -24,7 +24,7 @@ const Footer = () => (
                 <Header inverted as='h3'>Climate Pulse</Header>
                 <Divider />
                 <p>
-                The <a href='https://climate.copernicus.eu/'>Copernicus Climate Change Service (C3S)</a>, implemented by the
+                The Copernicus Climate Change Service (C3S), implemented by the
                 European Centre for Medium-Range Weather Forecasts (ECMWF)
                 on behalf of the European Commission is part of the European Union's space programme.
                 </p>

@@ -18,7 +18,7 @@ const switchToGlobeStyle = (
       position: 'absolute',
       rotate: '90deg',
       top: 46,
-      right: -72,
+      right: ((window.innerWidth < 768) ? -72 : -49),
       zIndex: 1000,
   }
 )
@@ -27,8 +27,8 @@ const switchToTimeSeriesStyle = (
   {
       position: 'absolute',
       rotate: '90deg',
-      top: 61,
-      left: -85,
+      top: 62,
+      left: ((window.innerWidth < 768) ? -85 : -65),
       zIndex: 1000,
   }
 )

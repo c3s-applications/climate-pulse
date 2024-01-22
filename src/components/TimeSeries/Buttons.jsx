@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Button, Icon, Divider, Modal } from 'semantic-ui-react'
+import { Button, Icon, Divider, Modal, Popup } from 'semantic-ui-react'
 import { getStartYear } from './AnnualValues';
 
 
@@ -115,8 +115,19 @@ const TimeSeriesButtons = () => {
 
     return (
         <Button.Group basic size='small' color='teal'>
-        <Button icon href={getDataLink(variable)} color='teal' size='small' ><Icon name="download" /></Button>
-        <Button icon color='teal' size='small' ><Icon name="camera" /></Button>
+        <Popup
+          size='small'
+          trigger={<Button icon href={getDataLink(variable)} color='teal' size='small' ><Icon name="download" /></Button>}
+        >
+          Download data (CSV)
+        </Popup>
+        <Popup
+          size='small'
+          trigger={ <Button icon color='teal' size='small' ><Icon name="camera" /></Button>}
+        >
+          Download image (PNG)
+        </Popup>
+       
         <Modal
             closeIcon
             size='fullscreen'
