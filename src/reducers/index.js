@@ -14,7 +14,7 @@ const initialState = {
   globe: {
     quantity: "anomaly",
     temporalResolution: "daily",
-    dateTime: new Date("2024-01-20"),
+    dateTime: new Date("2023-12-20"),
     loaded: true,
     maxDaily: new Date("2024-01-20"),
     minDaily: new Date("2023-01-01"),

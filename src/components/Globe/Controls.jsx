@@ -205,7 +205,6 @@ const GlobeControls = () => {
 
   
     function jumpToDate(date, res=temporalResolution) {
-        console.log(minDate(res))
         if (date > maxDate(res)) {
             date = maxDate(res)
         } else if (date < minDate(res)) {
@@ -341,7 +340,6 @@ const GlobeControls = () => {
     }
 
     useEffect(() => {
-        console.log("JUMPING")
         jumpToDate(dateTime)
     }, [dateTime])
 
