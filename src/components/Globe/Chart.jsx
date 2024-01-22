@@ -3,7 +3,6 @@ import ReactGlobe from 'react-globe.gl';
 import { useSelector } from "react-redux"
 import * as THREE from 'three'
 import { Image, Grid } from 'semantic-ui-react'
-import GlobeButtons from './Buttons'
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
@@ -29,7 +28,7 @@ const Chart = () => {
     const [setUp, setSetUp] = useState(false);
     const [coastlines, setCoastlines] = useState();  
 
-    const [globeImageUrl, setGlobeImageUrl] = useState();
+    const [globeImageUrl, setGlobeImageUrl] = useState('https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74167/world.200410.3x5400x2700.jpg');
     const [legendOrientation, setLegendOrientation] = useState((window.innerWidth < 768) ? 'horizontal' : 'horizontal');
   
     const variable = useSelector(state => state.variable);
@@ -136,11 +135,12 @@ const Chart = () => {
 
         let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
 
-        // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
+        var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
         // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
-        var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
-        setGlobeImageUrl(url)
+        // var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
+        fetch(url)
+            .then(setGlobeImageUrl(url))
     }
 
 
