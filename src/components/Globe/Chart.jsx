@@ -3,6 +3,7 @@ import ReactGlobe from 'react-globe.gl';
 import { useSelector } from "react-redux"
 import * as THREE from 'three'
 import { Image, Grid } from 'semantic-ui-react'
+import GlobeButtons from './Buttons'
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
@@ -17,9 +18,9 @@ function getWidth(maxHeight, padWidescreen, padMobile, mode) {
 
 function getHeight() {
     if (window.innerWidth < 768) {
-        return 320
+        return 330
     } else {
-        return 443
+        return 500
     }
   }
 
@@ -29,17 +30,17 @@ const Chart = () => {
     const [coastlines, setCoastlines] = useState();  
 
     const [globeImageUrl, setGlobeImageUrl] = useState();
-    const [legendOrientation, setLegendOrientation] = useState((window.innerWidth < 768) ? 'horizontal' : 'vertical');
+    const [legendOrientation, setLegendOrientation] = useState((window.innerWidth < 768) ? 'horizontal' : 'horizontal');
   
     const variable = useSelector(state => state.variable);
     const quantity = useSelector(state => state.globe.quantity)
     const temporalResolution = useSelector(state => state.globe.temporalResolution)
     const dateTime = useSelector(state => state.globe.dateTime)
 
-    const padWidescreen = 125
-    const padMobile = 40
+    const padWidescreen = 40
+    const padMobile = 80
     const mode = 'adaptive'
-    const altitude = 1.75
+    const altitude = 1.62
 
     const [width, setWidth] = useState([getWidth(getHeight(), padWidescreen, padMobile, mode)]);
 
@@ -48,9 +49,9 @@ const Chart = () => {
 
     function getVariable() {
         if (variable === 'air-temperature') {
-            return 'surface air temperature'
+            return 'Surface air temperature'
         } else {
-            return 'sea surface temperature'
+            return 'Sea surface temperature'
         }
     }
 
@@ -75,6 +76,10 @@ const Chart = () => {
         }
     }
 
+    function getTemporalResolution() {
+        return temporalResolution.charAt(0).toUpperCase() + temporalResolution.slice(1);
+    }
+
     function getTimeString(year, month, day) {
         switch (temporalResolution) {
             case 'daily':
@@ -92,7 +97,7 @@ const Chart = () => {
         if (window.innerWidth < 768) {
             setLegendOrientation('horizontal')
         } else {
-            setLegendOrientation('vertical')
+            setLegendOrientation('horizontal')
         }
     }
 
@@ -133,40 +138,41 @@ const Chart = () => {
 
         // var url = `maps/${temporalResolution}/${shortName}/${quantity}/map_era5_${shortName}_${quantity}_global_${temporalResolution}_stripped_${year}${month}${day}.png`
 
-        var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
+        // var url = `https://sites.ecmwf.int/data/c3sci/.climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_${temporalResolution}_wrap_${shortName}_${quantity}_${timeString}.png`
+        var url = `https://sites.ecmwf.int/data/climatepulse/maps/wrap/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_wrap_${temporalResolution}p_${shortName}_${quantity}_${timeString}.png`
         setGlobeImageUrl(url)
     }
 
 
     return (
       <>
-      <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/>
+      {/* <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/> */}
       <h3
           align="left"
           style={{
               marginLeft: 35,
-              marginTop: 18,
+              marginTop: 19,
               marginBottom: 0,
               fontWeight: "normal",
-              fontSize: 17,
+              fontSize: 18,
+              lineHeight: 1,
               color: "#2A3F5F",
           }}
       >
-          <b>Global {getVariable()} {getVariableType()}- {getTimeTitle()}</b>
+          <b>{getVariable()}</b>
           <br></br>
-          <sup>
-          Data: ERA5 global reanalysis ● Credit: C3S/ECMWF
-          </sup>
+          <span style={{fontSize: 14}}>{getTemporalResolution()} mean {getVariableType()} - {getTimeTitle()}</span>
+          <br></br>
+          <span style={{fontSize: 13}}>
+          Data: ERA5 ● Credit: C3S/ECMWF
+          </span>
 
       </h3>
-      <br></br>
 
       <Grid padded={false} stackable>
             <Grid.Row>
-                {/* <Grid.Column width={1} only='computer' textAlign='right' verticalAlign='middle'> */}
-                {/* </Grid.Column> */}
-                <Grid.Column computer={13} tablet={14} mobile={16} textAlign='right' verticalAlign='middle'>
-
+                <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
+                <div>
                 <ReactGlobe
                     ref={globeEl}
                     width={width}
@@ -177,18 +183,20 @@ const Chart = () => {
                     pathPointLat={p => p[1]}
                     pathPointLng={p => p[0]}
                     pathPointAlt={0.001}
-                    pathColor={() => ((variable === 'air-temperature' && quantity === 'anomaly') ? '#888888' : '#eeeeee')}
-                    pathStroke={1.25}
+                    pathColor={() => ((variable === 'air-temperature') ? '#333' : '#eeeeee')}
+                    pathStroke={1}
                     globeMaterial={globeMaterial}
                     globeImageUrl={globeImageUrl}
+                    showAtmosphere={true}
                 />
+                </div>
 
                 </Grid.Column>
-                <Grid.Column computer={3} tablet={2} textAlign='center' verticalAlign='middle'>
+                <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
                     <Image
                         src={legendImageUrl}
                         verticalAlign='middle'
-                        size={(window.innerWidth < 991) ? 'large' : 'tiny'}
+                        size={(window.innerWidth < 991) ? 'large' : 'large'}
                     />
                 </Grid.Column>
             </Grid.Row>

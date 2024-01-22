@@ -2,7 +2,7 @@ import { UPDATE_STATE, UPDATE_TIMESERIES, UPDATE_GLOBE } from '../actions/action
 
 const initialState = {
   variable: "air-temperature",
-  maxDate: new Date("2024-01-07"),
+  maxDate: new Date("2024-01-20"),
   minDate: new Date("2023-12-01"),
   timeSeries: {
     quantity: "absolute",
@@ -14,9 +14,9 @@ const initialState = {
   globe: {
     quantity: "anomaly",
     temporalResolution: "daily",
-    dateTime: new Date("2024-01-05"),
+    dateTime: new Date("2024-01-20"),
     loaded: true,
-    maxDaily: new Date("2024-01-05"),
+    maxDaily: new Date("2024-01-20"),
     minDaily: new Date("2023-01-01"),
     maxMonthly: new Date("2023-12-15"),
     minMonthly: new Date("2022-01-15"),

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { updateGlobe } from "../../actions/actions"
-import { Button, Icon, Popup, Dropdown } from 'semantic-ui-react'
+import { Button, Icon, Popup, Dropdown, Label, Divider } from 'semantic-ui-react'
 
 
 const non31DayMonths = [1, 3, 5, 8, 10]
@@ -368,18 +368,13 @@ const GlobeControls = () => {
                     disabled={dateTime >= maxDate()}
                     {...bigPositive()}
                 />
-            </Button.Group>&nbsp;
-            <Button.Group size='mini' basic color='teal'>
-                <Button
-                    size='mini'
-                    onClick={() => jumpToDate(maxDate())}
-                >
-                    Latest
-                </Button>
+            </Button.Group>
+            <Divider fitted hidden />
+            <Button.Group size='small' basic color='teal'>
                 <Popup
                     textAlign='left'
                     on='click'
-                    size='mini'
+                    size='small'
                     flowing
                     hoverable={false}
                     hideOnScroll={false}
@@ -389,7 +384,17 @@ const GlobeControls = () => {
                         </Button>
                     }
                 >
-                    Select date<br></br>
+                    Select a date or &nbsp;
+                    <Button
+                        size='tiny'
+                        color='teal'
+                        compact
+                        onClick={() => jumpToDate(maxDate())}
+                    >
+                        Jump to latest &nbsp;
+                        <Icon name='calendar check outline' />
+                    </Button>
+                    <Divider hidden fitted/>
                     { temporalResolution === 'daily' &&
                         <>
                         <Dropdown
@@ -398,7 +403,7 @@ const GlobeControls = () => {
                             compact
                             style={{minWidth: "80px"}}
                             pinned
-                            defaultValue={dateTime.getDate()}
+                            value={dateTime.getDate()}
                             onChange={updateDay}
                         />&nbsp;
                         </>
@@ -411,7 +416,7 @@ const GlobeControls = () => {
                             compact
                             style={{minWidth: "150px"}}
                             pinned
-                            defaultValue={dateTime.getMonth()}
+                            value={dateTime.getMonth()}
                             onChange={updateMonth}
                         />&nbsp;
                         </>
@@ -422,20 +427,17 @@ const GlobeControls = () => {
                         compact
                         style={{minWidth: "80px"}}
                         pinned
-                        defaultValue={dateTime.getFullYear()}
+                        value={dateTime.getFullYear()}
                         onChange={updateYear}
                     />
                 </Popup>
-            </Button.Group>
-            &nbsp;
             <Dropdown
                 options={temporalResolutions}
                 as={Button}
-                selection
                 compact
                 basic
                 color='blue'
-                size='mini'
+                size='small'
                 style={{minWidth: "80px"}}
                 pinned
                 defaultValue={temporalResolution}
@@ -443,6 +445,7 @@ const GlobeControls = () => {
                     dispatch(updateGlobe({temporalResolution: data.value, dateTime: new Date(dateTime)}))
                 }}
             />
+            </Button.Group>
         </>
     )
 }

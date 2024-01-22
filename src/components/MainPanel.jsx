@@ -1,20 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Grid, Dimmer, Divider, Loader, Transition, Header, Icon } from 'semantic-ui-react'
+import { Grid, Dimmer, Divider, Loader, Transition, Button, Segment, Icon } from 'semantic-ui-react'
 
 import GlobeMenu from './Globe/Menu'
 import GlobeChart from './Globe/Chart'
 import GlobeControls from './Globe/Controls'
-import GlobeDownload from './Globe/Download'
+import GlobeButtons from './Globe/Buttons'
 
 import TimeSeriesMenu from './TimeSeries/Menu'
 import TimeSeriesChart from './TimeSeries/Chart'
 import TimeSeriesControls from './TimeSeries/Controls'
-import TimeSeriesDownload from './TimeSeries/Download'
+import TimeSeriesButtons from './TimeSeries/Buttons'
+
+
+const switchToGlobeStyle = (
+  {
+      position: 'absolute',
+      rotate: '90deg',
+      top: 46,
+      right: -72,
+      zIndex: 1000,
+  }
+)
+
+const switchToTimeSeriesStyle = (
+  {
+      position: 'absolute',
+      rotate: '90deg',
+      top: 61,
+      left: -85,
+      zIndex: 1000,
+  }
+)
+
 
 const MainPanel = () => {
   const timeSeriesLoaded = useSelector(state => state.timeSeries.loaded)
   const variable = useSelector(state => state.variable)
+
+  const [mobileVisualisation, setMobileVisualisation] = useState('timeSeries')
 
   const globeTemporalResolution = useSelector(state => state.globe.temporalResolution)
   const globeMinDaily = useSelector(state => state.globe.minDaily)
@@ -31,69 +55,154 @@ const MainPanel = () => {
         globeMinAnnual.toLocaleDateString("en-GB", {year: 'numeric'})
   )
 
-  return(
-    <Grid columns='equal' celled divided centered >
-      <Grid.Row centered>
-        <Grid.Column computer={8} tablet={16} textAlign="center">
-
-          <Grid verticalAlign='middle' padded={'horizontally'} centered>
-            <Grid.Column floated='left' width={2} />
-            <Grid.Column textAlign='center' width={12}>
-              <Header as='h3'>Daily averages ({timeSeriesStart}-present)</Header>
-            </Grid.Column>
-            <Grid.Column textAlign='right' width={2}>
-              <Icon name='question circle' size='large' color='grey'/>
-            </Grid.Column>
-          </Grid>
-           
-          <Divider />
+  const timeSeriesContent = (
+    <>
+      <Grid centered>
+        <Grid.Column tablet={12} mobile={15}>
           <TimeSeriesMenu />
-          <Dimmer.Dimmable dimmed={!timeSeriesLoaded} >
-            <Transition visible={!timeSeriesLoaded} animation='fade' duration={250}>
-            <Dimmer active={!timeSeriesLoaded} inverted >
-              <Loader size='massive' />
-            </Dimmer>
-            </Transition>
-            <TimeSeriesChart />
-            <TimeSeriesControls />
-          </Dimmer.Dimmable>
-          <Divider />
-        <TimeSeriesDownload />
         </Grid.Column>
-        <Grid.Column computer={8} tablet={16} textAlign="center" verticalAlign="middle">
+      </Grid>
 
-          <Grid centered>
-            <Grid.Column floated='left' width={2} />
-            <Grid.Column textAlign='center' width={12}>
-              <Header as='h3'>{globeTemporalResolution.charAt(0).toUpperCase() + globeTemporalResolution.slice(1)} data ({globeStart}-present)</Header>
-            </Grid.Column>
-            <Grid.Column textAlign='right' width={2}>
-              <Icon name='question circle' size='large' color='grey'/>
-            </Grid.Column>
-          </Grid>
+      <Dimmer.Dimmable dimmed={!timeSeriesLoaded} >
+        <Transition visible={!timeSeriesLoaded} animation='fade' duration={250}>
+        <Dimmer active={!timeSeriesLoaded} inverted >
+          <Loader size='massive' />
+        </Dimmer>
+        </Transition>
+        <TimeSeriesChart />
+        <TimeSeriesControls />
+        <TimeSeriesButtons />
+      </Dimmer.Dimmable>
+    </>
+  )
 
-          <Divider />
+  const globeContent = (
+    <>
+      <Grid centered>
+        <Grid.Column tablet={12} mobile={15}>
           <GlobeMenu />
-          <div id='globeContainer'>
-          <GlobeChart />
-          </div>
-          <Divider hidden />
-          <GlobeControls />
-          <Divider />
-        <GlobeDownload />
-          {/* <Dimmer.Dimmable dimmed={!useSelector(state => state.controls.globeLoaded)} >
-            <Transition visible={!useSelector(state => state.controls.globeLoaded)} animation='fade' duration={500}>
-            <Dimmer active={!useSelector(state => state.controls.globeLoaded)} inverted >
-              <Loader size='massive' />
-            </Dimmer>
-            </Transition>
-          <GlobeContainer />
-          <GlobeControls />
-          </Dimmer.Dimmable>
-          <Divider />
-          <DownloadGlobe /> */}
+        </Grid.Column>
+      </Grid>
+      <div id='globeContainer'>
+        <GlobeChart />
+      </div>
+      <Divider fitted hidden />
+      <Divider fitted hidden />
+      <Divider fitted hidden />
+      <Divider fitted hidden />
+      <Divider fitted hidden />
+      <Divider fitted hidden />
+      <GlobeControls />
+      <GlobeButtons />
+    </>
+  )
+
+  return (
+    <Grid>
+      <Grid.Row>
+
+      <Grid.Column widescreen={10} computer={8} only='computer' textAlign="center" >
+
+        <Segment fluid attached color='purple'>
+          {timeSeriesContent}
+          <Divider fitted hidden />
+          <Divider fitted hidden />
+          <Divider fitted hidden />
+          <Divider fitted hidden />
+        </Segment>
+        </Grid.Column>
+        <Grid.Column widescreen={6} computer={8} only='computer' textAlign="center" verticalAlign="middle" >
+
+        <Segment attached color='purple'>
+          {globeContent}
+        </Segment>
+
+      </Grid.Column>
+
+        <Grid.Column width={16} only='tablet' textAlign="center" >
+          {
+            (mobileVisualisation === 'timeSeries') &&
+            <>
+            <Segment fluid attached color='purple'>
+              {timeSeriesContent}
+              <Button
+                icon
+                color='purple'
+                attached
+                size='medium'
+                style={switchToGlobeStyle}
+                onClick={() => setMobileVisualisation('globe')}
+              >
+                <Icon name='arrow circle up'/> &nbsp;
+                Tap for globe &nbsp;
+              </Button>
+            </Segment>
+            </>
+          }
+          {
+            (mobileVisualisation === 'globe') &&
+            <>
+            <Segment fluid attached color='purple'>
+              {globeContent}
+              <Button
+                icon
+                color='purple'
+                attached
+                size='medium'
+                style={switchToTimeSeriesStyle}
+                onClick={() => setMobileVisualisation('timeSeries')}
+              >
+                <Icon name='arrow circle down'/>&nbsp;
+                Tap for time series &nbsp;
+              </Button>
+            </Segment>
+            </>
+          }
+        </Grid.Column>
+
+
+        <Grid.Column width={16} only='mobile' textAlign="center" >
+          {
+            (mobileVisualisation === 'timeSeries') &&
+            <>
+            <Segment fluid attached color='purple'>
+              {timeSeriesContent}
+              <Button
+                icon
+                color='purple'
+                attached
+                size='medium'
+                style={switchToGlobeStyle}
+                onClick={() => setMobileVisualisation('globe')}
+              >
+                <Icon name='arrow circle up'/> &nbsp;
+                Tap for globe &nbsp;
+              </Button>
+            </Segment>
+            </>
+          }
+          {
+            (mobileVisualisation === 'globe') &&
+            <>
+            <Segment fluid attached color='purple'>
+              {globeContent}
+              <Button
+                icon
+                color='purple'
+                attached
+                size='medium'
+                style={switchToTimeSeriesStyle}
+                onClick={() => setMobileVisualisation('timeSeries')}
+              >
+                <Icon name='arrow circle down'/>&nbsp;
+                Tap for time series &nbsp;
+              </Button>
+            </Segment>
+            </>
+          }
         </Grid.Column>
       </Grid.Row>
+
     </Grid>
   )
 }

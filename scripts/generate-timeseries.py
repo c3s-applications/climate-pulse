@@ -59,7 +59,7 @@ def timeseries(
         target="time-series-json",
         anomalies=False,
 ):
-    df = pd.read_csv(csv_file, comment="#")
+    df = pd.read_csv(csv_file, comment="#").round(2)
     start_year = int(df.iloc[0].date[:4])
     end_year = int(df.iloc[-1].date[:4])
     
@@ -180,7 +180,7 @@ def timeseries(
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=0.98,
+            y=1.02,
             xanchor="left",
         ),
         plot_bgcolor="white",
@@ -200,22 +200,22 @@ def timeseries(
             # tickangle=0,
         ),
         margin=dict(
-            l=10, r=10, b=50, t=0,
+            l=10, r=15, b=50, t=40,
         ),
         datarevision=0,
-        height=500,
+        height=600,
     )
 
     with open(target, "w") as f:
         f.write(fig.to_json())
 
 if __name__ == "__main__":
-    csv_file = "era5_daily_series_2t_global_1940-2024.csv"
+    csv_file = "era5_daily_series_2t_global.csv"
     var_name = "temp"
     timeseries(csv_file, var_name, target="time-series-air-temperature-absolute.json", anomalies=False)
     timeseries(csv_file, var_name, target="time-series-air-temperature-anomaly.json", anomalies=True)
     
-    csv_file = "era5_daily_series_sst_60S-60N_1979-2024.csv"
+    csv_file = "era5_daily_series_sst_60S-60N.csv"
     var_name = "sst"
     timeseries(csv_file, var_name, target="time-series-sea-temperature-absolute.json", anomalies=False)
     timeseries(csv_file, var_name, target="time-series-sea-temperature-anomaly.json", anomalies=True)
