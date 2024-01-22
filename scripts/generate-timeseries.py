@@ -200,7 +200,7 @@ def timeseries(
             # tickangle=0,
         ),
         margin=dict(
-            l=10, r=15, b=50, t=40,
+            l=0, r=0, b=50, t=40,
         ),
         datarevision=0,
         height=600,

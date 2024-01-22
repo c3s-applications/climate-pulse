@@ -41,7 +41,6 @@ const controls = (state = initialState, action) => {
           }
         }
     case UPDATE_GLOBE:
-        console.log(action)
         return {
           ...state,
           globe: {

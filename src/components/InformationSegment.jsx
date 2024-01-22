@@ -11,7 +11,7 @@ const MethodologyContent = () => {
     setActiveIndex(newIndex)
   }
 
-  return (<Accordion fluid styled  style={{fontSize: '1.2rem'}}>
+  return (<Accordion fluid style={{fontSize: '1.1rem'}}>
     <AccordionTitle
       active={activeIndex === 0}
       index={0}
@@ -279,7 +279,7 @@ const Methodology = (
 )
 
 const Attribution = (
-  <TabPane style={{fontSize: '1.2rem'}}>
+  <TabPane style={{fontSize: '1.1rem'}}>
     <p>
     All users of Copernicus Products must provide clear and visible attribution
     to the Copernicus programme.
@@ -333,7 +333,7 @@ const panes = [
 ]
 
 const InformationSegment = () => (
-  <Container textAlign='justified'>
+  <Container textAlign='left'>
     <Segment attached color='purple' >
     <Tab menu={{tabular: true, attached: true, widths: [4, 4, 4], style: {fontSize: '1.2rem'}}} panes={panes} />
     </Segment>
