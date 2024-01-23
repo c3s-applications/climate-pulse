@@ -1,8 +1,15 @@
 import { UPDATE_STATE, UPDATE_TIMESERIES, UPDATE_GLOBE } from '../actions/actions'
 
+import latestState from './status.json';
+
+const maxDaily = latestState["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
+const maxMonthly = latestState["monthly"].toString().replace(/(\d{4})(\d{2})/, "$1-$2");
+const maxAnnual = latestState["annual"].toString().replace(/(\d{4})/, "$1");
+
+
 const initialState = {
   variable: "air-temperature",
-  maxDate: new Date("2024-01-20"),
+  maxDate: new Date(maxDaily),
   minDate: new Date("2023-12-01"),
   timeSeries: {
     quantity: "absolute",
@@ -14,13 +21,13 @@ const initialState = {
   globe: {
     quantity: "anomaly",
     temporalResolution: "daily",
-    dateTime: new Date("2023-12-20"),
+    dateTime: new Date(maxDaily),
     loaded: true,
-    maxDaily: new Date("2024-01-20"),
+    maxDaily: new Date(maxDaily),
     minDaily: new Date("2023-01-01"),
-    maxMonthly: new Date("2023-12-15"),
+    maxMonthly: new Date(maxMonthly),
     minMonthly: new Date("2022-01-15"),
-    maxAnnual: new Date("2023-06-01"),
+    maxAnnual: new Date(maxAnnual),
     minAnnual: new Date("1979-06-01"),
   },
 }
