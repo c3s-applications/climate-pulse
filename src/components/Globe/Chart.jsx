@@ -6,6 +6,12 @@ import { Image, Grid, Button } from 'semantic-ui-react'
 import { updateGlobe } from "../../actions/actions"
 
 const globeMaterial = new THREE.MeshBasicMaterial();
+new THREE.TextureLoader().load('maps/daily/2t/absolute/map_era5_2t_absolute_global_daily_stripped_20231215.png', texture => {
+      globeMaterial.specularMap = texture;
+    //   globeMaterial.specular = new THREE.Color('grey');
+    //   globeMaterial.shininess = 15;
+    });
+
 
 const defaultPOV = { lat: 52, lng: 16, altitude: 1.62 }
 
@@ -189,7 +195,7 @@ const Chart = () => {
                         pathStroke={1}
                         pathTransitionDuration={0}
                         globeMaterial={globeMaterial}
-                        globeImageUrl={globeImageUrl}
+                        // globeImageUrl='maps/daily/2t/absolute/map_era5_2t_absolute_global_daily_stripped_20231215.png'
                         showAtmosphere={true}
                         animateIn={true}
                     />
