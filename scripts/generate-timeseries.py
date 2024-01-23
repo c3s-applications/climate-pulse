@@ -203,7 +203,7 @@ def timeseries(
             l=0, r=0, b=50, t=40,
         ),
         datarevision=0,
-        height=600,
+        height=594,
     )
 
     with open(target, "w") as f:
