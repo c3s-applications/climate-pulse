@@ -16,9 +16,9 @@ import TimeSeriesButtons from './TimeSeries/Buttons'
 const switchToGlobeStyle = (
   {
       position: 'absolute',
-      rotate: '90deg',
-      top: 46,
-      right: ((window.innerWidth < 768) ? -72 : -49),
+      rotate: '270deg',
+      top: 67,
+      right: ((window.innerWidth < 768) ? -90 : -70),
       zIndex: 1000,
   }
 )
@@ -26,9 +26,9 @@ const switchToGlobeStyle = (
 const switchToTimeSeriesStyle = (
   {
       position: 'absolute',
-      rotate: '90deg',
-      top: 62,
-      left: ((window.innerWidth < 768) ? -85 : -65),
+      rotate: '270deg',
+      top: 72,
+      left: ((window.innerWidth < 768) ? -96 : -75),
       zIndex: 1000,
   }
 )
@@ -142,8 +142,8 @@ const MainPanel = () => {
                 style={switchToGlobeStyle}
                 onClick={() => setMobileVisualisation('globe')}
               >
-                <Icon name='arrow circle up'/> &nbsp;
-                Tap for globe &nbsp;
+                TAP FOR MAP VIEW &nbsp;
+                <Icon name='arrow circle down'/>
               </Button>
             </Segment>
             </>
@@ -161,8 +161,8 @@ const MainPanel = () => {
                 style={switchToTimeSeriesStyle}
                 onClick={() => setMobileVisualisation('timeSeries')}
               >
-                <Icon name='arrow circle down'/>&nbsp;
-                Tap for time series &nbsp;
+                TAP FOR TIME SERIES &nbsp;
+                <Icon name='arrow circle up'/>
               </Button>
             </Segment>
             </>
@@ -184,8 +184,8 @@ const MainPanel = () => {
                 style={switchToGlobeStyle}
                 onClick={() => setMobileVisualisation('globe')}
               >
-                <Icon name='arrow circle up'/> &nbsp;
-                Tap for globe &nbsp;
+                TAP FOR MAP VIEW &nbsp;
+                <Icon name='arrow circle down'/>
               </Button>
             </Segment>
             </>
@@ -203,8 +203,8 @@ const MainPanel = () => {
                 style={switchToTimeSeriesStyle}
                 onClick={() => setMobileVisualisation('timeSeries')}
               >
-                <Icon name='arrow circle down'/>&nbsp;
-                Tap for time series &nbsp;
+                TAP FOR TIME SERIES &nbsp;
+                <Icon name='arrow circle up'/>
               </Button>
             </Segment>
             </>

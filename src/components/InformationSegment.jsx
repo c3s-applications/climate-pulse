@@ -294,7 +294,7 @@ const Attribution = (
     <h4>Academic citations</h4>
     <i>Buontempo et al 2022. The Copernicus Climate Change Service: Climate Science in Action. Bulletin of the American Meteorological Society 103 (12)</i>
     <br></br>
-    DOI: <a href='https://doi.org/10.1175/BAMS-D-21-0315' target='_blank'>10.1175/BAMS-D-21-0315</a>.
+    DOI: <a href='https://doi.org/10.1175/BAMS-D-21-0315.1' target='_blank'>10.1175/BAMS-D-21-0315.1</a>
     <br></br><br></br>
     <i>Hersbach et al. 2020 The ERA5 global Reanalysis. Quarterly Journal of the Royal Meteorological Society 146 (70)</i>
     <br></br>
