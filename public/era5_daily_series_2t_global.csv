@@ -1,10 +1,10 @@
 # Description: This file contains daily mean 2m temperature data from ERA5 averaged over the entire globe (0–360°E, 90°S–90°N) from 1940 to 2024.
 # Data source: The original gridded ERA5 hourly data used to generate the time series can be downloaded from the C3S Climate Data Store (CDS) at this address:
 # https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels
-# Data availability: The ERA5 data available in the CDS are updated up to 5 days behind real-time. Note that the time series below includes values based on pre-release data not yet available in the CDS.
-# Final vs preliminary data: The last value in the time series may be preliminary in which case it will likely change (slightly) once the final data for the day are available (typically 3 days behind real-time). The difference between the preliminary and final value is generally very small. See more details in the README file included in the folder.
+# Data availability: The hourly ERA5 data available in the CDS are updated up to 5 days (120 hours) behind real-time. The time series below includes values based data not yet available in the CDS.
+# Final vs preliminary data: The last value in the time series may be preliminary in which case it will likely change (slightly) once the final data for the day are available (typically 3 days behind real-time).
 # Units: deg. C
-# Last updated: 22 Jan 2024
+# Last updated: 23 Jan 2024
 date,temp,status
 1940-01-01,11.72,FINAL
 1940-01-02,11.66,FINAL
@@ -30686,7 +30686,7 @@ date,temp,status
 2023-12-28,13.53,FINAL
 2023-12-29,13.50,FINAL
 2023-12-30,13.46,FINAL
-2023-12-31,13.41,FINAL
+2023-12-31,13.42,FINAL
 2024-01-01,13.40,FINAL
 2024-01-02,13.30,FINAL
 2024-01-03,13.19,FINAL
@@ -30706,4 +30706,5 @@ date,temp,status
 2024-01-17,13.05,FINAL
 2024-01-18,13.14,FINAL
 2024-01-19,13.16,FINAL
-2024-01-20,13.11,PRELIMINARY
+2024-01-20,13.11,FINAL
+2024-01-21,13.09,PRELIMINARY
