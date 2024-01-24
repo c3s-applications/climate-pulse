@@ -1,10 +1,10 @@
 # Description: This file contains daily sea surface temperature data from ERA5 averaged over the 60°S–60°N domain from 1979 to 2024.
 # Data source: The original gridded ERA5 hourly data used to generate the time series can be downloaded from the C3S Climate Data Store (CDS) at this address:
 # https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels
-# Data availability: The ERA5 data available in the CDS are updated up to 5 days behind real-time. Note that the time series below includes values based on pre-release data not yet available in the CDS.
-# Final vs preliminary data: This corresponds to the 'status' column. For SST, all values are final. See more details in the README file included in the folder.
+# Data availability: The hourly ERA5 data available in the CDS are updated up to 5 days (120 hours) behind real-time. The time series below includes values based on pre-release data not yet available in the CDS.
+# Final vs preliminary data: This corresponds to the 'status' column. For SST, all values are final.
 # Units: deg. C
-# Last updated: 22 Jan 2024
+# Last updated: 23 Jan 2024
 date,sst,status
 1979-01-01,20.08,FINAL
 1979-01-02,20.08,FINAL
@@ -16462,3 +16462,4 @@ date,sst,status
 2024-01-18,20.95,FINAL
 2024-01-19,20.97,FINAL
 2024-01-20,20.98,FINAL
+2024-01-21,20.96,FINAL
