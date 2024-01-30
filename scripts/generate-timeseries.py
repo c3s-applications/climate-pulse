@@ -10,6 +10,8 @@ DEFAULT_LINEWIDTH = 1
 LATEST_LINEWIDTH = 2
 HIGHLIGHT_DELTA = 2
 
+FONTSIZE = 15
+
 VARIABLES = {
     "sst": "sea surface temperature",
     "temp": "surface air temperature",
@@ -88,9 +90,9 @@ def timeseries(
             name = str(year)
             latest_date = day_of_year(len(data))[-1]
             if anomalies:
-                text = f"<b>{latest_date:%-d %b} {year}<br>{data[-1]:+.2f}°C</b>"
+                text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:+.2f}°C</b>"
             else:
-                text = f"<b>{latest_date:%-d %b} {year}<br>{data[-1]:.2f}°C</b>"
+                text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:.2f}°C</b>"
             if len(data) < 250:
                 textposition = "middle right"
             elif len(data) < 328:
@@ -107,7 +109,7 @@ def timeseries(
                 text=text,
                 mode="markers+text",
                 textposition=textposition,
-                textfont=dict(color=color),
+                textfont=dict(color=color, size=16),
                 marker={"size": 9},
                 legendgroup="latest",
                 hoverinfo="skip",
@@ -182,6 +184,7 @@ def timeseries(
             yanchor="bottom",
             y=1.02,
             xanchor="left",
+            font=dict(size=FONTSIZE-2),
         ),
         plot_bgcolor="white",
         hovermode="closest",
@@ -189,14 +192,22 @@ def timeseries(
         yaxis=dict(
             showgrid=True,
             gridcolor="#e6e6e6",
-            title=f"temperature {'anomaly ' if anomalies else ''}(°C)"
+            title=dict(
+                text=f"Temperature {'anomaly ' if anomalies else ''}(°C)",
+            ),
+            tickfont=dict(size=FONTSIZE),
+            titlefont=dict(size=FONTSIZE+2),
         ),
         xaxis=dict(
             showgrid=False,
-            dtick="M1",
-            tickformat="%b",
+            # dtick="M1",
+            # tickformat="%b-",
+            tickmode="array",
+            tickvals=[f"2001-{i:02d}-15" for i in range(1, 13)],
+            ticktext=["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
             ticklabelmode="period",
             range=["2000-12-25", "2001-12-31"],
+            tickfont=dict(size=FONTSIZE),
             # tickangle=0,
         ),
         margin=dict(
@@ -208,6 +219,7 @@ def timeseries(
 
     with open(target, "w") as f:
         f.write(fig.to_json())
+
 
 if __name__ == "__main__":
     csv_file = "era5_daily_series_2t_global.csv"
