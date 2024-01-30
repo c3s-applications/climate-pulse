@@ -2,41 +2,8 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Button, Icon, Divider, Modal, Popup } from 'semantic-ui-react'
 import { getStartYear } from './AnnualValues';
+import { ClickOrTap, ClickOrTouch } from '../TouchContext'
 
-
-const DistanceFromTop = 10
-const DistanceFromRight = 40
-
-
-const Button1Style = (
-    {
-        opacity: 0.75,
-        position: 'absolute',
-        top: DistanceFromTop,
-        right: DistanceFromRight,
-        zIndex: 100,
-    }
-)
-
-const Button2Style = (
-    {
-        opacity: 0.75,
-        position: 'absolute',
-        top: DistanceFromTop+30,
-        right: DistanceFromRight,
-        zIndex: 100,
-    }
-)
-
-const Button3Style = (
-    {
-        opacity: 0.75,
-        position: 'absolute',
-        top: DistanceFromTop+60,
-        right: DistanceFromRight,
-        zIndex: 100,
-    }
-)
 
 const getVariable = (variableName) => {
     switch (variableName) {
@@ -56,21 +23,24 @@ const getQuantity = (quantity) => {
     }
 }
 
-const getQuantityDescription = (quantity) => {
+const getQuantityDescription = (variable, quantity) => {
     switch (quantity) {
         case 'absolute':
             return (
-            <>
-                <b>Near-surface air temperature</b> is the temperature
-                of the air at 2m above the earth's surface.
-            </>
+                <>
+                    <b>absolute values</b> are the actual temperature in degrees Celsius
+                </>
             )
         case 'anomaly':
             return (
-            <>
-                <b>Near-surface air temperature</b> is the temperature
-                of the air at 2m above the earth's surface.
-            </>
+                <>
+                    <b>anomalies</b> are the difference between the absolute
+                    value and a long-term average for the same day or month of
+                    the year or for the year as a whole. Here, this long-term
+                    average corresponds to the average for the 30-year period
+                    1991–2020, the modern standard reference period used by the
+                    World Meteorological Organization
+                </>
             )
     }
 }
@@ -80,18 +50,18 @@ const getVariableDescription = (variable) => {
         case 'air-temperature':
             return (
             <>
-                <b>Near-surface air temperature</b> is the temperature
-                of the air at 2m above the earth's surface.
+                <b>near-surface air temperature</b> is the temperature
+                of the air at 2m above the earth's surface
             </>
             )
         case 'sea-temperature':
             return (
             <>
-                <b>Sea surface temperature</b> is the temperature of the
+                <b>sea surface temperature</b> is the temperature of the
                 water close to the ocean’s surface, in °C. In ERA5, the
                 water temperature is estimated at a depth of around 10m.
                 This temperature is known as foundation temperature and is
-                free of the diurnal cycle.
+                free of the diurnal cycle
             </>
             )
     }
@@ -112,6 +82,7 @@ const getDataLink = (variable) => {
 const TimeSeriesButtons = () => {
     const variable = useSelector(state => state.variable)
     const quantity = useSelector(state => state.timeSeries.quantity)
+    const maxDate = useSelector(state => state.maxDate)
 
     return (
         <Button.Group basic size='small' color='teal'>
@@ -130,27 +101,49 @@ const TimeSeriesButtons = () => {
        
         <Modal
             closeIcon
-            size='fullscreen'
+            size='large'
             trigger={<Button icon color='teal' size='small' ><Icon name="info" /></Button>}
         >
             <Modal.Header>
                 Time series - {getVariable(variable)}
             </Modal.Header>
-            <Modal.Content style={{fontSize: 18}}>
-                <p>
-                <b>What the data shows</b>
-                </p>
-                <p>
-                This chart shows daily averages of global mean
-                {getVariable(variable)}<sup>1</sup> {getQuantity(quantity)}<sup>2</sup> from
-                the ERA5 global reanalysis dataset, from January
-                {getStartYear(variable)} up to two days behind real-time.
-                </p>
-                <Divider />
-                <p>
-                <sup>1</sup>{getVariableDescription(variable)}
-                </p>
+            <Modal.Content style={{fontSize: "1.2rem"}}>
+            <p>
+            <b>What the data shows</b>
+            <br></br>
+            This chart shows daily averages of global mean <Popup
+                trigger={<u>{getVariable(variable)}</u>}
 
+            >
+                {getVariableDescription(variable)}
+            </Popup> <Popup
+                trigger={<u>{getQuantity(quantity)}</u>}
+            >
+            {getQuantityDescription(variable, quantity)}
+            </Popup> from
+            the ERA5 global reanalysis dataset, from January
+            {getStartYear(variable)} up to two days behind real-time.
+            </p>
+            <p>
+            <b>How to use this plot</b>
+            <ul>
+                <li>Hover over a line to see the year and the global average {getVariable(variable)} on the given date</li>
+                <li><ClickOrTap capitalise /> on a line to highlight it</li>
+                <li>Highlighted lines are coloured from red to blue (hottest to coldest selected years)</li>
+                <li>You can also select any number of years to highlight by <ClickOrTap ing/> the <Button basic color='teal' size='mini'>
+                    <Icon name='plus'/>Add years to compare with &nbsp;
+                    <span style={{color: '#941333', fontWeight: 'bold'}}>
+                        {maxDate.getFullYear()}
+                    </span>
+                </Button> button</li>
+                <li><ClickOrTap capitalise/> or double-<ClickOrTap /> on the legend to show and hide lines</li>
+                <li><ClickOrTouch capitalise/> and drag on the main plot to zoom in to an area</li>
+                <li>Double-<ClickOrTap /> the main plot to reset the zoom level</li>
+                <li><ClickOrTap capitalise/> the <Button icon color='teal' size='mini' ><Icon name='undo' /></Button> button to reset the plot</li>
+                <li><ClickOrTap capitalise/> the <Button icon basic attached="left" color='teal' size='mini' ><Icon name="download" /></Button> button to download a CSV file containing the data used in this plot</li>
+                <li><ClickOrTap capitalise/> the <Button icon basic color='teal' size='mini' ><Icon name="camera" /></Button> button to download this plot as a PNG image</li>
+            </ul>
+            </p>
             </Modal.Content>
         </Modal>
         </Button.Group>
@@ -158,3 +151,24 @@ const TimeSeriesButtons = () => {
 }
 
 export default TimeSeriesButtons
+
+{/* <p>
+<b>Interacting with this plot</b>
+<br></br>
+Drag to zoom
+</p>
+<p>
+<b>What the data shows</b>
+<br></br>
+This chart shows daily averages of global mean {getVariable(variable)}<sup>1</sup> {getQuantity(quantity)}<sup>2</sup> from
+the ERA5 global reanalysis dataset, from January
+{getStartYear(variable)} up to two days behind real-time.
+</p>
+<Divider />
+<p>
+<span style={{fontSize: '1rem'}}>
+    <sup>1</sup>{getVariableDescription(variable)}
+    <br></br>
+    <sup>2</sup>{getQuantityDescription(variable, quantity)}
+</span>
+</p> */}

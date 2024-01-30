@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, TabPane, Tab, Segment, Accordion, AccordionTitle, AccordionContent, Icon } from 'semantic-ui-react'
 
 const MethodologyContent = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const handleClick = (e, titleProps) => {
     const { index } = titleProps
@@ -17,8 +17,8 @@ const MethodologyContent = () => {
       index={0}
       onClick={handleClick}
     >
-      <Icon name='dropdown' />
-      Where do the data come from?
+      <Icon name='dropdown'/>
+      <span style={{color: "#941333"}}><b>Where do the data come from?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 0}>
       <p>
@@ -43,7 +43,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      What is a climate reanalysis?
+      <span style={{color: "#941333"}}><b>What is a climate reanalysis?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 1}>
       <p>
@@ -64,7 +64,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      What is surface air temperature?
+      <span style={{color: "#941333"}}><b>What is surface air temperature?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 2}>
       <p>
@@ -88,7 +88,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      What is sea surface temperature?
+      <span style={{color: "#941333"}}><b>What is sea surface temperature?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 4}>
       <p>
@@ -118,7 +118,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      How are daily averages calculated? 
+      <span style={{color: "#941333"}}><b>How are daily averages calculated?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 5}>
       <p>
@@ -141,7 +141,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      What are anomalies?
+      <span style={{color: "#941333"}}><b>What are anomalies?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 6}>
       <p>
@@ -163,7 +163,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      Which ERA5 data is used?
+      <span style={{color: "#941333"}}><b>Which ERA5 data is used?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 7}>
       <p>
@@ -182,7 +182,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      What period is covered by the data? 
+      <span style={{color: "#941333"}}><b>What period is covered by the data?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 8}>
       <p>
@@ -213,7 +213,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      Where can I find ERA5 data? 
+      <span style={{color: "#941333"}}><b>Where can I find ERA5 data?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 9}>
       <p>
@@ -231,7 +231,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      Where can I download ERA5 anomalies?
+      <span style={{color: "#941333"}}><b>Where can I download ERA5 anomalies?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 10}>
       <p>
@@ -250,7 +250,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      How are the graphics produced?
+      <span style={{color: "#941333"}}><b>How are the graphics produced?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 11}>
       <p>
@@ -326,10 +326,21 @@ const Attribution = (
   </TabPane>
 )
 
+const About = (
+  <TabPane>
+    <p>
+    Climate Pulse provides near-real time updates of global average variables.
+    It is developed, maintained and updated daily by the Copernicus Climate
+    Change Service/ECMWF.
+    </p>
+  </TabPane>
+)
+
 
 const panes = [
-  { menuItem: 'Methodology', render: () =>  Methodology},
-  { menuItem: 'Attribution', render: () => Attribution },
+  { menuItem: 'About', render: () =>  About},
+  { menuItem: 'FAQs', render: () =>  Methodology},
+  { menuItem: 'Credits', render: () => Attribution },
 ]
 
 const InformationSegment = () => (
