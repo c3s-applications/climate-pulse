@@ -14,12 +14,12 @@ FONTSIZE = 15
 
 VARIABLES = {
     "sst": "sea surface temperature",
-    "temp": "surface air temperature",
+    "2t": "surface air temperature",
 }
 
 DOMAINS = {
     "sst": "60°S - 60°N",
-    "temp": "Global",
+    "2t": "global",
 }
 
 def get_year_data(df, year, var_name="temp"):
@@ -58,26 +58,30 @@ def data_mean(df, start_year=1991, end_year=2020, var_name="temp"):
 def timeseries(
         csv_file,
         var_name,
+        data_col=None,
         target="time-series-json",
         anomalies=False,
+        write_png=True,
 ):
     df = pd.read_csv(csv_file, comment="#").round(2)
     start_year = int(df.iloc[0].date[:4])
     end_year = int(df.iloc[-1].date[:4])
     
-    reference_mean = data_mean(df, var_name=var_name)
+    data_col = data_col or var_name
+    
+    reference_mean = get_year_data(df, 2000, "clim_91-20")
     
     fig = go.Figure()
     
     first = True
     latest_marker = None
     for year in range(start_year, end_year+1):
-        data = get_year_data(df, year, var_name=var_name)
+        data = get_year_data(df, year, var_name=data_col)
         
-        if anomalies:
-            data -= reference_mean[:len(data)]
+        # if anomalies:
+        #     data -= reference_mean[:len(data)]
         
-        customdata = data - reference_mean[:len(data)]
+        customdata = get_year_data(df, year, var_name="ano_91-20")
         customdata = np.dstack([reference_mean[:len(customdata)], customdata])
         customdata = customdata[0]
         
@@ -158,25 +162,6 @@ def timeseries(
         fig.add_trace(latest_marker)
 
     fig.update_layout(
-        # images=[
-        #     dict(
-        #         source="logos/c3s-positive.png",
-        #         xref="paper", yref="paper",
-        #         x=1, y=0.985,
-        #         sizex=0.2, sizey=0.2,
-        #         xanchor="right", yanchor="bottom"
-        #     ),
-        # ],
-        # title={
-        #     'text': (
-        #         f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}({DOMAINS[var_name]})</b><br>"
-        #         f"<sup>Data: ERA5 {start_year}-{end_year} ● Credit: C3S/ECMWF</sup>"
-        #     ),
-        #     'y': 0.93,
-        #     'x': 0.08,
-        #     'xanchor': 'left',
-        #     'yanchor': 'top'
-        # },
         font_family="Lato",
         autosize=True,
         legend=dict(
@@ -200,34 +185,82 @@ def timeseries(
         ),
         xaxis=dict(
             showgrid=False,
-            # dtick="M1",
-            # tickformat="%b-",
             tickmode="array",
             tickvals=[f"2001-{i:02d}-15" for i in range(1, 13)],
             ticktext=["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
             ticklabelmode="period",
             range=["2000-12-25", "2001-12-31"],
             tickfont=dict(size=FONTSIZE),
-            # tickangle=0,
         ),
-        margin=dict(
-            l=0, r=0, b=50, t=40,
-        ),
+        margin=dict(l=0, r=0, b=50, t=40,),
         datarevision=0,
         height=594,
     )
 
     with open(target, "w") as f:
         f.write(fig.to_json())
+    
+    if write_png:
+        data = get_year_data(df, end_year-1, var_name=data_col)
+        trace = go.Scatter(
+            x=day_of_year(len(data)),
+            y=data,
+            line_color="#F07736",
+            line_width=2,
+            showlegend=True,
+            name=str(end_year-1),
+            mode="lines",
+        )
+        fig.add_trace(trace)
+        
+        data = get_year_data(df, end_year, var_name=data_col)
+        
+        filename = f"{csv_file.split('.')[0]}_{'anomaly_' if anomalies else ''}{end_year}-{latest_date:%m-%d}.png"
+        fig.add_annotation(
+            x=-0.015, y=1.04,
+            xref="paper",
+            yref="paper",
+            xanchor="left",
+            yanchor="bottom",
+            text=(
+                f"ERA5 {start_year}-{end_year} ({DOMAINS[var_name]} {'mean' if not anomalies else 'anomaly'})<br>"
+                "Data ERA5 ● Credit: C3S/ECMWF"
+            ),
+            align="left",
+            font=dict(size=FONTSIZE),
+            showarrow=False,
+        )
+        fig.update_layout(
+            title={
+                'text': (
+                    f"<b>{VARIABLES[var_name].capitalize()}"
+                ),
+                'font': dict(size=FONTSIZE+5),
+                'y': 0.95,
+                'x': 0.042,
+                'xanchor': 'left',
+                'yanchor': 'bottom'
+                
+        },
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=0.98,
+            xanchor="left",
+            font=dict(size=FONTSIZE-2),
+        ),
+        margin=dict(l=10, r=10, b=50, t=100,),
+        width=1000,
+        height=650,
+        )
+        fig.write_image(filename)
 
 
 if __name__ == "__main__":
     csv_file = "era5_daily_series_2t_global.csv"
-    var_name = "temp"
-    timeseries(csv_file, var_name, target="time-series-air-temperature-absolute.json", anomalies=False)
-    timeseries(csv_file, var_name, target="time-series-air-temperature-anomaly.json", anomalies=True)
+    timeseries(csv_file, "2t", target="time-series-air-temperature-absolute.json")
+    timeseries(csv_file, "2t", "ano_91-20", target="time-series-air-temperature-anomaly.json", anomalies=True)
     
     csv_file = "era5_daily_series_sst_60S-60N.csv"
-    var_name = "sst"
-    timeseries(csv_file, var_name, target="time-series-sea-temperature-absolute.json", anomalies=False)
-    timeseries(csv_file, var_name, target="time-series-sea-temperature-anomaly.json", anomalies=True)
+    timeseries(csv_file, "sst", target="time-series-sea-temperature-absolute.json", anomalies=False)
+    timeseries(csv_file, "sst", "ano_91-20", target="time-series-sea-temperature-anomaly.json", anomalies=True)
