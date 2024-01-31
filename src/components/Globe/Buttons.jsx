@@ -118,7 +118,7 @@ const GlobeButtons = () => {
                 <li><ScrollOrPinch capitalise /> on the globe to zoom in and out</li>
                 <li><ClickOrTap capitalise/> the <Button icon basic attached="left" color='teal' size='mini' ><Icon name="angle double left" /></Button> and <Button icon basic color='teal' size='mini' ><Icon name="angle left" /></Button> buttons to step <b>backwards</b> in time by a large or small step, respectively</li>
                 <li><ClickOrTap capitalise/> the <Button icon basic color='teal' size='mini' ><Icon name="angle right" /></Button> and <Button icon basic color='teal' attached="right" size='mini' ><Icon name="angle double right" /></Button> buttons to step <b>forwards</b> in time by a small or large step, respectively</li>
-                <li><ClickOrTap capitalise/> the dropdown menu to temporal aggregation (options are daily, monthly and annual)</li>
+                <li><ClickOrTap capitalise/> the dropdown menu to select the temporal aggregation (options are daily, monthly and annual)</li>
                 <li><ClickOrTap capitalise/> the <Button basic color='teal' attached="left" size='mini' >Select date</Button> button to manually select a date to visualise on the globe</li>
                 <li><ClickOrTap capitalise/> the <Button icon basic attached="left" color='teal' size='mini' ><Icon name="download" /></Button> button to download a CSV file containing the data used in this plot</li>
                 <li><ClickOrTap capitalise/> the <Button icon basic color='teal' size='mini' ><Icon name="camera" /></Button> button to download a static PNG image of the data currently visualised on the globe (note that the resulting image will use a Robinson projection instead of a globe perspective)</li>

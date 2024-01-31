@@ -327,11 +327,21 @@ const Attribution = (
 )
 
 const About = (
-  <TabPane>
+  <TabPane style={{fontSize: '1.1rem'}}>
     <p>
-    Climate Pulse provides near-real time updates of global average variables.
-    It is developed, maintained and updated daily by the Copernicus Climate
-    Change Service/ECMWF.
+    <b>Climate Pulse</b> provides near-real time updates of global average climate
+    variables. It is developed and maintained by the Copernicus Climate Change
+    Service (C3S), which provides climate intelligence information for a broad
+    audience encompassing policy makers, the press, and the general public. The
+    data displayed here is from the ERA5 climate reanalysis, a global dataset
+    produced by the European Centre for Medium-Range Weather Forecasts (ECMWF).
+    </p>
+    <p>
+    Future releases of this webpage may showcase more parameters.
+    In the meantime we’d love to hear from you! For feedback and questions, 
+    eave us a message in
+    the <a href='https://confluence.ecmwf.int/category/cd' >Chart and data support section</a> on the ECMWF Support
+    page. Please bear with us if our response gets delayed.
     </p>
   </TabPane>
 )
