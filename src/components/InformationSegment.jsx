@@ -329,19 +329,35 @@ const Attribution = (
 const About = (
   <TabPane style={{fontSize: '1.1rem'}}>
     <p>
-    <b>Climate Pulse</b> provides near-real time updates of global average climate
-    variables. It is developed and maintained by the Copernicus Climate Change
-    Service (C3S), which provides climate intelligence information for a broad
-    audience encompassing policy makers, the press, and the general public. The
-    data displayed here is from the ERA5 climate reanalysis, a global dataset
-    produced by the European Centre for Medium-Range Weather Forecasts (ECMWF).
+    <b>Climate Pulse</b> is a new interactive web application developed and
+    maintained by the Copernicus Climate Change Service (C3S) to make climate
+    monitoring more accessible to a broad audience. This page provides daily
+    charts and maps of global surface air temperature and sea surface
+    temperature updated close to real-time, as well as an archive of past daily,
+    monthly and annual maps.
     </p>
     <p>
-    Future releases of this webpage may showcase more parameters.
-    In the meantime we’d love to hear from you! For feedback and questions, 
-    eave us a message in
-    the <a href='https://confluence.ecmwf.int/category/cd' >Chart and data support section</a> on the ECMWF Support
-    page. Please bear with us if our response gets delayed.
+    Climate Pulse complements other regular climate monitoring activities
+    carried out by
+    the <a href="https://climate.copernicus.eu/climate-intelligence">C3S Climate Intelligence</a> Team,
+    including its monthly <a href="https://climate.copernicus.eu/climate-bulletins">Climate Bulletin</a> and
+    the annual reports <a href="https://climate.copernicus.eu/ESOTC">European State of the Climate</a> and <a href="https://climate.copernicus.eu/global-climate-highlights">Global Climate Highlights</a>. 
+    </p>
+    <p>
+    The graphics displayed here are based on data from the ERA5 climate
+    reanalysis, a global dataset produced for C3S by the European Centre for
+    Medium-Range Weather Forecasts (ECMWF). More information about the data and
+    methodology can be found in the FAQs.
+    </p>
+    <p>
+      <i>
+      Climate Pulse is currently in its beta release. We are keen to further
+      improve this tool to make it as useful and accessible as possible based
+      on feedback we receive from users. That’s why we would love to hear fro
+      you! For feedback and questions, leave us a message in
+      the <a href="https://confluence.ecmwf.int/category/cd">Chart and data support section</a> on
+      the ECMWF Support page. Please bear with us if our response gets delayed.
+      </i>
     </p>
   </TabPane>
 )
