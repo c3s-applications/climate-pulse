@@ -170,6 +170,7 @@ def timeseries(
             y=1.02,
             xanchor="left",
             font=dict(size=FONTSIZE-2),
+            traceorder="reversed",
         ),
         plot_bgcolor="white",
         hovermode="closest",

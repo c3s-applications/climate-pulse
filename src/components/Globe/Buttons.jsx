@@ -4,6 +4,11 @@ import { Button, Icon, Popup, Modal } from 'semantic-ui-react'
 import { ClickOrTap, ClickOrTouch, ScrollOrPinch } from '../TouchContext'
 
 
+const CdsUrl = 'https://cds.climate.copernicus.eu/cdsapp#!/dataset/'
+const era5HourlyURL = CdsUrl + 'reanalysis-era5-single-levels'
+const era5MonthlyURL = CdsUrl + 'reanalysis-era5-single-levels-monthly-means'
+
+
 const getVariable = (variableName) => {
     switch (variableName) {
         case 'air-temperature':
@@ -68,21 +73,84 @@ const getVariableDescription = (variable) => {
 }
 
 const GlobeButtons = () => {
+    const [open, setOpen] = useState(false);
     const variable = useSelector(state => state.variable)
     const quantity = useSelector(state => state.globe.quantity)
     const temporalResolution = useSelector(state => state.globe.temporalResolution)
+    const dateTime = useSelector(state => state.globe.dateTime)
+
+    const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
+
+    function getTimeString(year, month, day) {
+        switch (temporalResolution) {
+            case 'daily':
+                return `${year}${month}${day}`
+            case 'monthly':
+                return `${year}${month}`
+            case 'annual':
+                return `${year}`
+            default:
+                
+        }
+    }
+
+    const getDownloadImageUrl = () => {
+        let year = dateTime.getFullYear()
+        let month = ('0' + (dateTime.getMonth()+1)).slice(-2)
+        let day = ('0' + dateTime.getDate()).slice(-2)
+
+        let timeString = getTimeString(year, month, day)
+
+        let yearPath = ((temporalResolution === 'daily') ? `${year}/` : '')
+        var url = `https://sites.ecmwf.int/data/climatepulse/maps/download/${temporalResolution}/${shortName}/${quantity}/${yearPath}climpulse_map_era5_download_${temporalResolution}_${shortName}_${quantity}_${timeString}.png`
+        return url
+    }
 
     return (
         <Button.Group basic size='small' attached={false} color='teal'>
-        <Popup
-          size='small'
-          trigger={<Button icon color='teal' size='small' ><Icon name="download" /></Button>}
+        <Modal
+            closeIcon
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            open={open}
+            size='large'
+            trigger={<Button icon color='teal' size='small' ><Icon name="download" /></Button>}
         >
-          Download data (GRIB/NetCDF)
-        </Popup>
+            <Modal.Header>
+                Download ERA5 reanalysis gridded data from the Copernicus Climate Data Store (CDS)
+            </Modal.Header>
+            <Modal.Content style={{fontSize: "1.2rem"}}>
+                Precalculated monthly gridded anomalies for surface air temperature from January 1979 onward are
+                available for donwload in the Climate Data Store, as part of the dataset underpinning the <a href="https://climate.copernicus.eu/climate-bulletins" target="_blank">C3S monthly
+                climate bulletins</a>. For the time being, monthly temperature anomalies for the period 1940–1978 as well
+                as other gridded anomalies (for SST and for daily or annual data) are not available in the C3S Climate
+                Data Store (CDS).
+                <br></br><br></br>
+                Absolute values of near-surface air temperature, sea surface temperature, and a wide range of other
+                variables from ERA5 are available in the CDS on hourly or monthly timescales, from 1940-present (with
+                a five-day lag behind real time). Click the buttons below to explore these datasets in the CDS.
+            </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    color='purple'
+                    onClick={() => window.open(era5HourlyURL, '_blank').focus()}
+                >
+                ERA5 hourly
+                </Button>
+                <Button
+                    color='purple'
+                    onClick={() => window.open(era5MonthlyURL, '_blank').focus()}
+                >
+                ERA5 monthly
+                </Button>
+                {/* <Button onClick={() => setOpen(false)}>
+                Back
+                </Button> */}
+            </Modal.Actions>
+        </Modal>
         <Popup
           size='small'
-          trigger={<Button icon color='teal' size='small' ><Icon name="camera" /></Button>}
+          trigger={<Button icon color='teal' size='small' href={getDownloadImageUrl()} target="_blank" ><Icon name="camera" /></Button>}
         >
           Download image (PNG)
         </Popup>
