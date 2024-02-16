@@ -19,18 +19,18 @@ const Footer = () => (
         </Grid.Column>
         </Grid.Row>
         <Grid.Row textAlign='left' color='purple'>
-        <Grid.Column computer={8} tablet={8} mobile={16}>
-            <Container textAlign='left' text inverted>
-                <Header inverted as='h3'>Climate Pulse</Header>
-                <Divider />
-                <p>
-                The Copernicus Climate Change Service (C3S), implemented by the
-                European Centre for Medium-Range Weather Forecasts (ECMWF)
-                on behalf of the European Commission is part of the European Union's space programme.
-                </p>
-            </Container>
-            <Divider hidden/>
-        </Grid.Column>
+        <Container textAlign='left' text inverted>
+            <Grid.Column computer={8} tablet={8} mobile={16}>
+                    <Header inverted as='h3'>Climate Pulse</Header>
+                    <Divider />
+                    <p>
+                    The Copernicus Climate Change Service (C3S), implemented by the
+                    European Centre for Medium-Range Weather Forecasts (ECMWF)
+                    on behalf of the European Commission is part of the European Union's space programme.
+                    </p>
+                <Divider hidden/>
+            </Grid.Column>
+        </Container>
         </Grid.Row>
 
         <Grid.Row />
