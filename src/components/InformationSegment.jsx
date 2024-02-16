@@ -292,27 +292,19 @@ const Attribution = (
     </p>
     <p>
     <h4>Academic citations</h4>
-    <i>Buontempo et al 2022. The Copernicus Climate Change Service: Climate Science in Action. Bulletin of the American Meteorological Society 103 (12)</i>
-    <br></br>
-    DOI: <a href='https://doi.org/10.1175/BAMS-D-21-0315.1' target='_blank'>10.1175/BAMS-D-21-0315.1</a>
+    <i>Buontempo et al 2022. The Copernicus Climate Change Service: Climate Science in Action. Bulletin of the American Meteorological Society 103 (12)</i> · DOI: <a href='https://doi.org/10.1175/BAMS-D-21-0315.1' target='_blank'>10.1175/BAMS-D-21-0315.1</a>
     <br></br><br></br>
-    <i>Hersbach et al. 2020 The ERA5 global Reanalysis. Quarterly Journal of the Royal Meteorological Society 146 (70)</i>
-    <br></br>
-    DOI: <a href='https://doi.org/10.1002/qj.3803' target='_blank'>10.1002/qj.3803</a> 
+    <i>Hersbach et al. 2020 The ERA5 global Reanalysis. Quarterly Journal of the Royal Meteorological Society 146 (70)</i> · DOI: <a href='https://doi.org/10.1002/qj.3803' target='_blank'>10.1002/qj.3803</a> 
     </p>
     <p>
     <h4>Citing the data </h4>
     <a href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview' target='_blank'>
     ERA5 hourly data on single levels from 1940 to present
-    </a>
-    <br></br>
-    DOI: <a href='https://doi.org/10.24381/cds.adbb2d47' target='_blank'>10.24381/cds.adbb2d47</a>
+    </a> · DOI: <a href='https://doi.org/10.24381/cds.adbb2d47' target='_blank'>10.24381/cds.adbb2d47</a>
     <br></br><br></br>
     <a href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels-monthly-means?tab=overview' target='_blank'>
     ERA5 monthly averaged data on single levels from 1940 to present
-    </a>
-    <br></br>
-    DOI: <a href='https://doi.org/10.24381/cds.f17050d7' target='_blank'>10.24381/cds.f17050d7</a>
+    </a> · DOI: <a href='https://doi.org/10.24381/cds.f17050d7' target='_blank'>10.24381/cds.f17050d7</a>
     </p>
     <p>
     For more information on the Copernicus Climate Change Service – refer to
@@ -353,10 +345,9 @@ const About = (
       <i>
       Climate Pulse is currently in its beta release. We are keen to further
       improve this tool to make it as useful and accessible as possible based
-      on feedback we receive from users. That’s why we would love to hear fro
-      you! For feedback and questions, leave us a message in
-      the <a href="https://confluence.ecmwf.int/category/cd">Chart and data support section</a> on
-      the ECMWF Support page. Please bear with us if our response gets delayed.
+      on feedback we receive from users. In the meantime, we would like to hear from you: for feedback and
+      questions, leave us a message in the <a href="https://confluence.ecmwf.int/category/cd">Chart and data support section</a> on
+      the ECMWF Support page.
       </i>
     </p>
   </TabPane>
