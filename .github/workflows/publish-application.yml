@@ -1,7 +1,4 @@
 name: Publish development application
-
-env:
-  IMAGE_TAG: latest
   
 on:
   push:
@@ -22,17 +19,23 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Set development environment variables
+    - name: Set deployment environment=dev
       if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
       run: |
-        echo "IMAGE_TAG=latest" >> $GITHUB_ENV
-        cat environments/actions.env.dev >> $GITHUB_ENV
-    - name: Set production environment variables
+        echo "DEPLOYMENT_ENVIRONMENT=dev" >> $GITHUB_ENV
+    - name: Set production environment=prod
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       run: |
+        echo "DEPLOYMENT_ENVIRONMENT=prod" >> $GITHUB_ENV
         echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        cat environments/actions.env.prod >> $GITHUB_ENV
-      
+    - name: Set deployment environment variables
+      run: |
+        echo cat environments/actions.env.common;
+        cat environments/actions.env.common >> $GITHUB_ENV;
+        echo cat "environments/actions.env.$DEPLOYMENT_ENVIRONMENT";
+        cat "environments/actions.env.${DEPLOYMENT_ENVIRONMENT}" >> $GITHUB_ENV;
+        cat $GITHUB_ENV
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
       with:
@@ -43,7 +46,7 @@ jobs:
         context: .
         platforms: linux/amd64
         push: true
-        build-args: environment=${{ env.APP_ENVIRONMENT }}
+        build-args: environment=${{ env.DEPLOYMENT_ENVIRONMENT }}
         tags: "eccr.ecmwf.int/c3s-applications/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}"
   
   deployment:
@@ -52,18 +55,22 @@ jobs:
       - build_and_push
     runs-on: 'ubuntu-latest'
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
 
-    - name: Set development environment variables
+    - name: Set deployment environment=dev
       if: github.event_name == 'push' && ! startsWith(github.ref, 'refs/tags')
       run: |
-        echo "IMAGE_TAG=latest" >> $GITHUB_ENV
-        cat environments/actions.env.dev >> $GITHUB_ENV
-    - name: Set production environment variables
+        echo "DEPLOYMENT_ENVIRONMENT=dev" >> $GITHUB_ENV
+    - name: Set production environment=prod
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
       run: |
+        echo "DEPLOYMENT_ENVIRONMENT=prod" >> $GITHUB_ENV
         echo "IMAGE_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        cat environments/actions.env.prod >> $GITHUB_ENV
+    - name: Set deployment environment variables
+      run: |
+        cat environments/actions.env.common >> $GITHUB_ENV
+        cat environments/actions.env.$DEPLOYMENT_ENVIRONMENT >> $GITHUB_ENV
+        cat $GITHUB_ENV
 
     - name: Populate values.yaml
       run: |
@@ -80,8 +87,8 @@ jobs:
     - name: "Update Helm Chart"
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml && chmod 400 kubeconfig.yaml;
-        echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications || helm install -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications --values values.yaml"
-        helm upgrade -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications || helm install -n $APP_NAMESPACE $APP_NAME c3s-applications/c3s-applications --values values.yaml
+        echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml"
+        helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml
       env:
         KUBECONFIG: kubeconfig.yaml
     - name: "Force update of pods"
@@ -90,4 +97,3 @@ jobs:
         kubectl delete pods -n $APP_NAMESPACE -l app=$APP_NAME
       env:
         KUBECONFIG: kubeconfig.yaml   
-      
