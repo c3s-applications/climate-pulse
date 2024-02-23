@@ -6,6 +6,7 @@ import InformationSegment from './components/InformationSegment';
 import Tagline from './components/Tagline';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import CookiesModal from './components/Cookies';
 import React, { createRef } from 'react';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
@@ -23,6 +24,7 @@ const panelStyle = {
 const App = () => {
   return (
   <Provider store={store}>
+    <CookiesModal />
     <Grid id='grad' centered padded columns={1} >
 
       <Grid.Row stretched color='purple'>
