@@ -7,8 +7,11 @@ WORKDIR /app
 
 COPY public/ /app/public
 COPY src/ /app/src
+COPY scripts/ /app/scripts
 COPY package*.json craco.config.js /app/
 COPY environments/.env.${environment} /app/.env
+
+RUN crontab /app/scrpits/status-cron
 
 RUN npm install
 
