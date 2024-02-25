@@ -38,6 +38,7 @@ const TimeSeriesChart = () => {
 
     const defaultHighlightYears = useSelector(state => state.timeSeries.defaultHighlightYears);
 
+    const timeSeriesUrl = 'https://sites.ecmwf.int/data/climatepulse/timeseries/'
     const jsonSrc = `time-series-${variable}-${quantity}.json`;
     const prevJsonSrc = useRef()
 
@@ -105,7 +106,7 @@ const TimeSeriesChart = () => {
 
     const fetchJson = () => {
         dispatch(updateTimeSeries({loaded: false}))
-        fetch(jsonSrc)
+        fetch(timeSeriesUrl + jsonSrc)
             .then(resp => resp.json())
             .then((data)=> {
                 data.layout["height"] = ((window.innerWidth < 768) ? 400 : 593)
