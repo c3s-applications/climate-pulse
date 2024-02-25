@@ -11,6 +11,7 @@ COPY scripts/ /app/scripts
 COPY package*.json craco.config.js /app/
 COPY environments/.env.${environment} /app/.env
 
+RUN apt-get install -y cron wget
 RUN crontab /app/scrpits/status-cron
 
 RUN npm install
