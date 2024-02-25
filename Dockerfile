@@ -13,7 +13,7 @@ COPY environments/.env.${environment} /app/.env
 
 RUN apt-get update
 RUN apt-get install -y cron wget
-RUN crontab /app/scrpits/status-cron
+RUN crontab /app/scripts/status-cron
 
 RUN npm install
 
