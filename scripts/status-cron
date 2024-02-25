@@ -1,0 +1,1 @@
+* * * * * wget -O /app/src/reducers/status.json https://sites.ecmwf.int/data/climatepulse/status/climpulse_status.json
