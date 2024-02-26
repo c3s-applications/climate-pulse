@@ -107,11 +107,28 @@ const getDataLink = (variable) => {
     }
 }
 
+function exampleReducer(state, action) {
+    switch (action.type) {
+      case 'OPEN_MODAL':
+        return { open: true, dimmer: action.dimmer }
+      case 'CLOSE_MODAL':
+        return { open: false }
+      default:
+        throw new Error()
+    }
+  }
+
+
 
 const TimeSeriesButtons = () => {
     const variable = useSelector(state => state.variable)
     const quantity = useSelector(state => state.timeSeries.quantity)
     const maxDate = useSelector(state => state.maxDate)
+    const [state, dispatch] = React.useReducer(exampleReducer, {
+        open: false,
+        dimmer: undefined,
+    })
+    const { open, dimmer } = state
 
     const getDownloadImageUrl = () => {
         let year = maxDate.getFullYear()
@@ -138,11 +155,19 @@ const TimeSeriesButtons = () => {
         >
           Download image (PNG)
         </Popup>
-       
+    
+        <Popup
+            size='small'
+            trigger={<Button icon color='teal' size='small' onClick={() => dispatch({ type: 'OPEN_MODAL' })}><Icon name="info" /></Button>}
+        >
+            More information
+        </Popup>
+
         <Modal
             closeIcon
             size='large'
-            trigger={<Button icon color='teal' size='small' ><Icon name="info" /></Button>}
+            open={open}
+            onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
         >
             <Modal.Header>
                 Time series - {getVariable(variable)}
@@ -186,6 +211,7 @@ const TimeSeriesButtons = () => {
             </p>
             </Modal.Content>
         </Modal>
+        
         </Button.Group>
     )
 }

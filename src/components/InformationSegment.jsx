@@ -223,14 +223,14 @@ const MethodologyContent = () => {
     </AccordionContent>
 
     <AccordionTitle
-      active={activeIndex === 9}
-      index={9}
+      active={activeIndex === 10}
+      index={10}
       onClick={handleClick}
     >
       <Icon name='dropdown' />
       <span style={{color: "#941333"}}><b>Where can I download ERA5 gridded data?</b></span>
     </AccordionTitle>
-    <AccordionContent active={activeIndex === 9}>
+    <AccordionContent active={activeIndex === 10}>
       <p>
       All gridded ERA5 data can be accessed freely from
       the <a href='https://cds.climate.copernicus.eu/cdsapp#!/home' target='_blank'>
@@ -241,14 +241,14 @@ const MethodologyContent = () => {
     </AccordionContent>
 
     <AccordionTitle
-      active={activeIndex === 10}
-      index={10}
+      active={activeIndex === 11}
+      index={11}
       onClick={handleClick}
     >
       <Icon name='dropdown' />
       <span style={{color: "#941333"}}><b>Where can I download ERA5 gridded anomalies?</b></span>
     </AccordionTitle>
-    <AccordionContent active={activeIndex === 10}>
+    <AccordionContent active={activeIndex === 11}>
       <p>
         Precalculated monthly gridded anomalies for surface air temperature from
         January 1979 onward are available in the Climate Data Store, as part of
@@ -260,14 +260,14 @@ const MethodologyContent = () => {
     </AccordionContent>
 
     <AccordionTitle
-      active={activeIndex === 11}
-      index={11}
+      active={activeIndex === 12}
+      index={12}
       onClick={handleClick}
     >
       <Icon name='dropdown' />
       <span style={{color: "#941333"}}><b>How are the graphics produced?</b></span>
     </AccordionTitle>
-    <AccordionContent active={activeIndex === 11}>
+    <AccordionContent active={activeIndex === 12}>
       <p>
       The interactive time series chart is produced
       using <a href='https://plotly.com/python/' target='_blank'>Plotly</a>.
