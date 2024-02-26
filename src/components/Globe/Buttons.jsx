@@ -8,6 +8,20 @@ const CdsUrl = 'https://cds.climate.copernicus.eu/cdsapp#!/dataset/'
 const era5HourlyURL = CdsUrl + 'reanalysis-era5-single-levels'
 const era5MonthlyURL = CdsUrl + 'reanalysis-era5-single-levels-monthly-means'
 
+function modalReducer(state, action) {
+    switch (action.type) {
+        case 'OPEN_DATA':
+            return { dataOpen: true, dimmer: action.dimmer }
+        case 'CLOSE_DATA':
+            return { dataOpen: false }
+        case 'OPEN_INFO':
+            return { infoOpen: true, dimmer: action.dimmer }
+        case 'CLOSE_INFO':
+            return { infoOpen: false }
+      default:
+        throw new Error()
+    }
+  }
 
 const getVariable = (variableName) => {
     switch (variableName) {
@@ -73,13 +87,19 @@ const getVariableDescription = (variable) => {
 }
 
 const GlobeButtons = () => {
-    const [open, setOpen] = useState(false);
     const variable = useSelector(state => state.variable)
     const quantity = useSelector(state => state.globe.quantity)
     const temporalResolution = useSelector(state => state.globe.temporalResolution)
     const dateTime = useSelector(state => state.globe.dateTime)
 
     const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
+
+    const [state, dispatch] = React.useReducer(modalReducer, {
+        dataOpen: false,
+        infoOpen: false,
+        dimmer: undefined,
+    })
+    const { dataOpen, infoOpen, dimmer } = state
 
     function getTimeString(year, month, day) {
         switch (temporalResolution) {
@@ -108,13 +128,18 @@ const GlobeButtons = () => {
 
     return (
         <Button.Group basic size='small' attached={false} color='teal'>
+    
+        <Popup
+            size='small'
+            trigger={<Button icon color='teal' size='small' onClick={() => dispatch({ type: 'OPEN_DATA' })}><Icon name="download" /></Button>}
+        >
+            Download data (GRIB/NetCDF)
+        </Popup>
         <Modal
             closeIcon
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            open={open}
+            onClose={() => dispatch({ type: 'CLOSE_DATA' })}
+            open={dataOpen}
             size='large'
-            trigger={<Button icon color='teal' size='small' ><Icon name="download" /></Button>}
         >
             <Modal.Header>
                 Download ERA5 reanalysis gridded data from the Copernicus Climate Data Store (CDS)
@@ -155,10 +180,18 @@ const GlobeButtons = () => {
           Download image (PNG)
         </Popup>
         
+        <Popup
+            size='small'
+            trigger={<Button icon color='teal' size='small' onClick={() => dispatch({ type: 'OPEN_INFO' })}><Icon name="info" /></Button>}
+        >
+            More information
+        </Popup>
+
         <Modal
             closeIcon
             size='large'
-            trigger={<Button icon color='teal' size='small' ><Icon name="info" /></Button>}
+            onClose={() => dispatch({ type: 'CLOSE_INFO' })}
+            open={infoOpen}
         >
             <Modal.Header>
                 Map view - {getVariable(variable)}
