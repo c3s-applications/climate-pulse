@@ -88,7 +88,7 @@ jobs:
         cat values.yaml;
 
     - name: 'Add repo'
-      run: helm repo add --username ${{ secrets.HARBOR_USERNAME  }} --password ${{ secrets.HARBOR_PASSWORD  }} single-pod-application https://eccr.ecmwf.int/chartrepo/c3s-applications
+      run: helm repo add --username ${{ secrets.HARBOR_USERNAME  }} --password ${{ secrets.HARBOR_PASSWORD  }} c3s-applications https://eccr.ecmwf.int/chartrepo/c3s-applications
     - name: "Update Helm Chart"
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml && chmod 400 kubeconfig.yaml;
