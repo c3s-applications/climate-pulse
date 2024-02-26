@@ -1,55 +1,48 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import {
-  ModalHeader,
-  ModalContent,
-  ModalActions,
+  Sidebar,
+  Segment,
   Button,
-  Modal,
+  Container,
 } from 'semantic-ui-react'
 
-function exampleReducer(state, action) {
-  switch (action.type) {
-    case 'OPEN_MODAL':
-      return { open: true, dimmer: action.dimmer }
-    case 'CLOSE_MODAL':
-      return { open: false }
-    default:
-      throw new Error()
+function getCookie(key) {
+    var b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+    return b ? b.pop() : "";
   }
-}
 
 function CookiesModal() {
-  const [state, dispatch] = React.useReducer(exampleReducer, {
-    open: false,
-    dimmer: undefined,
-  })
-  const { open, dimmer } = state
+  const cookiesAccepted = (
+     getCookie("acceptedCookies") != "true"
+  )
+  const [visible, setVisible] = React.useState(cookiesAccepted)
 
-  useEffect(() => dispatch({ type: 'OPEN_MODAL' }), []);
+  const acceptCookies = () => {
+    document.cookie = "acceptedCookies=true"; 
+    setVisible(false)
+  }
 
   return (
     <div>
-      <Modal
-        dimmer={dimmer}
-        open={open}
-        onClose={() => dispatch({ type: 'CLOSE_MODAL' })}
-      >
-        <ModalHeader>Cookies</ModalHeader>
-        <ModalContent style={{fontSize: "1.2rem"}}>
-        We use cookies on this website to improve user experience and generate
-        aggregated data on website use and statistics. If you choose "Accept
-        all", you consent to the use of all cookies.
-        </ModalContent>
-        <ModalActions>
-          <Button negative onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
-            Deny all
-          </Button>
-          <Button positive onClick={() => dispatch({ type: 'CLOSE_MODAL' })}>
-            Accept all
-          </Button>
-        </ModalActions>
-      </Modal>
-    </div>
+        <Sidebar
+            as={Segment}
+            animation='overlay'
+            visible={visible}
+            width='thin'
+            inverted
+            direction="bottom"
+        >
+            <Container style={{fontSize: "1.4rem"}} textAlign='justified'>
+            We use cookies on this website to improve user experience and generate
+            aggregated data on website use and statistics. If you choose "Accept
+            all", you consent to the use of all cookies.
+            </Container>
+            <Container textAlign='right'>
+            <Button color="purple" size='large' onClick={() => setVisible(false)}>Deny all</Button>
+            <Button color="purple" size='large' onClick={() => acceptCookies()}>Accept all</Button>
+            </Container>
+        </Sidebar>
+        </div>
   )
 }
 
