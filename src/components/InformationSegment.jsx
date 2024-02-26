@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, TabPane, Tab, Segment, Accordion, AccordionTitle, AccordionContent, Icon } from 'semantic-ui-react'
+import { Container, TabPane, Tab, Segment, Accordion, AccordionTitle, AccordionContent, Icon, Button } from 'semantic-ui-react'
 
 const MethodologyContent = () => {
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -213,7 +213,22 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      <span style={{color: "#941333"}}><b>Where can I find ERA5 data?</b></span>
+      <span style={{color: "#941333"}}><b>Can I download the data behind the line charts?</b></span>
+    </AccordionTitle>
+    <AccordionContent active={activeIndex === 9}>
+      <p>
+      Yes, the data used to generate the line charts can be downloaded as CSV
+      files by clicking on the <Button icon basic color='teal' size='mini' ><Icon name="download" /></Button> button below the charts. 
+      </p>
+    </AccordionContent>
+
+    <AccordionTitle
+      active={activeIndex === 9}
+      index={9}
+      onClick={handleClick}
+    >
+      <Icon name='dropdown' />
+      <span style={{color: "#941333"}}><b>Where can I download ERA5 gridded data?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 9}>
       <p>
@@ -231,7 +246,7 @@ const MethodologyContent = () => {
       onClick={handleClick}
     >
       <Icon name='dropdown' />
-      <span style={{color: "#941333"}}><b>Where can I download ERA5 anomalies?</b></span>
+      <span style={{color: "#941333"}}><b>Where can I download ERA5 gridded anomalies?</b></span>
     </AccordionTitle>
     <AccordionContent active={activeIndex === 10}>
       <p>

@@ -14,6 +14,35 @@ const getVariable = (variableName) => {
     }
 }
 
+
+const getShortName = (variableName) => {
+    switch (variableName) {
+        case 'air-temperature':
+            return '2t'
+        case 'sea-temperature':
+            return 'sst'
+    }
+}
+
+
+const getArea = (variableName) => {
+    switch (variableName) {
+        case 'air-temperature':
+            return 'global'
+        case 'sea-temperature':
+            return '60S-60N_ocean'
+    }
+}
+
+const getTsQuantity = (quantity) => {
+    switch (quantity) {
+        case 'absolute':
+            return ''
+        case 'anomaly':
+            return '_anomaly'
+    }
+}
+
 const getQuantity = (quantity) => {
     switch (quantity) {
         case 'absolute':
@@ -84,6 +113,17 @@ const TimeSeriesButtons = () => {
     const quantity = useSelector(state => state.timeSeries.quantity)
     const maxDate = useSelector(state => state.maxDate)
 
+    const getDownloadImageUrl = () => {
+        let year = maxDate.getFullYear()
+        let month = ('0' + (maxDate.getMonth()+1)).slice(-2)
+        let day = ('0' + maxDate.getDate()).slice(-2)
+
+        let timeString = `${year}-${month}-${day}`
+
+        var url = `https://sites.ecmwf.int/data/climatepulse/timeseries/era5_daily_series_${getShortName(variable)}_${getArea(variable)}${getTsQuantity(quantity)}_${timeString}.png`
+        return url
+    }
+
     return (
         <Button.Group basic size='small' color='teal'>
         <Popup
@@ -94,7 +134,7 @@ const TimeSeriesButtons = () => {
         </Popup>
         <Popup
           size='small'
-          trigger={ <Button icon color='teal' size='small' ><Icon name="camera" /></Button>}
+          trigger={ <Button icon color='teal' size='small' href={getDownloadImageUrl()} target="_blank"><Icon name="camera" /></Button>}
         >
           Download image (PNG)
         </Popup>
