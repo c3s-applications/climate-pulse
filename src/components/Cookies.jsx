@@ -38,6 +38,7 @@ function CookiesModal() {
             width='thin'
             inverted
             direction="bottom"
+            style={{zIndex: 10000}}
         >
             <Container style={{fontSize: "1.4rem"}} textAlign='justified'>
             We use cookies on this website to improve user experience and generate
