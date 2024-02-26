@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TagManager from 'react-gtm-module'
 import {
   Sidebar,
@@ -19,15 +19,21 @@ const tagManagerArgs = {
 
 function CookiesModal() {
   const cookiesAccepted = (
-     getCookie("acceptedCookies") != "true"
+     getCookie("acceptedCookies") == "true"
   )
-  const [visible, setVisible] = useState(cookiesAccepted)
+  const [visible, setVisible] = useState(!cookiesAccepted)
 
   const acceptCookies = () => {
     document.cookie = "acceptedCookies=true";
     TagManager.initialize(tagManagerArgs);
     setVisible(false)
   }
+
+  useEffect(() => {
+    if (cookiesAccepted) {
+        acceptCookies()
+    }
+  }, []);
 
   return (
     <div>
