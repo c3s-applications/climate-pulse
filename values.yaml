@@ -6,4 +6,4 @@ deployment:
 ingress:
   hostname: DUMMY_HOSTNAME
   path: DUMMY_APP_PATH
-  
+  secretName: DUMMY_SECRET_NAME
