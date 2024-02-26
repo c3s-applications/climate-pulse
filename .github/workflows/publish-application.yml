@@ -93,7 +93,7 @@ jobs:
       run: |
         echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml && chmod 400 kubeconfig.yaml;
         echo "EXCUTING: helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml"
-        helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --values values.yaml
+        helm upgrade -n $APP_NAMESPACE $APP_NAME $HELM_CHART --version 0.1.3 --values values.yaml || helm install -n $APP_NAMESPACE $APP_NAME $HELM_CHART --version 0.1.3 --values values.yaml
       env:
         KUBECONFIG: kubeconfig.yaml
     - name: "Force update of pods"
