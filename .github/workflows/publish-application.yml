@@ -38,9 +38,7 @@ jobs:
 
     - name: Set up SSL certificate key
       run: |
-        ls;
-        ls /;
-        echo ${{ secrets.SSL_KEY }} > nginx/STAR.climate.copernicus.eu.key
+        echo "${{ secrets.SSL_KEY }}" > nginx/STAR.climate.copernicus.eu.key
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
