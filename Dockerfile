@@ -11,10 +11,6 @@ COPY scripts/ /app/scripts
 COPY package*.json craco.config.js /app/
 COPY environments/.env.${environment} /app/.env
 
-RUN apt-get update
-RUN apt-get install -y cron wget
-RUN crontab /app/scripts/status-cron
-
 RUN npm install
 
 FROM prepare AS development
@@ -24,6 +20,10 @@ CMD ["npm", "start"]
 
 FROM prepare AS build
 RUN npm run build
+
+RUN apt-get update
+RUN apt-get install -y cron wget
+RUN crontab /app/scripts/status-cron
 
 FROM nginx:1.21-alpine
 COPY --from=build /app/build /usr/share/nginx/html/
