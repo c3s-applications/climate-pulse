@@ -59,6 +59,7 @@ const MainPanel = () => {
             )
             dispatch(
               updateGlobe({
+                dateTime: new Date(data["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")),
                 maxDaily: new Date(data["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")),
                 maxMonthly: new Date(data["monthly"].toString().replace(/(\d{4})(\d{2})/, "$1-$2")),
                 maxAnnual: new Date(data["annual"].toString().replace(/(\d{4})/, "$1")),
