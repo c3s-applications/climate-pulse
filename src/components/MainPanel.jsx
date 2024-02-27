@@ -56,7 +56,7 @@ const MainPanel = () => {
               updateState({
                 maxDate: new Date(data["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"))
               })
-            ),
+            )
             dispatch(
               updateGlobe({
                 maxDaily: new Date(data["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3")),
