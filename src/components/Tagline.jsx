@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
-import { Grid, Icon, Header, Segment, Popup, Container, Divider } from 'semantic-ui-react'
+import { Grid, Icon, Header, Segment, Popup, Container, Button } from 'semantic-ui-react'
 
 const TaglineSegment = (props) => (
     <Segment {...props} attached color='purple' ></Segment>
@@ -21,6 +21,7 @@ const LatestData = ({maxDate}) => (
           }
           position='bottom'
         />
+        <Button onClick={() => console.log(maxDate)} />
     </>
 )
 

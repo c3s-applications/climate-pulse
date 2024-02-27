@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Dimmer, Divider, Loader, Transition, Button, Segment, Icon } from 'semantic-ui-react'
+import { updateState, updateGlobe } from "../actions/actions"
 
 import GlobeMenu from './Globe/Menu'
 import GlobeChart from './Globe/Chart'
@@ -35,6 +36,7 @@ const switchToTimeSeriesStyle = (
 
 
 const MainPanel = () => {
+  const dispatch = useDispatch()
   const timeSeriesLoaded = useSelector(state => state.timeSeries.loaded)
   const variable = useSelector(state => state.variable)
 
@@ -45,6 +47,22 @@ const MainPanel = () => {
   const globeMinDaily = useSelector(state => state.globe.minDaily)
   const globeMinMonthly = useSelector(state => state.globe.minMonthly)
   const globeMinAnnual = useSelector(state => state.globe.minAnnual)
+
+  const fetchStatus = () => {
+    fetch("https://sites.ecmwf.int/data/climatepulse/status/climpulse_status.json")
+        .then(resp => resp.json())
+        .then((data)=> {
+            dispatch(
+              updateState({
+                maxDate: new Date(data["daily"].toString().replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"))
+              })
+            )
+        })
+  }
+
+  useEffect(() => {
+      fetchStatus()
+  }, [])
 
   const timeSeriesStart = ((variable === 'air-temperature') ? 1940 : 1979)
 
