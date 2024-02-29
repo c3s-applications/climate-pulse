@@ -128,8 +128,8 @@ const MethodologyContent = () => {
       by combining model output and observations. For the last day in the time
       series (2 days behind real time), the hourly data is taken from the ERA5
       analysis for 00 to 21 UTC and from the ERA5 short-term forecast for 22 and
-      23 UTC. Therefore, in case, the data is preliminary. It will be updated
-      once ERA5 analysis data for the full day become available. For SST, given
+      23 UTC. Therefore, in this case, the data is preliminary. It will be updated
+      once ERA5 analysis data for the full day becomes available. For SST, given
       that the SST products used in ERA5 already provide daily data, the SST
       data at 12 UTC in the ERA5 archive is used.
       </p>
@@ -186,7 +186,7 @@ const MethodologyContent = () => {
     </AccordionTitle>
     <AccordionContent active={activeIndex === 8}>
       <p>
-      The ERA5 dataset provides data from January 1940 onward. For the initia
+      The ERA5 dataset provides data from January 1940 onward. For the initial
        beta release of Climate Pulse, only a subset of the data is being used,
        depending on the variable and/or the temporal sampling. 
       </p>
