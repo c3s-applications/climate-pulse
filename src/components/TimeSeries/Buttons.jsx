@@ -101,9 +101,9 @@ const getVariableDescription = (variable) => {
 const getDataLink = (variable) => {
     switch (variable) {
         case 'air-temperature':
-            return 'https://sites.ecmwf.int/data/c3sci/.climatepulse/data/era5_daily_series_2t_global.csv'
+            return 'https://sites.ecmwf.int/data/climatepulse/data/series/era5_daily_series_2t_global.csv'
         case 'sea-temperature':
-            return 'https://sites.ecmwf.int/data/c3sci/.climatepulse/data/era5_daily_series_sst_60S-60N.csv'
+            return 'https://sites.ecmwf.int/data/climatepulse/data/series/era5_daily_series_sst_60S-60N_ocean.csv'
     }
 }
 
