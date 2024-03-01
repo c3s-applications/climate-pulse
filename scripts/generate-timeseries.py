@@ -24,8 +24,6 @@ DOMAINS = {
 
 def get_year_data(df, year, var_name="temp"):
     data = df[df['date'].str.contains(str(year))==True][var_name].values
-    # if len(data) != 366:
-    #     data = np.delete(data, [59])
     return data
 
 def day_of_year(n_days, year):
