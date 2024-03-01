@@ -149,28 +149,37 @@ const Chart = () => {
 
     return (
       <>
-      <h3
-          align="left"
-          style={{
-              marginLeft: 35,
-              marginTop: 19,
-              marginBottom: 0,
-              fontWeight: "normal",
-              fontSize: 18,
-              lineHeight: 1,
-              color: "#2A3F5F",
-          }}
-      >
-          <b>{getVariable()}</b>
-          <br></br>
-          <span style={{fontSize: 14}}>{getTemporalResolution()} mean {getVariableType()} - {getTimeTitle()}</span>
-          <br></br>
-          <span style={{fontSize: 13}}>
-          Data: ERA5 ● Credit: C3S/ECMWF
-          </span>
+              <Grid>
+            <Grid.Row verticalAlign="middle">
+                <Grid.Column width={1} />
+                <Grid.Column computer={10} tablet={10} mobile={14}>
+                <h3
+                    align="left"
+                    style={{
+                        fontWeight: "normal",
+                        fontSize: 18,
+                        lineHeight: 1,
+                        color: "#2A3F5F",
+                    }}
+                >
+                    <b>{getVariable()}</b>
+                    <br></br>
+                    <span style={{fontSize: 14}}>{getTemporalResolution()} mean {getVariableType()} - {getTimeTitle()}</span>
+                    <br></br>
+                    <span style={{fontSize: 13}}>
+                    Data: ERA5 ● Credit: C3S/ECMWF
+                    </span>
 
-      </h3>
-
+                </h3>
+                </Grid.Column>
+                <Grid.Column only="computer" width={5}>
+                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
+                </Grid.Column>
+                <Grid.Column only="tablet" width={5}>
+                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
       <Grid padded={false} stackable>
             <Grid.Row>
                 <Grid.Column width={16} textAlign='center' verticalAlign='middle'>

@@ -148,8 +148,8 @@ const TimeSeriesChart = () => {
         <div id='timeseries'>
         <Grid>
             <Grid.Row verticalAlign="middle">
-                <Grid.Column computer={1} />
-                <Grid.Column computer={10}>
+                <Grid.Column width={1} />
+                <Grid.Column computer={10} tablet={10} mobile={14}>
                     <h3
                         align="left"
                         style={{
@@ -169,11 +169,16 @@ const TimeSeriesChart = () => {
             
                     </h3>
                 </Grid.Column>
-                <Grid.Column computer={5}>
+                <Grid.Column only="computer" width={5}>
+                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
+                </Grid.Column>
+                <Grid.Column only="tablet" width={4}>
                     <Image src='logos/c3s-positive.png' size='small' floated="right"/>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
+        <Divider fitted hidden />
+        <Divider fitted hidden />
         <Divider fitted hidden />
         <Divider fitted hidden />
         <div>
@@ -193,6 +198,9 @@ const TimeSeriesChart = () => {
                 }
             }}
         />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
         </div>
         </div>
     )

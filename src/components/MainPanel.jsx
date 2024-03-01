@@ -99,6 +99,16 @@ const MainPanel = () => {
         <TimeSeriesChart />
         <TimeSeriesControls />
         <TimeSeriesButtons />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
+        <Divider fitted hidden />
       </Dimmer.Dimmable>
     </>
   )
