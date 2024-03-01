@@ -123,7 +123,8 @@ const GlobeControls = () => {
     function invalidDay(day) {
         return (
             (non31DayMonths.includes(dateTime.getMonth()) && day===31) ||
-            (dateTime.getMonth()===1 && day>=29) ||
+            (dateTime.getMonth()===1 && (dateTime.getFullYear()%4 === 0) && day>=30) ||
+            (dateTime.getMonth()===1 && (dateTime.getFullYear()%4 !== 0) && day>=29) ||
             (
                 (dateTime.getFullYear() === maxDate().getFullYear()) &&
                 (dateTime.getMonth() === maxDate().getMonth()) &&
