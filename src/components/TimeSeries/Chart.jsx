@@ -5,7 +5,7 @@ import Plot from 'react-plotly.js'
 import defaultPlot from './default.json';
 import { getAnnualValue, getStartYear, sanitiseYears } from './AnnualValues'
 import { applyColormap } from './Colors'
-import { Divider } from 'semantic-ui-react'
+import { Divider, Image, Grid } from 'semantic-ui-react'
 
 
 const plotlyConfig = {
@@ -146,28 +146,34 @@ const TimeSeriesChart = () => {
 
     return (
         <div id='timeseries'>
-        {/* <Image src='logos/c3s-mini-positive.png' size='mini' spaced='right' floated='right'/> */}
-        <h3
-            align="left"
-            style={{
-                marginLeft: 35,
-                marginTop: 18,
-                marginBottom: 0,
-                fontWeight: "normal",
-                fontSize: 19,
-                lineHeight: 1,
-                color: "#2A3F5F",
-            }}
-        >
-            <b>{getVariable()}</b>
-            <br></br>
-            <span style={{fontSize: 14}}>ERA5 {getStartYear(variable)}-{maxDate.getFullYear()} ({getExtent()} {getQuantity()})</span>
-            <br></br>
-            <span style={{fontSize: 13}}>
-            Data: ERA5 ● Credit: C3S/ECMWF
-            </span>
-  
-        </h3>
+        <Grid>
+            <Grid.Row verticalAlign="middle">
+                <Grid.Column computer={1} />
+                <Grid.Column computer={10}>
+                    <h3
+                        align="left"
+                        style={{
+                            fontWeight: "normal",
+                            fontSize: 19,
+                            lineHeight: 1,
+                            color: "#2A3F5F",
+                        }}
+                    >
+                        <b>{getVariable()}</b>
+                        <br></br>
+                        <span style={{fontSize: 14}}>ERA5 {getStartYear(variable)}-{maxDate.getFullYear()} ({getExtent()} {getQuantity()})</span>
+                        <br></br>
+                        <span style={{fontSize: 13}}>
+                        Data: ERA5 ● Credit: C3S/ECMWF
+                        </span>
+            
+                    </h3>
+                </Grid.Column>
+                <Grid.Column computer={5}>
+                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
         <Divider fitted hidden />
         <Divider fitted hidden />
         <div>
