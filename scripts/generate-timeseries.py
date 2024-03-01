@@ -24,13 +24,17 @@ DOMAINS = {
 
 def get_year_data(df, year, var_name="temp"):
     data = df[df['date'].str.contains(str(year))==True][var_name].values
-    if len(data) == 366:
-        data = np.delete(data, [59])
+    # if len(data) != 366:
+    #     data = np.delete(data, [59])
     return data
 
-def day_of_year(n_days):
-    start = datetime(2001, 1, 1, 12)
-    return [start+timedelta(i) for i in range(n_days)]
+def day_of_year(n_days, year):
+    start = datetime(2000, 1, 1, 12)
+    if year % 4 == 0:
+        print(year)
+        return [start+timedelta(i) for i in range(n_days)]
+    else:
+        return [start+timedelta(i+(1 if i >= 59 else 0)) for i in range(n_days)]
 
 def generate_hovertemplate(year, anomalies=False):
     if anomalies:
@@ -92,7 +96,7 @@ def timeseries(
             line_width = LATEST_LINEWIDTH
             legendgroup = 'latest'
             name = str(year)
-            latest_date = day_of_year(len(data))[-1]
+            latest_date = day_of_year(len(data), year)[-1]
             if anomalies:
                 text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:+.2f}°C</b>"
             else:
@@ -125,7 +129,7 @@ def timeseries(
             name = legendgroup
         
         trace = go.Scatter(
-            x=day_of_year(len(data)),
+            x=day_of_year(len(data), year),
             y=data,
             line_color=color,
             line_width=line_width,
@@ -144,7 +148,7 @@ def timeseries(
             first = False
     
     reference_trace = go.Scatter(
-        x=day_of_year(len(reference_mean)),
+        x=day_of_year(len(reference_mean), year=2000),
         y=reference_mean if not anomalies else [0]*len(reference_mean),
         name="1991-2020 average",
         line_color="darkgrey",
@@ -187,10 +191,10 @@ def timeseries(
         xaxis=dict(
             showgrid=False,
             tickmode="array",
-            tickvals=[f"2001-{i:02d}-15" for i in range(1, 13)],
+            tickvals=[f"2000-{i:02d}-15" for i in range(1, 13)],
             ticktext=["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
             ticklabelmode="period",
-            range=["2000-12-25", "2001-12-31"],
+            range=["1999-12-25", "2000-12-31"],
             tickfont=dict(size=FONTSIZE),
         ),
         margin=dict(l=0, r=0, b=50, t=40,),
@@ -204,7 +208,7 @@ def timeseries(
     if write_png:
         data = get_year_data(df, end_year-1, var_name=data_col)
         trace = go.Scatter(
-            x=day_of_year(len(data)),
+            x=day_of_year(len(data), end_year-1),
             y=data,
             line_color="#F07736",
             line_width=2,
