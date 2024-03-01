@@ -24,13 +24,14 @@ DOMAINS = {
 
 def get_year_data(df, year, var_name="temp"):
     data = df[df['date'].str.contains(str(year))==True][var_name].values
-    if len(data) == 366:
-        data = np.delete(data, [59])
     return data
 
-def day_of_year(n_days):
-    start = datetime(2001, 1, 1, 12)
-    return [start+timedelta(i) for i in range(n_days)]
+def day_of_year(n_days, year):
+    start = datetime(2000, 1, 1, 12)
+    if year % 4 == 0:
+        return [start+timedelta(i) for i in range(n_days)]
+    else:
+        return [start+timedelta(i+(1 if i >= 59 else 0)) for i in range(n_days)]
 
 def generate_hovertemplate(year, anomalies=False):
     if anomalies:
@@ -92,7 +93,7 @@ def timeseries(
             line_width = LATEST_LINEWIDTH
             legendgroup = 'latest'
             name = str(year)
-            latest_date = day_of_year(len(data))[-1]
+            latest_date = day_of_year(len(data), year)[-1]
             if anomalies:
                 text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:+.2f}°C</b>"
             else:
@@ -125,7 +126,7 @@ def timeseries(
             name = legendgroup
         
         trace = go.Scatter(
-            x=day_of_year(len(data)),
+            x=day_of_year(len(data), year),
             y=data,
             line_color=color,
             line_width=line_width,
@@ -144,7 +145,7 @@ def timeseries(
             first = False
     
     reference_trace = go.Scatter(
-        x=day_of_year(len(reference_mean)),
+        x=day_of_year(len(reference_mean), year=2000),
         y=reference_mean if not anomalies else [0]*len(reference_mean),
         name="1991-2020 average",
         line_color="darkgrey",
@@ -187,10 +188,10 @@ def timeseries(
         xaxis=dict(
             showgrid=False,
             tickmode="array",
-            tickvals=[f"2001-{i:02d}-15" for i in range(1, 13)],
+            tickvals=[f"2000-{i:02d}-15" for i in range(1, 13)],
             ticktext=["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
             ticklabelmode="period",
-            range=["2000-12-25", "2001-12-31"],
+            range=["1999-12-25", "2000-12-31"],
             tickfont=dict(size=FONTSIZE),
         ),
         margin=dict(l=0, r=0, b=50, t=40,),
@@ -204,7 +205,7 @@ def timeseries(
     if write_png:
         data = get_year_data(df, end_year-1, var_name=data_col)
         trace = go.Scatter(
-            x=day_of_year(len(data)),
+            x=day_of_year(len(data), end_year-1),
             y=data,
             line_color="#F07736",
             line_width=2,
@@ -213,6 +214,40 @@ def timeseries(
             mode="lines",
         )
         fig.add_trace(trace)
+        
+        year = end_year
+        data = get_year_data(df, end_year, var_name=data_col)
+        color = C3S_RED
+        line_width = LATEST_LINEWIDTH
+        legendgroup = 'latest'
+        name = str(year)
+        latest_date = day_of_year(len(data), year)[-1]
+        if anomalies:
+            text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:+.2f}°C</b>"
+        else:
+            text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:.2f}°C</b>"
+        if len(data) < 250:
+            textposition = "middle right"
+        elif len(data) < 328:
+            textposition = "bottom center"
+        else:
+            textposition = "middle left"
+        latest_marker = go.Scatter(
+            x=[latest_date],
+            y=[data[-1]],
+            line_color=color,
+            line_width=line_width,
+            showlegend=False,
+            name=f"{latest_date:%-d %b} {year}",
+            text=text,
+            mode="markers+text",
+            textposition=textposition,
+            textfont=dict(color=color, size=16),
+            marker={"size": 9},
+            legendgroup="latest",
+            hoverinfo="skip",
+    )
+        fig.add_trace(latest_marker)
         
         data = get_year_data(df, end_year, var_name=data_col)
         
@@ -231,6 +266,7 @@ def timeseries(
             font=dict(size=FONTSIZE),
             showarrow=False,
         )
+        
         fig.update_layout(
             title={
                 'text': (
@@ -240,19 +276,27 @@ def timeseries(
                 'y': 0.95,
                 'x': 0.042,
                 'xanchor': 'left',
-                'yanchor': 'bottom'
-                
-        },
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=0.98,
-            xanchor="left",
-            font=dict(size=FONTSIZE-2),
-        ),
-        margin=dict(l=10, r=10, b=50, t=100,),
-        width=1000,
-        height=650,
+                'yanchor': 'bottom',
+            },
+            images=[
+                dict(
+                    source="./logoline.png",
+                    xref="paper", yref="paper",
+                    x=0.5, y=-0.1,
+                    sizex=0.8, sizey=0.2,
+                    xanchor="center", yanchor="top"
+                ),
+            ],
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=0.98,
+                xanchor="left",
+                font=dict(size=FONTSIZE-2),
+            ),
+            margin=dict(l=10, r=10, b=120, t=100,),
+            width=1000,
+            height=650,
         )
         fig.write_image(filename)
 
