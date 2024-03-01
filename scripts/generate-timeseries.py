@@ -29,7 +29,6 @@ def get_year_data(df, year, var_name="temp"):
 def day_of_year(n_days, year):
     start = datetime(2000, 1, 1, 12)
     if year % 4 == 0:
-        print(year)
         return [start+timedelta(i) for i in range(n_days)]
     else:
         return [start+timedelta(i+(1 if i >= 59 else 0)) for i in range(n_days)]
@@ -216,6 +215,40 @@ def timeseries(
         )
         fig.add_trace(trace)
         
+        year = end_year
+        data = get_year_data(df, end_year, var_name=data_col)
+        color = C3S_RED
+        line_width = LATEST_LINEWIDTH
+        legendgroup = 'latest'
+        name = str(year)
+        latest_date = day_of_year(len(data), year)[-1]
+        if anomalies:
+            text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:+.2f}°C</b>"
+        else:
+            text = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:.2f}°C</b>"
+        if len(data) < 250:
+            textposition = "middle right"
+        elif len(data) < 328:
+            textposition = "bottom center"
+        else:
+            textposition = "middle left"
+        latest_marker = go.Scatter(
+            x=[latest_date],
+            y=[data[-1]],
+            line_color=color,
+            line_width=line_width,
+            showlegend=False,
+            name=f"{latest_date:%-d %b} {year}",
+            text=text,
+            mode="markers+text",
+            textposition=textposition,
+            textfont=dict(color=color, size=16),
+            marker={"size": 9},
+            legendgroup="latest",
+            hoverinfo="skip",
+    )
+        fig.add_trace(latest_marker)
+        
         data = get_year_data(df, end_year, var_name=data_col)
         
         filename = f"{csv_file.split('.')[0]}_{'anomaly_' if anomalies else ''}{end_year}-{latest_date:%m-%d}.png"
@@ -233,6 +266,7 @@ def timeseries(
             font=dict(size=FONTSIZE),
             showarrow=False,
         )
+        
         fig.update_layout(
             title={
                 'text': (
@@ -242,19 +276,27 @@ def timeseries(
                 'y': 0.95,
                 'x': 0.042,
                 'xanchor': 'left',
-                'yanchor': 'bottom'
-                
-        },
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=0.98,
-            xanchor="left",
-            font=dict(size=FONTSIZE-2),
-        ),
-        margin=dict(l=10, r=10, b=50, t=100,),
-        width=1000,
-        height=650,
+                'yanchor': 'bottom',
+            },
+            images=[
+                dict(
+                    source="./logoline.png",
+                    xref="paper", yref="paper",
+                    x=0.5, y=-0.1,
+                    sizex=0.8, sizey=0.2,
+                    xanchor="center", yanchor="top"
+                ),
+            ],
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=0.98,
+                xanchor="left",
+                font=dict(size=FONTSIZE-2),
+            ),
+            margin=dict(l=10, r=10, b=120, t=100,),
+            width=1000,
+            height=650,
         )
         fig.write_image(filename)
 
