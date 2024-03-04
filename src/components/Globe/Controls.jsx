@@ -217,14 +217,6 @@ const GlobeControls = () => {
     function incrementDay(days) {      
       var result = new Date(dateTime);
       result.setDate(result.getDate() + days);
-    
-      if (result.getMonth()===1 && result.getDate()===29) {
-        if (days < 0) {
-            result.setDate(result.getDate() - 1);
-        } else {
-            result.setDate(result.getDate() + 1);
-        }
-      }
 
       if (result > maxDate()) {
         result = maxDate()
