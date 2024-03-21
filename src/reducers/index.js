@@ -26,7 +26,7 @@ const initialState = {
     maxDaily: new Date(maxDaily),
     minDaily: new Date("2023-01-01"),
     maxMonthly: new Date(maxMonthly),
-    minMonthly: new Date("2022-01-15"),
+    minMonthly: new Date("1979-01-15"),
     maxAnnual: new Date(maxAnnual),
     minAnnual: new Date("1979-06-01"),
   },
