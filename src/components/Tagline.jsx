@@ -34,7 +34,7 @@ const Tagline = () => {
                     <Grid.Column textAlign='center' computer={10} tablet={16} mobile={16}>
                     <Container>
                     <Header as={'h3'} style={{fontWeight: 'normal', fontSize: '1.2rem', fontFamily: 'Lato'}}>
-                    Near-real time updates of key global climate variables from the
+                    Near-real time updates of key global climate variables from
                     the <span style={{color: '#941933', fontWeight: 'bold'}}>Copernicus Climate Change Service (C3S)</span>
                     </Header>
                     </Container>
