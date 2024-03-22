@@ -46,17 +46,40 @@ const TimeSeriesChart = () => {
 
     function getVariable() {
         if (variable === 'air-temperature') {
-            return 'Surface air temperature'
+            if (quantity === 'absolute') {
+                return 'Global surface air temperature'
+            } else {
+                return 'Global surface air temperature anomaly'
+            }
         } else {
-            return 'Sea surface temperature'
+            if (quantity === 'absolute') {
+                return `Sea surface temperature ${((window.innerWidth < 768) ? "●" : "for")} 60°S–60°N`
+            } else {
+                return `Sea surface temperature anomaly ${((window.innerWidth < 768) ? "●" : "for")} 60°S–60°N`
+            }
         }
     }
 
     function getQuantity() {
         if (quantity === 'absolute') {
-            return 'mean'
+            return 'average'
         } else {
             return 'anomaly'
+        }
+    }
+    
+    function getSecondLineExtra() {
+        if (quantity === 'absolute') {
+            return ' ● Data ERA5'
+        } else {
+            return ' ● Reference period: 1991-2020'
+        }
+    }
+    function getThirdLineExtra() {
+        if (quantity === 'absolute') {
+            return ''
+        } else {
+            return 'Data: ERA5 ● '
         }
     }
 
@@ -146,35 +169,35 @@ const TimeSeriesChart = () => {
 
     return (
         <div id='timeseries'>
+        <Divider hidden />
         <Grid>
             <Grid.Row verticalAlign="middle">
-                <Grid.Column width={1} />
-                <Grid.Column computer={10} tablet={10} mobile={14}>
+                <Grid.Column textAlign="center">
                     <h3
-                        align="left"
+                        align="center"
                         style={{
                             fontWeight: "normal",
-                            fontSize: 19,
+                            fontSize: ((window.innerWidth < 768) ? ((variable === 'sea-temperature') ? 13 : 13) : 18),
                             lineHeight: 1,
                             color: "#2A3F5F",
                         }}
                     >
                         <b>{getVariable()}</b>
                         <br></br>
-                        <span style={{fontSize: 14}}>ERA5 {getStartYear(variable)}-{maxDate.getFullYear()} ({getExtent()} {getQuantity()})</span>
+                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>Daily average{getSecondLineExtra()}</span>
                         <br></br>
-                        <span style={{fontSize: 13}}>
-                        Data: ERA5 ● Credit: C3S/ECMWF
+                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>
+                        {getThirdLineExtra()}Credit: C3S/ECMWF
                         </span>
             
                     </h3>
                 </Grid.Column>
-                <Grid.Column only="computer" width={5}>
-                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
+                {/* <Grid.Column only="computer" width={2}>
+                    <Image src='logos/c3s-mini-positive.png' size='mini' floated="right"/>
                 </Grid.Column>
-                <Grid.Column only="tablet" width={4}>
-                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
-                </Grid.Column>
+                <Grid.Column only="tablet" width={2}>
+                    <Image src='logos/C3S_logo_compact.png' size='mini' floated="right"/>
+                </Grid.Column> */}
             </Grid.Row>
         </Grid>
         <Divider fitted hidden />

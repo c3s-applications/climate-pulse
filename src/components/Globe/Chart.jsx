@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react"
 import ReactGlobe from 'react-globe.gl';
 import { useSelector, useDispatch } from "react-redux"
 import * as THREE from 'three'
-import { Image, Grid, Button } from 'semantic-ui-react'
+import { Image, Grid, Divider } from 'semantic-ui-react'
 import { updateGlobe } from "../../actions/actions"
 
 const globeMaterial = new THREE.MeshBasicMaterial();
 
-const defaultPOV = { lat: 52, lng: 16, altitude: 1.62 }
+const defaultPOV = { lat: 52, lng: 16, altitude: 1.52 }
 
 function getWidth(maxHeight, padWidescreen, padMobile, mode) {
     if (window.innerWidth < 991) {
@@ -17,11 +17,12 @@ function getWidth(maxHeight, padWidescreen, padMobile, mode) {
     }
   }
 
-function getHeight() {
+
+  function getHeight() {
     if (window.innerWidth < 768) {
-        return 330
+        return 300
     } else {
-        return 500
+        return 505
     }
   }
 
@@ -50,11 +51,35 @@ const Chart = () => {
     const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
     const legendImageUrl = `https://sites.ecmwf.int/data/climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${legendOrientation}.png`
 
+
     function getVariable() {
         if (variable === 'air-temperature') {
-            return 'Surface air temperature'
+            if (quantity === 'absolute') {
+                return 'Surface air temperature'
+            } else {
+                return 'Surface air temperature anomaly'
+            }
         } else {
-            return 'Sea surface temperature'
+            if (quantity === 'absolute') {
+                return `Sea surface temperature`
+            } else {
+                return `Sea surface temperature anomaly`
+            }
+        }
+    }
+    
+    function getSecondLineExtra() {
+        if (quantity === 'absolute') {
+            return ' ● Data ERA5'
+        } else {
+            return ' ● Reference period: 1991-2020'
+        }
+    }
+    function getThirdLineExtra() {
+        if (quantity === 'absolute') {
+            return ''
+        } else {
+            return 'Data: ERA5 ● '
         }
     }
 
@@ -69,9 +94,9 @@ const Chart = () => {
     function getTimeTitle() {
         switch(temporalResolution) {
             case 'daily':
-                return dateTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric'})
+                return dateTime.toLocaleDateString("en-GB", {day: 'numeric', month: 'short', year: 'numeric'})
             case 'monthly':
-                return dateTime.toLocaleDateString("en-GB", {month: 'long', year: 'numeric'})
+                return dateTime.toLocaleDateString("en-GB", {month: ((window.innerWidth < 768) ? 'short' : 'long'), year: 'numeric'})
             case 'annual':
                 return dateTime.toLocaleDateString("en-GB", {year: 'numeric'})
             default:
@@ -149,38 +174,32 @@ const Chart = () => {
 
     return (
       <>
+      <Divider compact hidden />
               <Grid>
             <Grid.Row verticalAlign="middle">
-                <Grid.Column width={1} />
-                <Grid.Column computer={10} tablet={10} mobile={14}>
+                <Grid.Column textAlign="center">
                 <h3
-                    align="left"
+                    align="center"
                     style={{
                         fontWeight: "normal",
-                        fontSize: 18,
+                        fontSize: ((window.innerWidth < 768) ? ((variable === 'sea-temperature') ? 13 : 13) : 18),
                         lineHeight: 1,
                         color: "#2A3F5F",
+                        marginBottom: "-10px",
+                        padding: "0px",
                     }}
                 >
-                    <b>{getVariable()}</b>
+                    <b>{getVariable()} ● {getTimeTitle()}</b>
                     <br></br>
-                    <span style={{fontSize: 14}}>{getTemporalResolution()} mean {getVariableType()} - {getTimeTitle()}</span>
-                    <br></br>
-                    <span style={{fontSize: 13}}>
-                    Data: ERA5 ● Credit: C3S/ECMWF
-                    </span>
+                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>{getTemporalResolution()} average{getSecondLineExtra()}</span>
+                        <br></br>
+                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>
+                        {getThirdLineExtra()}Credit: C3S/ECMWF
+                        </span>
 
                 </h3>
                 </Grid.Column>
-                <Grid.Column only="computer" width={5}>
-                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
-                </Grid.Column>
-                <Grid.Column only="tablet" width={5}>
-                    <Image src='logos/c3s-positive.png' size='small' floated="right"/>
-                </Grid.Column>
             </Grid.Row>
-        </Grid>
-      <Grid padded={false} stackable>
             <Grid.Row>
                 <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
                 <div>
@@ -189,6 +208,7 @@ const Chart = () => {
                         width={width}
                         height={getHeight()}
                         backgroundColor="#ffffff00"
+                        atmosphereAltitude={0.1}
                         pathsData={coastlines}
                         pathPoints="coords"
                         pathPointLat={p => p[1]}
@@ -203,9 +223,11 @@ const Chart = () => {
                         animateIn={true}
                     />
                 </div>
-
                 </Grid.Column>
                 <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
+                <Divider hidden fitted />
+                <Divider hidden fitted />
+                <Divider hidden fitted />
                     <Image
                         src={legendImageUrl}
                         verticalAlign='middle'
