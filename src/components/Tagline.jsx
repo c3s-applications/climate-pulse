@@ -35,7 +35,7 @@ const Tagline = () => {
                     <Container>
                     <Header as={'h3'} style={{fontWeight: 'normal', fontSize: '1.2rem', fontFamily: 'Lato'}}>
                     Near-real time updates of key global climate variables from
-                    the <span style={{color: '#941933', fontWeight: 'bold'}}>Copernicus Climate Change Service (C3S)</span>
+                    the <span style={{color: '#941932', fontWeight: 'bold'}}>Copernicus Climate Change Service (C3S)</span>
                     </Header>
                     </Container>
                     </Grid.Column>
