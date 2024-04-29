@@ -1,6 +1,7 @@
 import calendar
 import os
-from argparse import ArgumentParser
+import textwrap
+from argparse import ArgumentParser, RawTextHelpFormatter
 from datetime import datetime, timedelta
 import pandas as pd
 import plotly.graph_objects as go
@@ -27,7 +28,7 @@ DOMAINS = {
 }
 
 LOGOLINE = os.environ.get('LOGOLINE', os.path.abspath('./logoline.png'))
-LOGO_C3S_COMPACT = os.environ.get('LOGO_C3S_COMPACT', os.path.abspath('./c3s_logo_compact.png'))
+C3S_LOGO_COMPACT = os.environ.get('C3S_LOGO_COMPACT', os.path.abspath('./C3S_logo_compact.png'))
 
 # ------------------------------------------------------------------------------------------------ #
 # Helper functions
@@ -49,15 +50,42 @@ def day_of_year(n_days, year):
 # Main plotting function
 # ------------------------------------------------------------------------------------------------ #
 
-def create_image(var_name='2t', anomalies=False, image_format='png'):
+def create_image(var_name='2t', statistic='absolute', image_format='png',
+                 end_date=None, dirin=None, dirout=None):
+    """_summary_
 
-    csv_file = f"era5_daily_series_{var_name}_{DOMAINS[var_name]['name']}.csv"
+    Args:
+        var_name (str, optional): variable name. Defaults to '2t'.
+        statistic (str, optional): absolute or anomaly. Defaults to 'absolute'.
+        image_format (str, optional): png or pdf. Defaults to 'png'.
+        end_date (str, optional): desired last date as YYYYMMDD. Defaults to None.
+        dirin (str, optional): directory containing the CSV file. Defaults to None.
+        dirout (str, optional): where to save the image. Defaults to None.
+    """
+
+    domain = DOMAINS[var_name]
+    csv_file = f"era5_daily_series_{var_name}_{domain['name']}.csv"
+    print(f'Reading data from {csv_file}')
     df = pd.read_csv(csv_file, comment="#", index_col=0, parse_dates=True).round(2)
+    
+    anomalies = statistic == 'anomaly'
+    col_name = 'ano_91-20' if anomalies else var_name
+    data_reference = get_year_data(df, 2000, "clim_91-20")
+
+    # -------------------------------------------------------------------------------------------- #
+    # Date/time stuff
+    # -------------------------------------------------------------------------------------------- #
+
+    latest_date = df.index[-1]
+    latest_date_file_label = f'{latest_date:%Y-%m-%d}'
+    latest_date_marker_label = f'{latest_date:%-d %b %Y}'
     start_year = int(df.index.year[0])
     end_year = int(df.index.year[-1])
-    data_col = 'ano_91-20' if anomalies else var_name
-    data_reference = get_year_data(df, 2000, "clim_91-20")
-    
+
+    # -------------------------------------------------------------------------------------------- #
+    # Initialise figure
+    # -------------------------------------------------------------------------------------------- #
+
     fig = go.Figure()
 
     # -------------------------------------------------------------------------------------------- #
@@ -66,7 +94,7 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
 
     show_legend = True
     for year in range(start_year, end_year-1):
-        data = get_year_data(df, year, var_name=data_col)
+        data = get_year_data(df, year, var_name=col_name)
         trace = go.Scatter(
             x=day_of_year(len(data), year),
             y=data,
@@ -101,7 +129,7 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
     # -------------------------------------------------------------------------------------------- #
 
     year = end_year - 1 
-    data = get_year_data(df, year, var_name=data_col)
+    data = get_year_data(df, year, var_name=col_name)
     trace_prev_year = go.Scatter(
         x=day_of_year(len(data), year),
         y=data,
@@ -119,11 +147,10 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
     # -------------------------------------------------------------------------------------------- #
 
     year = end_year
-    data = get_year_data(df, end_year, var_name=data_col)
-    latest_date = day_of_year(len(data), year)[-1]
-    latest_date_label = latest_date.strftime(rf'{year}-%m-%d')
+    data = get_year_data(df, end_year, var_name=col_name)
+    latest_date_xvalue = day_of_year(len(data), year)[-1]
     float_format = '+.2f' if anomalies else '.2f'
-    latest_date_annot = f"{latest_date:%-d %b} {year}<br><b>{data[-1]:{float_format}}°C</b>"
+    latest_date_annot = f"{latest_date_marker_label}<br><b>{data[-1]:{float_format}}°C</b>"
 
     trace_end_year = go.Scatter(
         x=day_of_year(len(data), year),
@@ -138,7 +165,7 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
     fig.add_trace(trace_end_year)
 
     trace_marker = go.Scatter(
-        x=[latest_date],
+        x=[latest_date_xvalue],
         y=[data[-1]],
         showlegend=False,
         mode="markers",
@@ -151,11 +178,11 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
     # ---------------------------------------------------------------------------------------- #
 
     # Main title
-    if var_name == '2t' and DOMAINS[var_name] == 'global':
+    if var_name == '2t' and domain['name'] == 'global':
         main_title = f"<b>Daily global {VARIABLES[var_name]} {'anomaly' if anomalies else ''}"
     else:
         main_title = f"<b>Daily {VARIABLES[var_name]} {'anomaly ' if anomalies else ''}"
-        main_title += f"for {DOMAINS[var_name]['title']}"
+        main_title += f"for {domain['title']}"
 
     # Subtitle
     subtitle = f'Data: ERA5 {start_year}–{end_year}  •  '
@@ -188,25 +215,28 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
 
     annotation_latest_value = dict(
         text=latest_date_annot,
-        x=latest_date,
+        x=latest_date_xvalue,
         y=data[-1],
-        ax=15 if anomalies else -5,
+        ax=10 if anomalies else -5,
         ay=-30,
         xanchor='center',
         yanchor="bottom",
         align="center",
-        showarrow=True,
+        showarrow=False,
         arrowcolor=C3S_RED,
         font=dict(color=C3S_RED, size=16),
         standoff=7,
-        borderpad=5,
+        borderpad=1,
     )
+
+
 
     if var_name == 'sst':
         annotation_latest_value |= dict(
             showarrow=False,
             xshift=15,
             yshift=5,        
+            borderpad=5,
         )
 
     annotation_url = dict(
@@ -264,7 +294,7 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
         sizex=0.8, sizey=0.17,
         xref="paper", yref="paper",
         xanchor="right", yanchor="top",
-        source=LOGO_C3S_COMPACT,
+        source=C3S_LOGO_COMPACT,
     )
 
     # ---------------------------------------------------------------------------------------- #
@@ -298,7 +328,7 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
     # Save image to file
     # ---------------------------------------------------------------------------------------- #
 
-    suffix = f"_{'anomaly_' if anomalies else ''}{latest_date_label}"
+    suffix = f"_{'anomaly_' if anomalies else ''}{latest_date_file_label}"
     filename = csv_file.replace('.csv', f'{suffix}.{image_format}')
     fig.write_image(filename, scale=2)
     print(f'Image saved to {filename}')
@@ -309,7 +339,16 @@ def create_image(var_name='2t', anomalies=False, image_format='png'):
 
 def parse_arguments():
 
-    parser = ArgumentParser(description='Create image of daily time series for Climate Pulse')
+    description = textwrap.dedent('''
+    Create image of daily time series for Climate Pulse
+                            
+    examples:
+    python generate-timeseries-image.py -v sst
+    python generate-timeseries-image.py -v sst -f pdf
+    python generate-timeseries-image.py -v sst -f pdf -a
+    ''')
+
+    parser = ArgumentParser(description=description, formatter_class=RawTextHelpFormatter)
 
     # Optional arguments with parameters
     parser.add_argument(
@@ -321,6 +360,14 @@ def parse_arguments():
     )
 
     parser.add_argument(
+        '-s', '--statistic',
+        type=str,
+        choices=['absolute', 'anomaly'],
+        default='absolute',
+        help='Statistic (default: absolute)',
+    )
+
+    parser.add_argument(
         '-f', '--format',
         type=str,
         choices=['png', 'pdf'],
@@ -329,10 +376,24 @@ def parse_arguments():
     )
 
     parser.add_argument(
-        '-a', '--anomalies',
-        action='store_true',
-        default=False,
-        help='Plot anomalies (default: False)',
+        '-e', '--end-date',
+        type=str,
+        default=None,
+        help='Desired end date formatted as YYYYMMDD',
+    )
+
+    parser.add_argument(
+        '-I', '--input-dir',
+        type=str,
+        default=None,
+        help='Input directory for CSV file',
+    )
+
+    parser.add_argument(
+        '-O', '--output-dir',
+        type=str,
+        default=None,
+        help='Output directory for image',
     )
 
     return vars(parser.parse_args())
@@ -346,6 +407,16 @@ if __name__ == "__main__":
     args = parse_arguments()
     var_name = args['varname']
     image_format = args['format']
-    anomalies = args['anomalies']
+    statistic = args['statistic']
+    end_date = args['end_date']
+    dirin = args['input_dir']
+    dirout = args['output_dir']
 
-    create_image(var_name=var_name, image_format=image_format, anomalies=anomalies)
+    create_image(
+        var_name=var_name,
+        image_format=image_format,
+        statistic=statistic,
+        end_date=end_date,
+        dirin=dirin,
+        dirout=dirout,
+    )
