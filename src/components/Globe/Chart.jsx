@@ -147,6 +147,7 @@ const Chart = () => {
                         coords => cablePaths.push({ coords, properties })
                     );
                 });
+                console.log(cablePaths);
                 setCoastlines(cablePaths);
                 globeEl.current.pointOfView(defaultPOV);
                 });
