@@ -178,7 +178,7 @@ const TimeSeriesChart = () => {
                         style={{
                             fontWeight: "normal",
                             fontSize: ((window.innerWidth < 768) ? ((variable === 'sea-temperature') ? 13 : 13) : 18),
-                            lineHeight: 1,
+                            lineHeight: 1.2,
                             color: "#2A3F5F",
                         }}
                     >
