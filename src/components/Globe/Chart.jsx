@@ -72,7 +72,7 @@ const Chart = () => {
         if (quantity === 'absolute') {
             return ' ● Data ERA5'
         } else {
-            return ' ● Reference period: 1991-2020'
+            return ' ● Baseline: 1991-2020'
         }
     }
     function getThirdLineExtra() {
@@ -183,20 +183,36 @@ const Chart = () => {
                     align="center"
                     style={{
                         fontWeight: "normal",
-                        fontSize: ((window.innerWidth < 768) ? ((variable === 'sea-temperature') ? 13 : 13) : 18),
+                        fontSize: 18,
                         lineHeight: 1.2,
                         color: "#2A3F5F",
                         marginBottom: "-10px",
                         padding: "0px",
                     }}
                 >
+                {window.innerWidth >= 768 &&
+                    <>
                     <b>{getVariable()} ● {getTimeTitle()}</b>
                     <br></br>
-                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>{getTemporalResolution()} average{getSecondLineExtra()}</span>
+                        <span style={{fontSize: 16}}>{getTemporalResolution()} average{getSecondLineExtra()}</span>
                         <br></br>
-                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>
+                        <span style={{fontSize: 16}}>
                         {getThirdLineExtra()}Credit: C3S/ECMWF
                         </span>
+                    </>
+                }
+                {window.innerWidth < 768 &&
+                    <>
+                    <b>{getTimeTitle()}</b><br></br>
+                    <b>{getVariable()}</b>
+                    <br></br>
+                        <span style={{fontSize: 16}}>{getTemporalResolution()} average{getSecondLineExtra()}</span>
+                        <br></br>
+                        <span style={{fontSize: 16}}>
+                        {getThirdLineExtra()}Credit: C3S/ECMWF
+                        </span>
+                    </>
+                }
 
                 </h3>
                 </Grid.Column>

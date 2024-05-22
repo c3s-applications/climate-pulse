@@ -53,9 +53,9 @@ const TimeSeriesChart = () => {
             }
         } else {
             if (quantity === 'absolute') {
-                return `Sea surface temperature ${((window.innerWidth < 768) ? "●" : "for")} 60°S–60°N`
+                return `Sea surface temperature`
             } else {
-                return `Sea surface temperature anomaly ${((window.innerWidth < 768) ? "●" : "for")} 60°S–60°N`
+                return `Sea surface temperature anomaly`
             }
         }
     }
@@ -72,7 +72,7 @@ const TimeSeriesChart = () => {
         if (quantity === 'absolute') {
             return ' ● Data ERA5'
         } else {
-            return ' ● Reference period: 1991-2020'
+            return ' ● Baseline: 1991-2020'
         }
     }
     function getThirdLineExtra() {
@@ -85,7 +85,7 @@ const TimeSeriesChart = () => {
 
     function getExtent() {
         if (variable === 'air-temperature') {
-            return 'global'
+            return ''
         } else {
             return '60°S - 60°N'
         }
@@ -177,18 +177,39 @@ const TimeSeriesChart = () => {
                         align="center"
                         style={{
                             fontWeight: "normal",
-                            fontSize: ((window.innerWidth < 768) ? ((variable === 'sea-temperature') ? 13 : 13) : 18),
+                            fontSize: 18,
                             lineHeight: 1.2,
                             color: "#2A3F5F",
                         }}
                     >
-                        <b>{getVariable()}</b>
+                    {window.innerWidth >= 768 &&
+                        <>
+                        <b>{getVariable()} {((getExtent() !== "") ? ` ● ${getExtent()}` : "")}</b>
                         <br></br>
-                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>Daily average{getSecondLineExtra()}</span>
+                        <span style={{fontSize: 16}}>Daily average{getSecondLineExtra()}</span>
                         <br></br>
-                        <span style={{fontSize: ((window.innerWidth < 768) ? 13 : 16)}}>
+                        <span style={{fontSize: 16}}>
                         {getThirdLineExtra()}Credit: C3S/ECMWF
                         </span>
+                        </>
+                    }
+                    {window.innerWidth < 768 &&
+                        <>
+                        <b>{getVariable()}</b>
+                        {getExtent() !== "" &&
+                            <>
+                            <br></br>
+                            <b>{getExtent()}</b>
+                            </>
+                        }
+                        <br></br>
+                        <span style={{fontSize: 16}}>Daily average{getSecondLineExtra()}</span>
+                        <br></br>
+                        <span style={{fontSize: 16}}>
+                        {getThirdLineExtra()}Credit: C3S/ECMWF
+                        </span>
+                        </>
+                    }
             
                     </h3>
                 </Grid.Column>
