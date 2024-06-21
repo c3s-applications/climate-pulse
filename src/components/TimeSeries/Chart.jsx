@@ -4,7 +4,7 @@ import { updateTimeSeries } from "../../actions/actions"
 import Plot from 'react-plotly.js'
 import defaultPlot from './default.json';
 import { getAnnualValue, getStartYear, sanitiseYears } from './AnnualValues'
-import { applyColormap } from './Colors'
+import { applyFixedColormap } from './Colors'
 import { Divider, Image, Grid } from 'semantic-ui-react'
 
 
@@ -17,7 +17,7 @@ const plotlyConfig = {
     showTips: false,
 }
 
-const TimeSeriesChart = () => {
+const TimeSeriesChart = ({ globeYear }) => {
 
     const dispatch = useDispatch()
 
@@ -33,10 +33,19 @@ const TimeSeriesChart = () => {
     const prevReset = useRef()
 
     const highlightYears = useSelector(state => state.timeSeries.highlightYears);
+    const globeHighlightYear = useSelector(state => state.timeSeries.globeHighlightYear);
     const prevHighlightYears = useRef(highlightYears)
+    const prevGlobeHighlightYear = useRef(globeHighlightYear)
     const [highlightsApplied, setHighlightsApplied] = useState(false)
-
     const defaultHighlightYears = useSelector(state => state.timeSeries.defaultHighlightYears);
+    console.log('TimeSeriesChart highlightYears', highlightYears)
+    console.log('TimeSeriesChart prevHighlightYears', prevHighlightYears.current)
+    console.log('TimeSeriesChart defaultHighlightYears', defaultHighlightYears)
+    console.log('TimeSeriesChart globeHighlightYear', globeHighlightYear)
+    console.log('TimeSeriesChart globeYear', globeYear)
+
+    const minMaxVals = useSelector(state => state.timeSeries.minMaxVals);
+    console.log("READ minMaxVals", minMaxVals)
 
     const timeSeriesUrl = 'https://sites.ecmwf.int/data/climatepulse/timeseries/'
     const jsonSrc = `time-series-${variable}-${quantity}.json`;
@@ -85,6 +94,7 @@ const TimeSeriesChart = () => {
 
     function getExtent() {
         if (variable === 'air-temperature') {
+            
             return ''
         } else {
             return '60°S - 60°N'
@@ -93,10 +103,14 @@ const TimeSeriesChart = () => {
 
     const applyHighlights = (years) => {
         years = sanitiseYears(variable, years)
-        years.sort(function(a, b){
-            return getAnnualValue(variable, b)-getAnnualValue(variable, a)
-        })
-        var colors = applyColormap(years.length)
+        // years.sort(function(a, b){
+        //     return getAnnualValue(variable, b)-getAnnualValue(variable, a)
+        // })
+        // var colors = applyColormap(years.length)
+        const values = years.map(year => getAnnualValue(variable, year))
+        console.log("DEBUG VALUES", minMaxVals[0], minMaxVals[1], values)
+        var colors = applyFixedColormap(minMaxVals[0], minMaxVals[1], values)
+        console.log("DEBUG", colors)
 
         var hovertemplate = ((quantity == 'absolute') ? 
             " - %{x|%B %-d}</b><br>Temperature: %{y}°C<br>1991-2020 average: %{customdata[0]:.2f}°C<br>Anomaly: %{customdata[1]:.2f}°C<extra></extra>"
@@ -107,13 +121,16 @@ const TimeSeriesChart = () => {
         for (var i = 0; i < years.length; i++) {
             let year = years[i]
 
+            const lineWidth = (year === globeHighlightYear) ? 3 : 3;
+            const color = (year === globeHighlightYear) ? "black" : colors[i];
+
             let traceIndex = year-getStartYear(variable)
             if (traceIndex >= 0) {
                 const trace = timeSeriesRef.current.props.data[traceIndex]
                 var newTrace = {
                     x: trace.x,
                     y: trace.y,
-                    line: {color: colors[i], width: 2},
+                    line: {color: color, width: lineWidth},
                     hovertemplate: "<b>" + year.toString() + hovertemplate,
                     customdata: trace.customdata,
                     name: year.toString(),
@@ -140,10 +157,24 @@ const TimeSeriesChart = () => {
     }
 
     useEffect(() => {
-        if (reset !== prevReset.current || jsonSrc !== prevJsonSrc.current) {
+        let resetDueToGlobeChange = globeHighlightYear !== prevGlobeHighlightYear.current
+
+        if (reset !== prevReset.current || jsonSrc !== prevJsonSrc.current || (resetDueToGlobeChange)) {
             if (reset !== prevReset.current) {
                 dispatch(updateTimeSeries({ highlightYears: defaultHighlightYears }))
                 prevReset.current = reset
+                console.log('DEBUG RESET manual')
+            } else if (resetDueToGlobeChange) {
+                let yearsToHighlight = [...highlightYears, globeHighlightYear];  // Remember these if we want to reset and re-add the highlights
+                const indexOfPrevGlobeHighlightYear = yearsToHighlight.indexOf(prevGlobeHighlightYear.current);
+                if (indexOfPrevGlobeHighlightYear !== -1) {
+                    // Remove the value using splice
+                    yearsToHighlight.splice(indexOfPrevGlobeHighlightYear, 1);
+                }
+                dispatch(updateTimeSeries({ highlightYears: yearsToHighlight }))
+                prevReset.current = reset
+                prevGlobeHighlightYear.current = globeHighlightYear
+                console.log('DEBUG RESET Globe')
             }
             fetchJson()
             prevJsonSrc.current = jsonSrc
@@ -151,7 +182,17 @@ const TimeSeriesChart = () => {
 
         if (highlightsApplied === false) {
             applyHighlights(highlightYears)
+            // applyHighlights(yearsToHighlight)
+            console.log('DEBUG highlightsApplied === false')
         }
+
+        // if ((globeHighlightYear !== prevGlobeHighlightYear.current) && (!highlightYears.includes(globeHighlightYear))) {
+        //     // If we change the globe highlight year then reset all the highlights and re-add them
+        //     applyHighlights(yearsToHighlight)
+        //     // applyHighlights([globeHighlightYear])
+        //     console.log('DEBUG', globeHighlightYear, prevGlobeHighlightYear.current, highlightYears, highlightYears.includes(globeHighlightYear))
+        //     prevGlobeHighlightYear.current = globeHighlightYear
+        // }
 
         if (highlightYears != prevHighlightYears.current) {
             if (typeof prevHighlightYears.current !== 'undefined') {
@@ -163,6 +204,7 @@ const TimeSeriesChart = () => {
             }
             applyHighlights(highlightYears)
             prevHighlightYears.current = highlightYears
+            console.log('DEBUG highlightYears !== prevHighlightYears')
         }
 
     }, )

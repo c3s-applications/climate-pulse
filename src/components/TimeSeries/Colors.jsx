@@ -101,17 +101,30 @@ const RdYlBu = [
     "#2355a1",
 ]
 
-export function applyColormap(nColors, cmap=RdYlBu) {
-    if (nColors === 1) {
-        return ["#f0702c"]
-    } else if (nColors === 3) {
-        return ["#d01f27", "FDC659", "#2355a1"]
-    } else {
-        var result = []
-        for (var i = 0; i < nColors; i++) {
-            var color = cmap[Math.floor((cmap.length-1)*(i/(nColors-1)))]
-            result.push(color)
-        }
-        return result
-    }
+// export function applyColormap(nColors, cmap=RdYlBu) {
+//     if (nColors === 1) {
+//         return ["#f0702c"]
+//     } else if (nColors === 3) {
+//         return ["#d01f27", "FDC659", "#2355a1"]
+//     } else {
+//         var result = []
+//         for (var i = 0; i < nColors; i++) {
+//             var color = cmap[Math.floor((cmap.length-1)*(i/(nColors-1)))]
+//             result.push(color)
+//         }
+//         return result
+//     }
+// }
+
+export function applyFixedColormap(minVal, maxVal, values, cmap=RdYlBu) {
+    console.log("DEBUG applyFixedColormap", minVal, maxVal, values)
+    const range = maxVal - minVal;
+    var colors = [];
+    values.forEach((value, _) => {
+        const fractionalDistance = 1 - (value - minVal) / range
+        const index = Math.floor((cmap.length - 1) * fractionalDistance)
+        const color = cmap[index]
+        colors.push(color)
+    });
+    return colors
 }

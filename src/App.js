@@ -43,7 +43,7 @@ const App = () => {
       </Grid.Row>
 
       <Grid.Row>
-        <Grid.Column textAlign='center' mobile={16} computer={8}>
+        <Grid.Column textAlign='center' mobile={16} computer={14}>
           <Menu />
         </Grid.Column>
       </Grid.Row>

@@ -26,7 +26,7 @@ function getWidth(maxHeight, padWidescreen, padMobile, mode) {
     }
   }
 
-const Chart = () => {
+const Chart = ({climateScaleFactor}) => {
 
     const dispatch = useDispatch()
 
@@ -41,6 +41,7 @@ const Chart = () => {
     const quantity = useSelector(state => state.globe.quantity)
     const temporalResolution = useSelector(state => state.globe.temporalResolution)
     const dateTime = useSelector(state => state.globe.dateTime)
+    const pulseActive = useSelector(state => state.pulseActive)
 
     const padWidescreen = 40
     const padMobile = 80
@@ -48,9 +49,32 @@ const Chart = () => {
 
     const [width, setWidth] = useState([getWidth(getHeight(), padWidescreen, padMobile, mode)]);
 
+    let atmosphereColor = getColor(climateScaleFactor)
+
+    const minPulse = 0.35;  // Duration of hearbeat (0.25 = 240bps [dead])
+    const maxPulse = 2;   // 40 bps
+    const rangePulse = maxPulse - minPulse;
+    let pulseDuration = maxPulse - rangePulse * climateScaleFactor;  // Inverted (shorter duration is faster pulse)
+    const pulseClassName = pulseActive ?"pulse-effect" : ""
+
     const shortName = ((variable == 'air-temperature') ? '2t' : 'sst')
     const legendImageUrl = `https://sites.ecmwf.int/data/climatepulse/colourscales/climpulse_colourscale_${temporalResolution}_${shortName}_${quantity}_${legendOrientation}.png`
 
+    function getColor(value) {
+        // Ensure the value is between 0 and 1
+        if (value < 0) value = 0;
+        if (value > 1) value = 1;
+
+        // Calculate the alpha value based on the input. Apparently this doesn't work (globe.gl ignores alpha channel?)
+        let alpha = 1;
+        const red = Math.floor(255 * value);
+        const blue = 255 - Math.floor(255 * value);
+        console.log('getColor', red, blue, alpha)
+
+        // Define the red color with variable transparency
+        // Red color in RGB is (255, 0, 0)
+        return `rgba(${red}, 0, 0, ${alpha})`;
+    }
 
     function getVariable() {
         if (variable === 'air-temperature') {
@@ -219,7 +243,7 @@ const Chart = () => {
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width={16} textAlign='center' verticalAlign='middle'>
-                <div>
+                <div style={{ '--animation-duration': pulseDuration + 's' }} className={pulseClassName}>
                     <ReactGlobe
                         ref={globeEl}
                         width={width}
@@ -237,7 +261,8 @@ const Chart = () => {
                         globeMaterial={globeMaterial}
                         globeImageUrl={globeImageUrl}
                         showAtmosphere={true}
-                        animateIn={true}
+                        atmosphereColor={atmosphereColor}
+                        // animateIn={true}
                     />
                 </div>
                 </Grid.Column>

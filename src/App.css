@@ -56,8 +56,50 @@ g.points {
 .scene-container {
   margin: auto !important;
   display: block !important;
+  /*animation: pulseeffect 1s linear infinite;  /* Same as the pulsing dot */
 }
 
+:root {
+  --animation-duration: 1s;
+  --toggleGreen: #21ba45;
+}
+
+.pulse-effect {
+  animation: heartbeat var(--animation-duration) linear infinite;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(0.96);
+  }
+  20% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.96);
+  }
+}
+
+@keyframes doubleheartbeat {
+  0% {
+    transform: scale(0.99);
+  }
+  10% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.99);
+  }
+  40% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(0.99);
+  }
+}
 
 @keyframes Pulsing-dot {
   0%   {
@@ -84,4 +126,133 @@ g.points {
 
 .mainPanelContainer {
   width: 1825px !important;
+}
+
+/* For the pulse button */
+/* Hide the icon by default */
+.pulse-button-icon {
+  display: none;
+  /* background-color: black;
+  color: black; */
+}
+
+/* Show the icon and hide the text on smaller screens */
+/* @media (max-width: 600px) { */
+  .pulse-button-text {
+    /* display: none; */
+    /* visibility: hidden; */
+    font-size: 1.2rem;
+    position: absolute; /* Position the child divs absolutely */
+    top: 20%; /* Align both child divs to the top of the parent */
+    left: 0; /* Align both child divs to the left of the parent */
+    width: 100%; /* Ensure both child divs take up full width of parent */
+    height: 100%; /* Ensure both child divs take up full height of parent */
+  }
+
+  .pulse-button-icon {
+    display: inline-block;
+    position: absolute; /* Position the child divs absolutely */
+    top: 0; /* Align both child divs to the top of the parent */
+    left: 0; /* Align both child divs to the left of the parent */
+    width: 100%; /* Ensure both child divs take up full width of parent */
+    height: 100%; /* Ensure both child divs take up full height of parent */
+  }
+/* } */
+
+.menuContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centeredElement {
+  flex: 1;
+  text-align: center;
+}
+
+.rightElement {
+  position: absolute;
+  right: 10px;
+}
+
+
+.heart-rate {
+  max-width: 50px;
+  height: 45px;
+  position: relative;
+  margin:0px auto;
+  top:-10px;
+  overflow:hidden;
+  background-color: transparent;
+}
+
+.fade-in {
+  position: absolute;
+  width: 100%;
+  height:100%;
+  background: var(--toggleGreen);
+  top: 0;
+  right: 0;
+  animation: heartRateIn 2s linear infinite;
+
+  /* Gia na katalavw ti ginetai des auto
+    border:1px solid red;
+    */
+
+}
+
+.fade-out {
+  position: absolute;
+  width: 120%;
+  height: 100%;
+  top: 0;
+  left: -120%;
+  animation: heartRateOut 2s linear infinite;
+  /* background: rgba(255, 255, 255, 1);
+  background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%); */
+  background: linear-gradient(to right, var(--toggleGreen) 0%, var(--toggleGreen) 80%, rgba(255, 255, 255, 0) 100%);
+}
+
+@keyframes heartRateIn {
+  0% {
+    width: 100%;
+  }
+  50% {
+    width: 0%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes heartRateOut {
+  0% {
+    left: -120%;
+  }
+  30% {
+    left: -120%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+.minWidth {
+  min-width: 80px;
+}
+
+.minHeight {
+  min-height: 25px;
+}
+
+.centeredDiv {
+  position: relative; /* Ensure the parent container has relative positioning */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center; /* Center children horizontally */
+  align-items: center; /* Center children vertically */
 }

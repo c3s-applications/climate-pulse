@@ -13,6 +13,8 @@ import TimeSeriesChart from './TimeSeries/Chart'
 import TimeSeriesControls from './TimeSeries/Controls'
 import TimeSeriesButtons from './TimeSeries/Buttons'
 
+import { getAnnualValue } from './TimeSeries/AnnualValues'
+import { updateTimeSeries } from "../actions/actions"
 
 const switchToGlobeStyle = (
   {
@@ -82,6 +84,48 @@ const MainPanel = () => {
         globeMinAnnual.toLocaleDateString("en-GB", {year: 'numeric'})
   )
 
+  let minTemp = Infinity;
+  let maxTemp = -Infinity;
+
+  for (let year = 1900; year <= 2100; year++) {
+    const annualTemp = getAnnualValue(variable, year);
+
+    if (annualTemp < minTemp) {
+      minTemp = annualTemp;
+    }
+
+    if (annualTemp > maxTemp) {
+      maxTemp = annualTemp;
+    }
+  }
+
+  const rangeTemp = maxTemp - minTemp;
+  console.log('min, max temps', minTemp, maxTemp)
+  
+
+  const dateTime = useSelector(state => state.globe.dateTime)
+  const year = dateTime.getFullYear();
+  // const year = useSelector(state => state.globe.year)  // Somehow use this, and update this value elsewhere? But then what is "dispatch" used for?..
+  const yearClamped = (year > 2023) ? 2023 : year;  // Clamp at 2023 as the annual temp for 2024 is undefined
+  const annualTemp = getAnnualValue(variable, yearClamped);
+  const fractionTemp = (annualTemp - minTemp) / rangeTemp;
+  // const pulseDuration = maxPulse - rangePulse * fractionTemp;
+  // const pulseDuration = 1;
+
+  // console.log(`Minimum Annual Temperature: ${minTemp}`);
+  // console.log(`Maximum Annual Temperature: ${maxTemp}`);
+  // console.log(`pulseDuration: ${pulseDuration}, year: ${year}, yearClamped: ${yearClamped}`);
+
+  const globeHighlightYear = useSelector(state => state.timeSeries.globeHighlightYear);
+  if (globeHighlightYear !== yearClamped.toString()) {
+    // let newHighlightYears = highlightYears.concat(yearClamped.toString())
+    dispatch(updateTimeSeries({globeHighlightYear: yearClamped.toString()}))
+  }
+
+  // console.log('Year', year, annualTemp)
+
+  // state.timeSeries.  reducers, index.js
+
   const timeSeriesContent = (
     <>
       <Grid centered>
@@ -96,7 +140,7 @@ const MainPanel = () => {
           <Loader size='massive' />
         </Dimmer>
         </Transition>
-        <TimeSeriesChart />
+        <TimeSeriesChart globeYear={yearClamped}/>
         <TimeSeriesControls />
         <TimeSeriesButtons />
         <Divider fitted hidden />
@@ -128,7 +172,7 @@ const MainPanel = () => {
         </Dimmer>
         </Transition>
       <div id='globeContainer'>
-        <GlobeChart />
+        <GlobeChart climateScaleFactor={fractionTemp} />
       </div>
       <Divider fitted hidden />
       <Divider fitted hidden />
